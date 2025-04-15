@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+.banh-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-size: cover;
+  text-align: center;
+  font-family: "Signika", sans-serif;
+  height: 530px;
+  width: 400px;
+  justify-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  gap: 20px;
+}
+.banh-widget::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-size: cover;
+}
+.banhnua > .banh-widget {
+  background-image: url("../images/sp-banhnua.png");
+}
+.banhsinhnhat > .banh-widget {
+  background-image: url("../images/sp-banhsinhnhat.jpg");
+}
+.phukien > .banh-widget {
+  background-image: url("../images/sp-phukien.jpg");
+}
+.widget-content {
+  color: white;
+  font-size: 30px;
+  z-index: 1;
+  position: relative;
+}
+.widget-content h3 {
+  margin-bottom: 40px;
+}
+.widget-content a {
+  padding: 10px 40px;
+  border-radius: 17px;
+  border: none;
+  background: white;
+  text-decoration: none;
+  color: #3C2A23;
+  font-family: "Open Sans", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.widget-content a:hover {
+  background: #4D4637;
+  color: white;
+}
+
+.banhnua,
+.banhsinhnhat,
+.phukien {
+  display: flex;
+  margin: 40px 40px;
+}
+.banh-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 900px;
+  gap: 10px;
+  margin-left: 70px;
+}
+
+.banh-list img {
+  width: 450px;
+  height: 480px;
+}
+
+.banhsinhnhat {
+  margin-top: 80px;
+  margin-bottom: 50px;
+}
+.banhsinhnhat .banh-list {
+  width: 100%;
+  margin: 0px;
+  margin-top: 30px;
+}
+.banhsinhnhat h3 {
+  font-family: "Signika", sans-serif;
+  font-size: 30px;
+  text-align: center;
+}
+.banhsinhnhat h3 a {
+  color: var(--productname--color);
+}
+.banhsinhnhat h3 a:hover {
+  color: #224503;
+}
+
+.banh-list p {
+  margin-top: 20px;
+}
+
+.bookmark {
+  position: relative;
+  min-height: 450px;
+  background-image: url(../images/cake-shadow.jpg);
+  background-size: cover;
+  background-position: center 50%;
+  text-align: center;
+  font-family: "Signika", sans-serif;
+}
+
+.bookmark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.content-bookmark {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+.content-bookmark > div h1 {
+  font-size: 60px;
+}
+.content-bookmark > div h3 {
+  font-weight: normal;
+  font-size: 35px;
+  padding-top: 20px;
+}
+.content-bookmark > div {
+  padding-top: 180px;
+}
+.content-bookmark a {
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+.content-bookmark a:hover {
+  color: #d4812e;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  background-image: url(../images/brand-bg.png);
+  background-color: #81c848;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  padding: 70px;
+  box-sizing: border-box;
+}
+.brand-item {
+  flex: 0 0 auto;
+  width: 20%;
+  margin-right: 10px;
+}
+
+.brand-item:last-child {
+  margin-right: 0;
+}
+
+.brand-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.contaner-product-section-1{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #F6EFEA;
+}
+
+.contaner-product-section-2{
+  display: flex;
+  background-color: #ffffff;
+}
+
+.contaner-product-section-3{
+  display: flex;
+  background-color: #F6EFEA;
+}
+
+.product-container {
+  flex: 1 1 calc(33.333% - 20px); /* Tính toán chiều rộng của mỗi sản phẩm */
+  background-color: #F6F6F6;
+  display: inline-block;
+  transition: 0.5s;
+  border-radius: 10%;
+  padding: 20px; /* Thêm khoảng cách bên trong để nhìn thoáng hơn */
+  width: 30%;
+}
+
+.product-container:hover {
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Bóng mờ nhẹ */
+  transform: scale(1.05); /* Tăng nhẹ kích thước để thêm hiệu ứng nổi */
+}
+
+.product-container p {
+  font-size: 40px;
+  text-align: left;
+  margin: 0;
+  padding-left: 10px; /* Đẩy chữ sang phải một chút */
+}
+
+.product-container .price {
+  font-family: "Signika", sans-serif;
+  font-size: 20px; /* Giảm kích thước chữ */
+  margin-top: 5px; /* Tạo khoảng cách giữa các đoạn văn */
+  padding-left: 10px; /* Canh lề đồng nhất với phần tên sản phẩm */
+}
+
+.product-container img {
+  max-width: 100%; /* Đảm bảo hình ảnh không bị vỡ */
+  height: auto;
+  display: block;
+  margin-top: 10px; /* Thêm khoảng cách giữa ảnh và chữ */
+}
+
+.hidden {
+  display: none;
+}

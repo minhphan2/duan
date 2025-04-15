@@ -1,0 +1,89 @@
+.bookmark {
+    position: relative;
+    min-height: 450px;
+    background-image: url('../images/chitietrauanqua.webp');
+    background-size: cover;
+    text-align: center;
+    font-family: "Signika", sans-serif;
+}
+
+.bookmark::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.content-bookmark {
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+.content-bookmark > div h1{
+    font-size: 60px;
+}
+.content-bookmark > div h3{
+    font-weight: normal;
+    font-size: 35px;
+    padding-top: 20px;
+}
+.content-bookmark > div{
+    padding-top: 180px;
+}
+.content-bookmark a{
+    text-decoration: none;
+    color:white;
+    transition: 0.3s;
+}
+.content-bookmark a:hover{
+    color:#7dc642;
+}
+.rau-list{
+    padding: 10px 50px;
+}
+.page {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    margin-bottom: 45px;
+}
+
+.page li {
+    display: inline-block;
+    
+    padding: 8px 12px;
+    margin-right: 5px; /* Sửa margin để tạo khoảng cách đều */
+    border-radius: 5px; /* Bo góc nút */
+    transition: all 0.3s ease; /* Hiệu ứng mượt */
+    background-color: #694922; /* Màu nền nhạt */
+}
+
+.page-numbers a {
+    color: #ffffff; /* Màu chữ nút */
+    text-decoration: none;
+}
+
+
+
+.page li:hover {
+    background-color: #ecdccd; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Bóng mờ nhẹ */
+}
+
+.page li:hover a {
+    color: #A6705B;
+}
+
+.next svg path {
+    fill: #ffffff; /* Đổi màu biểu tượng nút "Next" */
+}
+
+.next:hover svg path {
+    fill: #A6705B; /* Màu biểu tượng khi hover */
+}

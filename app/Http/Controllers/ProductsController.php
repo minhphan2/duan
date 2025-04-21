@@ -2,7 +2,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductsModel;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\AbstractCursorPaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductsController extends Controller
 {
@@ -14,6 +18,76 @@ class ProductsController extends Controller
 
 
         return view('sanpham', compact( 'result_bsn', 'result_bne', 'result_pkb'));
+    }
+
+    public function banhsinhnhat(Request $request){
+        
+        $limit = 1;
+
+
+        $products = ProductsModel::where('LoaiSP', 'BSN')->paginate($limit);
+       
+
+        return view('banhsinhnhat', [
+            'products' => $products,
+            'page' => $products->currentPage(), // Trang hiện tại
+            'totalPages' => $products->lastPage(),
+            
+        ]);
+    }  
+
+    public function banhnuae(Request $request){
+        $limit = 1;
+
+        $products = ProductsModel::where('LoaiSP', 'BNE')->paginate($limit);
+       
+
+        return view('banhnuae', [
+            'products' => $products,
+            'page' => $products->currentPage(), // Trang hiện tại
+            'totalPages' => $products->lastPage(),
+            
+        ]);
+    }
+
+    public function phukienbanh(Request $request){
+        $limit = 4;
+
+        $products = ProductsModel::where('LoaiSP', 'PKB')->paginate($limit);
+       
+
+        return view('phukienbanh', [
+            'products' => $products,
+            'page' => $products->currentPage(), // Trang hiện tại
+            'totalPages' => $products->lastPage(),
+            
+        ]);
+    }
+
+    public function fetchBanhsinhnhat(Request $request)
+{
+    $page = $request->input('page', 1);
+    $limit = 4;
+    $offset = ($page - 1) * $limit;
+
+    $query = ProductsModel::where('LoaiSP', 'BSN');
+    $total = $query->count();
+    $products = $query->offset($offset)->limit($limit)->get();
+    $totalPages = ceil($total / $limit);
+
+    $html = view('ajax.banhsinhnhat_list', compact('products'))->render();
+    $pagination = view('ajax.banhsinhnhat_pagination', compact('page', 'totalPages'))->render();
+
+    return response()->json([
+        'html' => $html,
+        'pagination' => $pagination,
+    ]);
+}
+
+
+    public function chitietsanpham($id){
+        $result = DB::table('sanpham')->where('id', $id)->first();
+        return view('chitietsanpham', compact('result'));
     }
 
 }

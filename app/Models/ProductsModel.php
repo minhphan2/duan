@@ -12,7 +12,7 @@ class ProductsModel extends Model
         'MoTa',
         'Gia',
         'HinhAnh',
-        'MaLoaiSP'
+        'LoaiSP'
     ];
 
 }

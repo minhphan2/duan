@@ -54,7 +54,7 @@
 
     <!-- Phân trang -->
     <nav class="page">
-        <ul class="page-numbers" id="pagination">
+        <ul class="page-numbers" id="pagination2">
             @if ($products->lastPage()> 1)
             @for ($i = 1; $i <= $products->lastPage(); $i++)
                 <li class="{{ $i == $products->currentPage() ? 'active' : '' }}">
@@ -64,6 +64,34 @@
         @endif
         </ul>
     </nav>
+    
+    
+
+    <div id="product-list"></div>
+<nav class="page" >
+    <ul class="page-numbers" id="pagination">
+        <li></li>
+    </ul>
+</nav>
+<script>
+    function loadProducts(page = 1) {
+        fetch(`/banhsinhnhat/ajax?page=${page}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('product-list').innerHTML = data.html;
+
+                let pagination = '';
+                for (let i = 1; i <= data.totalPages; i++) {
+                    pagination += `<button onclick="loadProducts(${i})">${i}</button>`;
+                }
+                document.getElementById('pagination').innerHTML = pagination;
+            });
+    }
+
+    loadProducts();
+</script>
+
+
 
     <!-- FOOTER -->
     <footer>

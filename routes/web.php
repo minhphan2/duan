@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -37,8 +38,11 @@ Route::get('/db-test', function () {
 //sanpham
 Route::get('/sanpham', [ProductsController::class, 'index'])->name('sanpham');
 Route::get('/banhsinhnhat', [ProductsController::class, 'banhsinhnhat'])->name('banhsinhnhat');
+Route::get('/banhsinhnhat/ajax', [ProductsController::class, 'BanhsinhnhatAjax']);
 Route::get('/banhnuae', [ProductsController::class, 'banhnuae'])->name('banhnuae');
-Route::get('/sanpham/phukienbanh', [ProductsController::class, 'phukienbanh'])->name('phukienbanh');
+Route::get('/banhnuae/ajax', [ProductsController::class, 'BanhnuaeAjax']);
+Route::get('/phukienbanh', [ProductsController::class, 'phukienbanh'])->name('phukienbanh');
+Route::get('/phukienbanh/ajax', [ProductsController::class, 'PhukienbanhAjax']);
 Route::get('/sanpham/chitietsanpham/{id}', [ProductsController::class, 'chitietsanpham'])->name('chitietsanpham');
 
 //cac trang tinh~
@@ -65,3 +69,10 @@ Route::get('/dangxuat', [UserController::class, 'logout'])->name('dangxuat');
 
 Route::get('auth/google', [SocialController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [SocialController::class, 'handleGoogleCallback']);
+//dang nhap bang facebook
+Route::get('auth/facebook', [SocialController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('auth/facebook/callback', [SocialController::class, 'handleFacebookCallback']);
+
+
+//guimail
+Route::post('/send-promo-email', [MailController::class, 'sendPromoEmail'])->name('send.promo.email');

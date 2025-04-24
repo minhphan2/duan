@@ -63,6 +63,30 @@
     </ul>
 </nav>
 
+<div id="product-list"></div>
+<nav class="page" >
+    <ul class="page-numbers" id="pagination">
+        <li></li>
+    </ul>
+</nav>
+<script>
+    function loadProducts(page = 1) {
+        fetch(`/phukienbanh/ajax?page=${page}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('product-list').innerHTML = data.html;
+
+                let pagination = '';
+                for (let i = 1; i <= data.totalPages; i++) {
+                    pagination += `<button onclick="loadProducts(${i})">${i}</button>`;
+                }
+                document.getElementById('pagination').innerHTML = pagination;
+            });
+    }
+
+    loadProducts();
+</script>
+
     <script src="././js/brand.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>

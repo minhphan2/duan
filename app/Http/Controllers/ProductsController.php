@@ -64,10 +64,10 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function fetchBanhsinhnhat(Request $request)
+    public function BanhsinhnhatAjax(Request $request)
 {
     $page = $request->input('page', 1);
-    $limit = 4;
+    $limit = 1;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'BSN');
@@ -75,13 +75,49 @@ class ProductsController extends Controller
     $products = $query->offset($offset)->limit($limit)->get();
     $totalPages = ceil($total / $limit);
 
-    $html = view('ajax.banhsinhnhat_list', compact('products'))->render();
-    $pagination = view('ajax.banhsinhnhat_pagination', compact('page', 'totalPages'))->render();
+    $view = view('sanpham.ajax_banhsinhnhat', compact('products'))->render();
 
     return response()->json([
-        'html' => $html,
-        'pagination' => $pagination,
+        'html' => $view,
+        'totalPages' => $totalPages,
     ]);
+}
+
+public function BanhnuaeAjax(Request $request){
+    $page = $request->input('page', 1);
+    $limit = 1;
+    $offset = ($page - 1) * $limit;
+
+    $query = ProductsModel::where('LoaiSP', 'BNE');
+    $total = $query->count();
+    $products = $query->offset($offset)->limit($limit)->get();
+    $totalPages = ceil($total / $limit);
+
+    $view = view('sanpham.ajax_banhnuae', compact('products'))->render();
+
+    return response()->json([
+        'html' => $view,
+        'totalPages' => $totalPages,
+    ]);
+}
+
+public function PhukienbanhAjax(Request $request) {
+    $page = $request->input('page', 1);
+    $limit = 1;
+    $offset = ($page - 1) * $limit;
+
+    $query = ProductsModel::where('LoaiSP', 'PKB');
+    $total = $query->count();
+    $products = $query->offset($offset)->limit($limit)->get();
+    $totalPages = ceil($total / $limit);
+
+    $view = view('sanpham.ajax_phukienbanh', compact('products'))->render();
+
+    return response()->json([
+        'html' => $view,
+        'totalPages' => $totalPages,
+    ]);
+    
 }
 
 

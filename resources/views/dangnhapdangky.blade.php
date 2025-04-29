@@ -39,7 +39,15 @@
                 <input type="text" name="username" placeholder="Name">
                 <input type="email" name="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password">
-                <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.site_key')}}"></div>
+                
+                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+                <br/>
+                @if($errors->has('g-recaptcha-response'))
+                    <span class="invalid-feedback" style="display: block;">
+                       <strong>{{ $errors->first('g-recaptcha-response') }}</strong> 
+                    </span>
+                @endif
+
                 <button name="nutdangky">Đăng kí</button>
                 <span>Hoặc sử dụng tài khoản của bạn</span>
                 <div class="social-container"> 
@@ -71,7 +79,15 @@
                         <a href="">Quên mật khẩu</a>
                     </div>
                 </div> 
-                <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.site_key')}}"></div>
+                
+                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+                <br/>
+                @if($errors->has('g-recaptcha-response'))
+                    <span class="invalid-feedback" style="display: block;">
+                       <strong>{{ $errors->first('g-recaptcha-response') }}</strong> 
+                    </span>
+                @endif
+
                 <button name="nutdangnhap">Đăng nhập</button>
                 <span>Hoặc sử dụng tài khoản của bạn</span>
                 <div class="social-container">
@@ -80,6 +96,7 @@
             
                 </div>
             </form>
+          
         
         </div>
         <div class="overlay-container">
@@ -105,6 +122,7 @@
     <script src="{{ asset('js/header.js') }}"></script>
     <script src="{{ asset('js/dangnhap.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     </body>
     </html>

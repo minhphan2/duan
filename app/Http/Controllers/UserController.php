@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 // thu vien ho tro dang nhap = google
 use App\Http\Controllers\SocialController;
+//hotrocaptcha
+use App\Rules\Captcha;
 
 
 class UserController extends Controller
@@ -21,6 +23,7 @@ class UserController extends Controller
        $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'g-recaptcha-response' => new Captcha(),
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -40,6 +43,7 @@ class UserController extends Controller
             'username' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'g-recaptcha-response' => new Captcha(), 
         ]);
 
 

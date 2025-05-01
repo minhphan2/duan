@@ -76,3 +76,12 @@ Route::get('auth/facebook/callback', [SocialController::class, 'handleFacebookCa
 
 //guimail
 Route::post('/send-promo-email', [MailController::class, 'sendPromoEmail'])->name('send.promo.email');
+
+
+//quen mat khau
+Route::get('/quenmatkhau', [UserController::class,'hienthiquenmatkhau'])->name('quenmatkhau');
+Route::post('/quenmatkhau',[UserController::class,'maquenmatkhau'])->name('password.email');
+
+//sau khi lay ma
+Route::get('/laylaimatkhau', [UserController::class, 'hienthiformlaylai'])->name('formlaylaimk');
+Route::post('/laylaimatkhau', [UserController::class, 'laylaimatkhau'])->name('password.update');

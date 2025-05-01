@@ -76,7 +76,7 @@
                         <label >Nhớ tài khoản</label>
                     </div>
                     <div class="pass-link">
-                        <a href="">Quên mật khẩu</a>
+                        <a href="{{route('quenmatkhau')}}">Quên mật khẩu</a>
                     </div>
                 </div> 
                 

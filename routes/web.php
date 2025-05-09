@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 //thu vien ho tro day den dang nhap google
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\GioHangController;
 
 
 
@@ -85,3 +86,10 @@ Route::post('/quenmatkhau',[UserController::class,'maquenmatkhau'])->name('passw
 //sau khi lay ma
 Route::get('/laylaimatkhau', [UserController::class, 'hienthiformlaylai'])->name('formlaylaimk');
 Route::post('/laylaimatkhau', [UserController::class, 'laylaimatkhau'])->name('password.update');
+
+//chitietsanpham
+Route::get('/chitietsanpham/{id}', [ProductsController::class, 'chitietsanpham'])->name('chitietsanpham');
+
+
+//them vao gio hang
+Route::post('/giohang/them', [GioHangController::class, 'themVaoGio'])->name('giohang.them');

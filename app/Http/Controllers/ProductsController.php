@@ -122,9 +122,10 @@ public function PhukienbanhAjax(Request $request) {
 
 
     public function chitietsanpham($id){
-        $result = DB::table('sanpham')->where('id', $id)->first();
+        $result = DB::table('sanpham')->where('MaSP', $id)->first();
         return view('chitietsanpham', compact('result'));
     }
+
 
 }
 ?>

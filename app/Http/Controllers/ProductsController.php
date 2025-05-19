@@ -67,7 +67,7 @@ class ProductsController extends Controller
     public function BanhsinhnhatAjax(Request $request)
 {
     $page = $request->input('page', 1);
-    $limit = 1;
+    $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'BSN');
@@ -85,7 +85,7 @@ class ProductsController extends Controller
 
 public function BanhnuaeAjax(Request $request){
     $page = $request->input('page', 1);
-    $limit = 1;
+    $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'BNE');
@@ -103,7 +103,7 @@ public function BanhnuaeAjax(Request $request){
 
 public function PhukienbanhAjax(Request $request) {
     $page = $request->input('page', 1);
-    $limit = 1;
+    $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'PKB');
@@ -130,6 +130,61 @@ public function PhukienbanhAjax(Request $request) {
         $result = DB::table('sanpham')->get();
         return view('admin.qlysanpham', compact('result'));
     }
+
+
+    public function formThem(){
+        return view('admin.formthem');
+    }
+
+     public function store(Request $request)
+    {
+        $request->validate([
+            'ten_san_pham' => 'required',
+            'ma_loai' => 'required',
+            'don_gia' => 'required|numeric',
+            'so_luong' => 'required|integer',
+            'hinh1' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+            'hinh2' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+            'hinh3' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+        ]);
+
+        $sanpham = new ProductsModel();
+        $sanpham->TenSP = $request->ten_san_pham;
+        $sanpham->Loaisp = $request->ma_loai;
+        $sanpham->Gia = $request->don_gia;
+        $sanpham->SoLuong = $request->so_luong;
+        $sanpham->MoTa = $request->mo_ta;
+
+        // Xử lý upload hình ảnh nếu có
+        if ($request->hasFile('hinh1')) {
+            $file = $request->file('hinh1');
+            $filename = time().'_1.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $sanpham->HinhAnh = $filename;
+        }
+
+        if ($request->hasFile('hinh2')) {
+            $file = $request->file('hinh2');
+            $filename = time().'_2.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $sanpham->HinhAnh2 = $filename;
+        }
+
+        if ($request->hasFile('hinh3')) {
+            $file = $request->file('hinh3');
+            $filename = time().'_3.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $sanpham->HinhAnh3 = $filename;
+        }
+
+        $sanpham->save();
+
+        return redirect()->route('sanpham.formthem')->with('success', 'Thêm sản phẩm thành công!');
+
+
+    }
+
+    
 
    
 

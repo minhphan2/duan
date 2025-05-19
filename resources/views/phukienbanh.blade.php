@@ -33,37 +33,9 @@
     </div>
 
     <!-- Bánh sinh nhật -->
-    <div class='banhsinhnhat'>
-        <div class='banh-list'>
-            @if($products->count() > 0)
-                @foreach($products as $product)
-                    <div class="product-container" id="product-container">
-                        <a href="">
-                            <p class="product-name">{{ $product->TenSP }}</p>
-                            <p class="price">{{ $product->MoTa }}<br>{{ number_format($product->Gia, 0, ',', '.') }} ₫</p>
-                            <img src="{{ asset('images/banhsinhnhat/' . $product->HinhAnh) }}" alt="{{ $product->name }}">
-                        </a>
-                    </div>
-                @endforeach
-            @else
-                <p>Không có sản phẩm nào.</p>
-            @endif
-        </div>
-    </div>
-
-    <nav class="page">
-    <ul class="page-numbers">
-        @if ($products->lastPage()> 1)
-        @for ($i = 1; $i <= $products->lastPage(); $i++)
-            <li class="{{ $i == $products->currentPage() ? 'active' : '' }}">
-                <a href="{{ $products->url($i) }}">{{ $i }}</a>
-            </li>
-        @endfor
-    @endif
-    </ul>
-</nav>
-
-<div id="product-list"></div>
+ <div class='banhsinhnhat'>
+<div id="product-list" class="banh-list"></div>
+</div>
 <nav class="page" >
     <ul class="page-numbers" id="pagination">
         <li></li>

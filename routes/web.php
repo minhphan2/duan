@@ -121,3 +121,10 @@ Route::middleware(['auth:admin'])->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlysanpham', [ProductsController::class, 'laytatcasanpham'])->name('admin.qlysanpham');
 });
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard/quanlysanpham/them', [ProductsController::class, 'formthem'])->name('sanpham.formthem');
+    Route::post('/sanpham/store', [ProductsController::class, 'store'])->name('sanpham.store');
+});
+
+
+

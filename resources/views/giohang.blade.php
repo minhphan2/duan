@@ -118,7 +118,7 @@
                         <a href="{{ route('cart.remove', ['id' => $id]) }}" class="text-red-500 hover:underline mr-4">Xóa</a>
                 
                         <!-- Ảnh -->
-                        <img src="{{ asset(  $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
+                        <img src="{{ asset(  'uploads/' .$item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
                 
                         <!-- Thông tin -->
                         <div class="flex-1 mr-4">

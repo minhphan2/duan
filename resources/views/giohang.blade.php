@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="./images/logo_cake_1-removebg-preview.png" type = "image/x-icon"> <!--FAVICON-->
     <title>Giỏ hàng của bạn</title>
     <link rel="stylesheet" href="{{ asset('css/root.css') }}">
@@ -17,6 +18,60 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+    // Tăng số lượng
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            fetch(`/cart/increase/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateCartUI(data.cart);
+                    }
+                });
+        });
+    });
+
+    // Giảm số lượng
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            fetch(`/cart/decrease/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateCartUI(data.cart);
+                    }
+                });
+        });
+    });
+
+    // Cập nhật giao diện giỏ hàng
+    function updateCartUI(cart) {
+        for (const id in cart) {
+            const item = cart[id];
+            const quantityElement = document.querySelector(`.decrease-btn[data-id="${id}"]`).nextElementSibling;
+            quantityElement.textContent = item.quantity;
+        }
+    }
+});
+    </script>
+   
+
     
 </head>
 @extends('layout.app')
@@ -42,6 +97,7 @@
         });
         </script>
 
+
 <!-- tailwindcss -->
 <section class="bg-white">
     <div>
@@ -50,14 +106,55 @@
             <hr>
             <div class="flex flex-col lg:flex-row p-7">
                 <div class="flex flex-col gap-5 w-full lg:w-3/4" id="cartItems">
-                    <!-- Dữ liệu sản phẩm sẽ được thêm vào đây bằng JavaScript -->
+                    <!-- Dữ liệu sản phẩm sẽ được thêm vào đây bằng JavaScript   -->
+                    @php $tong = 0; @endphp
+                    @forelse($cart as $id => $item)
+                    @php
+                        $thanhtien = $item['price'] * $item['quantity'];
+                        $tong += $thanhtien;
+                    @endphp
+                    <div class="item-clear item-product productid-1 flex items-center">
+                        <!-- Xóa -->
+                        <a href="{{ route('cart.remove', ['id' => $id]) }}" class="text-red-500 hover:underline mr-4">Xóa</a>
+                
+                        <!-- Ảnh -->
+                        <img src="{{ asset(  $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
+                
+                        <!-- Thông tin -->
+                        <div class="flex-1 mr-4">
+                            <span class="text-lg font-semibold">{{ $item['name'] }}</span>
+                            <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
+                        </div>
+                
+                        <!-- Số lượng và nút -->
+                         <div class="flex items-center space-x-2 mr-4">
+        <button class="decrease-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">-</button>
+        <span class="quantity">{{ $item['quantity'] }}</span>
+        <button class="increase-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">+</button>
+    </div>
+                
+                        <!-- Thành tiền -->
+                        <div class="font-semibold">
+                            = {{ number_format($thanhtien) }}₫
+                        </div>
+                    </div>
+                @empty
+                    <p>Giỏ hàng rỗng. <a href="{{ route('sanpham') }}" class="text-blue-500">Mua hàng</a></p>
+                @endforelse
+                
+
+<hr class="my-4">
+<div class="flex justify-between items-center">
+    <h3 class="text-lg font-semibold">Tổng tiền</h3>
+    <span class="text-lg font-semibold">{{ number_format($tong) }}₫</span>
+</div>
                 </div>
 
                 <div class="w-full lg:w-1/4 mt-10 lg:mt-0 lg:ml-20">
                     <div class="flex-col justify-center">
                         <div class="flex items-center gap-4 lg:gap-14">
                             <h3 class="text-lg font-semibold">Tổng tiền</h3>
-                            <span id="totalPrice" class="text-lg font-semibold">0₫</span>
+                            <span id="totalPrice" class="text-lg font-semibold">{{ number_format($tong) }}₫</span>
                         </div>
                         <div class="mt-3">
                             <label for="note" class="control-label">Lưu ý cho đơn hàng</label> <br> <br>
@@ -77,101 +174,6 @@
 </section>
 
 <script>
-    // Mảng chứa thông tin các sản phẩm trong giỏ hàng (dùng cho mô phỏng)
-    let cartItems = [
-        {
-            id: 1,
-            name: "Letter to Santa",
-            price: 735000,
-            quantity: 1
-        },
-
-    //    {
-    //      id: 2,
-    //        name: "Mangopaco",
-    //        price: 445000,
-    //       quantity: 1
-    //    }
-    ];
-
-    // Hàm để hiển thị danh sách sản phẩm trong giỏ hàng
-    function renderCartItems() {
-        const cartItemsDiv = document.getElementById('cartItems');
-        cartItemsDiv.innerHTML = ''; // Xóa nội dung cũ đi
-
-        if (cartItems.length === 0) {
-            // Nếu không có sản phẩm, hiển thị nút đi đến trang mua hàng
-            cartItemsDiv.innerHTML = '<p>Đến trang mua hàng <a href="{{ route('sanpham') }}" class="text-blue-500">tại đây</a></p>';
-        } else {
-            // Nếu có sản phẩm, hiển thị từng sản phẩm
-            cartItems.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('item-clear', 'item-product', `productid-${item.id}`, 'flex', 'items-center');
-
-                itemDiv.innerHTML = `
-                    <div>
-                        <a href="javascript:void(0);" onclick="removeCartItem(${item.id})" class="text-blue-500">Xóa</a>
-                    </div>
-                    <div class="item-product-cart-mobile ml-10">
-                        <a href="./sanPham-letterToSanta.html">
-                            <img src="./images/banhsinhnhat1.avif" alt="${item.name}" class="w-16 h-16 object-cover rounded-full">
-                        </a>
-                    </div>
-                    <div class="ml-10">
-                        <span class="text-lg font-semibold"><a href="./sanPham-letterToSanta.html">${item.name}</a></span>
-                    </div>
-                    <div>
-                        <span class="product-price price ml-72">${formatCurrency(item.price)}₫</span>
-                    </div>
-                    <div class="ml-10">
-                        <div>
-                            <input class="hidden" name="variantId" value="${item.id}">
-                            <button type="button" onclick="changeQuantity(${item.id}, -1)" class="bg-gray-200 px-3 py-1 rounded-md">-</button>
-                            <input readonly type="text" maxlength="3" min="1" class="form-input number-sidebar qtyMobile${item.id} mx-2 w-12 text-center" id="qtyMobile${item.id}" name="Lines" size="4" value="${item.quantity}">
-                            <button type="button" onclick="changeQuantity(${item.id}, 1)" class="bg-gray-200 px-3 py-1 rounded-md">+</button>
-                        </div>
-                    </div>
-                `;
-                cartItemsDiv.appendChild(itemDiv);
-            });
-        }
-
-        // Cập nhật tổng tiền
-        updateTotalPrice();
-    }
-
-    // Hàm xử lý xóa sản phẩm khỏi giỏ hàng
-    function removeCartItem(itemId) {
-        cartItems = cartItems.filter(item => item.id !== itemId);
-        renderCartItems();
-    }
-
-    // Hàm cập nhật số lượng sản phẩm
-    function changeQuantity(itemId, amount) {
-        const item = cartItems.find(item => item.id === itemId);
-        if (item) {
-            item.quantity += amount;
-            if (item.quantity < 1) {
-                item.quantity = 1; // Đảm bảo số lượng không nhỏ hơn 1
-            }
-        }
-        renderCartItems();
-    }
-
-    // Hàm cập nhật tổng tiền
-    function updateTotalPrice() {
-        const totalPriceElement = document.getElementById('totalPrice');
-        const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-        totalPriceElement.textContent = formatCurrency(totalPrice) + '₫';
-    }
-
-    // Hàm định dạng số tiền có dấu phẩy
-    function formatCurrency(amount) {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    // Khởi tạo hiển thị ban đầu
-    renderCartItems();
 </script>
 
 <section class="form-section flex items-center justify-center bg-gray-100">
@@ -266,7 +268,7 @@
       </p>
     </div>
   </footer>
-  <script src="{{ asset('js/cart.js.js') }}"></script>
+  <script src="{{ asset('js/cart.js') }}"></script>
 </body>
 @endsection
 

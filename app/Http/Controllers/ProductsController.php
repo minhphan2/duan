@@ -126,6 +126,13 @@ public function PhukienbanhAjax(Request $request) {
         return view('chitietsanpham', compact('result'));
     }
 
+    public function laytatcasanpham(){
+        $result = DB::table('sanpham')->get();
+        return view('admin.qlysanpham', compact('result'));
+    }
+
+   
+
 
 }
 ?>

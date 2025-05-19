@@ -57,7 +57,7 @@ Route::get('/doingu', [PageController::class, 'doingu'])->name('doingu');
 Route::get('/lienhe', [PageController::class, 'lienhe'])->name('lienhe');
 
 //cai nay tinh sau
-Route::get('/giohang', [PageController::class, 'giohang'])->name('giohang');
+//Route::get('/giohang', [PageController::class, 'giohang'])->name('giohang');
 
 
 //dangnhap va dang ky
@@ -90,6 +90,34 @@ Route::post('/laylaimatkhau', [UserController::class, 'laylaimatkhau'])->name('p
 //chitietsanpham
 Route::get('/chitietsanpham/{id}', [ProductsController::class, 'chitietsanpham'])->name('chitietsanpham');
 
-
 //them vao gio hang
-Route::post('/giohang/them', [GioHangController::class, 'themVaoGio'])->name('giohang.them');
+Route::get('/giohang', [GioHangController::class, 'viewCart'])->name('cart.show');
+Route::post('/addtocart', [GioHangController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/increase/{id}', [GioHangController::class, 'increase'])->name('cart.increase');
+Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease');
+
+
+
+
+// cho admin
+use App\Http\Controllers\AdminController;
+//dang ky
+Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
+Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register.submit');
+
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+
+//dang nhap
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+
+// dangxuat
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard/quanlysanpham', [ProductsController::class, 'laytatcasanpham'])->name('admin.qlysanpham');
+});

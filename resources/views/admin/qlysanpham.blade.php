@@ -71,7 +71,6 @@
                             <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                     <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>                                                            
-                                    <a class="nav-link" href="nhacungcap.php">Nhà cung cấp</a>                                
                                 </nav>
                             </div>
                             <a class="nav-link" href="khachhang.php">
@@ -169,8 +168,12 @@
                     <td>{{ number_format($sp->Gia, 0, ',', '.') }}đ</td>
                     <td>{{ $sp->SoLuong }}</td>
                     <td style="max-width: 200px;">{{ Str::limit($sp->MoTa, 100) }}</td>
-                    <td><a href="#" class="btn btn-warning btn-sm">Sửa</a></td>
-                    <td><a href="#" class="btn btn-danger btn-sm">Xoá</a></td>
+                    <td><a href="{{ route('sanpham.edit', $sp->MaSP) }}" class="btn btn-warning btn-sm">Sửa</a></td>
+                    <td> <form action="{{ route('sanpham.delete', $sp->MaSP) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
+        </form></td>
                 </tr>
                 @endforeach
             </tbody>

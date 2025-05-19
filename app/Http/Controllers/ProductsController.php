@@ -184,10 +184,84 @@ public function PhukienbanhAjax(Request $request) {
 
     }
 
-    
+    public function delete($id)
+{
+    $sp = ProductsModel::findOrFail($id);
 
+    // Xóa hình ảnh cũ nếu có
+    if ($sp->HinhAnh && file_exists(public_path('uploads/' . $sp->HinhAnh))) {
+        unlink(public_path('uploads/' . $sp->HinhAnh));
+    }
+
+    $sp->delete();
+
+    return redirect()->route('admin.qlysanpham')->with('success', 'Xoá sản phẩm thành công!');
+}
+
+public function edit($id)
+{
+    $sp = ProductsModel::findOrFail($id);
+
+    return view('admin.formsuasp', compact('sp'));
+}
    
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'ten_san_pham' => 'required',
+        'ma_loai' => 'required|in:PKB,BNE,BSN',
+        'don_gia' => 'required|numeric',
+        'so_luong' => 'required|integer',
+        'hinh1' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+        'hinh2' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+        'hinh3' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+        'mo_ta' => 'nullable|string',
+    ]);
 
+    $sp = ProductsModel::findOrFail($id);
+    $sp->TenSP = $request->ten_san_pham;
+    $sp->Gia = $request->don_gia;
+    $sp->SoLuong = $request->so_luong;
+    $sp->MoTa = $request->mo_ta;
+    $sp->Loaisp = $request->ma_loai;
+
+    if ($request->hasFile('hinh1')) {
+        if ($sp->HinhAnh && file_exists(public_path('uploads/' . $sp->HinhAnh))) {
+            unlink(public_path('uploads/' . $sp->HinhAnh));
+        }
+
+        $file = $request->file('hinh1');
+        $filename = time().'_update.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $filename);
+        $sp->HinhAnh = $filename;
+    }
+
+    if ($request->hasFile('hinh2')) {
+        if ($sp->HinhAnh2 && file_exists(public_path('uploads/' . $sp->HinhAnh2))) {
+            unlink(public_path('uploads/' . $sp->HinhAnh2));
+        }
+
+        $file = $request->file('hinh2');
+        $filename = time().'_update_2.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $filename);
+        $sp->HinhAnh2 = $filename;
+    }
+
+    if ($request->hasFile('hinh3')) {
+        if ($sp->HinhAnh3 && file_exists(public_path('uploads/' . $sp->HinhAnh3))) {
+            unlink(public_path('uploads/' . $sp->HinhAnh3));
+        }
+
+        $file = $request->file('hinh3');
+        $filename = time().'_update_3.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $filename);
+        $sp->HinhAnh3 = $filename;
+    }
+
+    $sp->save();
+
+    return redirect()->route('admin.qlysanpham')->with('success', 'Cập nhật sản phẩm thành công!');
+}
 
 }
 ?>

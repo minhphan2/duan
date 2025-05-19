@@ -11,12 +11,12 @@
         <link href="{{ asset('admin/styles.css') }}" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('admin/scripts.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
-    <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
+        <script src="{{ asset('admin/scripts.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+        <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
+        <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+        <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
     </head>
     <body class="sb-nav-fixed">
         
@@ -77,7 +77,7 @@
                             </a>
                             <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>                                                                                           
+                                    <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>                                                                                          
                                 </nav>
                             </div>
                             <a class="nav-link" href="khachhang.php">
@@ -119,71 +119,103 @@
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-<div class="container mt-4">
-    <h3>Thêm sản phẩm mới</h3>
-    <form action="{{ route('sanpham.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <div class="card-header">
+                            <h3 class="text-center font-weight-light my-4">Cập nhật sản phẩm</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('sanpham.update', $sp->MaSP) }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
 
-        <div class="mb-3">
-            <label for="ten_san_pham" class="form-label">Tên sản phẩm</label>
-            <input type="text" name="ten_san_pham" id="ten_san_pham" class="form-control" required>
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="ten_san_pham" name="ten_san_pham" type="text"
+                                        value="{{ old('ten_san_pham', $sp->TenSP) }}" />
+                                    <label for="ten_san_pham">Tên Sản Phẩm</label>
+                                </div>
 
-      <div class="form-floating mb-3">
-    <select name="ma_loai" class="form-control" id="ma_loai">
-        <option value="PKB">PKB</option>
-        <option value="BNE">BNE</option>
-        <option value="BSN">BSN</option>
+                                <div class="form-floating mb-3">
+        <select name="ma_loai" class="form-control" id="ma_loai">
+        <option value="PKB" {{ $sp->LoaiSP == 'PKB' ? 'selected' : '' }}>PKB</option>
+        <option value="BNE" {{ $sp->LoaiSP == 'BNE' ? 'selected' : '' }}>BNE</option>
+        <option value="BSN" {{ $sp->LoaiSP == 'BSN' ? 'selected' : '' }}>BSN</option>
     </select>
     <label for="ma_loai">Loại Sản Phẩm</label>
 </div>
 
-        <div class="mb-3">
-            <label for="don_gia" class="form-label">Đơn giá</label>
-            <input type="number" name="don_gia" id="don_gia" class="form-control" required>
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" name="so_luong" id="so_luong" type="number"
+                                        value="{{ old('so_luong', $sp->SoLuong) }}" />
+                                    <label for="so_luong">Số Lượng</label>
+                                </div>
 
-        <div class="mb-3">
-            <label for="so_luong" class="form-label">Số lượng</label>
-            <input type="number" name="so_luong" id="so_luong" class="form-control" required>
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" name="don_gia" id="don_gia" type="number"
+                                        value="{{ old('don_gia', $sp->Gia) }}" />
+                                    <label for="don_gia">Đơn Giá</label>
+                                </div>
 
-        <div class="mb-3">
-            <label for="mo_ta" class="form-label">Mô tả</label>
-            <textarea name="mo_ta" id="mo_ta" class="form-control" rows="3"></textarea>
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" type="file" name="hinh1" id="hinh1" />
+                                    <label for="hinh1">Hình ảnh 1</label>
+                                    @if($sp->HinhAnh)
+                                        <p>Ảnh hiện tại: <img src="{{ asset('uploads/' . $sp->HinhAnh) }}" width="80"></p>
+                                    @endif
+                                </div>
 
-        <div class="mb-3">
-            <label for="hinh1" class="form-label">Hình 1</label>
-            <input type="file" name="hinh1" id="hinh1" class="form-control">
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" type="file" name="hinh2" id="hinh2" />
+                                    <label for="hinh2">Hình ảnh 2</label>
+                                    @if($sp->HinhAnh2)
+                                        <p>Ảnh hiện tại: <img src="{{ asset('uploads/' . $sp->HinhAnh2) }}" width="80"></p>
+                                    @endif
+                                </div>
 
-        <div class="mb-3">
-            <label for="hinh2" class="form-label">Hình 2</label>
-            <input type="file" name="hinh2" id="hinh2" class="form-control">
-        </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" type="file" name="hinh3" id="hinh3" />
+                                    <label for="hinh3">Hình ảnh 3</label>
+                                    @if($sp->HinhAnh3)
+                                        <p>Ảnh hiện tại: <img src="{{ asset('uploads/' . $sp->HinhAnh3) }}" width="80"></p>
+                                    @endif
+                                </div>
 
-        <div class="mb-3">
-            <label for="hinh3" class="form-label">Hình 3</label>
-            <input type="file" name="hinh3" id="hinh3" class="form-control">
-        </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" name="mo_ta" id="mo_ta" style="height: 100px">{{ old('mo_ta', $sp->MoTa) }}</textarea>
+                                    <label for="mo_ta">Mô Tả</label>
+                                </div>
 
-        <button type="submit" class="btn btn-success">Lưu sản phẩm</button>
-    </form>
-</div>
-
- <footer  class="py-4 bg-light mt-auto" >
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Bản Quyền &copy; Trang Web của bạn 2021</div>
-                            <div>
-                                <a href="chinhsachbaomat.php">Chính sách bảo mật</a>
-                                &middot;
-                                <a href="chinhsachbaomat.php">Điều khoản và điều kiện</a>
-                            </div>
+                                <div class="mt-4 mb-0">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <a href="{{ route('admin.qlysanpham') }}" class="btn btn-secondary">Hủy</a>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </footer>
+                </div>
             </div>
         </div>
+    </main>
+     <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex justify-content-between small">
+                        <div class="text-muted">Bản quyền &copy; Trang Web của bạn 2025</div>
+                        <div>
+                            <a href="#">Chính sách bảo mật</a>
+                            &middot;
+                            <a href="#">Điều khoản</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('admin/scripts.js') }}"></script>
+</body>
+</html>

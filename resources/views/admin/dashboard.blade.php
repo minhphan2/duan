@@ -79,7 +79,6 @@
                         <div class="collapse" id="collapseTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{{route('admin.qlysanpham')}}">Sản phẩm</a>
-                                <a class="nav-link" href="{{ url('nhacungcap') }}">Nhà cung cấp</a>
                             </nav>
                         </div>
 

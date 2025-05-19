@@ -127,4 +127,13 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 
 
+Route::middleware(['auth:admin'])->group(function () {
+    Route::delete('/sanpham/{id}', [ProductsController::class, 'delete'])->name('sanpham.delete');
+});
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/sanpham/{id}/edit', [ProductsController::class, 'edit'])->name('sanpham.edit');
+    Route::put('/sanpham/{id}', [ProductsController::class, 'update'])->name('sanpham.update');
+});
+
 

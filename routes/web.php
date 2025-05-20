@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 //thu vien ho tro day den dang nhap google
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\GioHangController;
+use App\Http\Controllers\CookieGioHangController;
+use Illuminate\Http\Request;
 
 
 
@@ -95,9 +97,7 @@ Route::get('/giohang', [GioHangController::class, 'viewCart'])->name('cart.show'
 Route::post('/addtocart', [GioHangController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/increase/{id}', [GioHangController::class, 'increase'])->name('cart.increase');
-Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease');
-
-
+Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease'); 
 
 
 // cho admin
@@ -137,3 +137,35 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 
 
+/*
+Route::post('/addtocart', function (Request $request) {
+    if (auth()->check()) {
+        return app(GioHangController::class)->addToCart($request);
+    } else {
+        return app(CookieGioHangController::class)->add($request);
+    }
+})->name('cart.add');
+
+Route::get('/cart/remove/{id}', function ($id) {
+    if (auth()->check()) {
+        return app(GioHangController::class)->remove($id);
+    } else {
+        return app(CookieGioHangController::class)->remove($id);
+    }
+})->name('cart.remove');
+
+Route::post('/cart/increase/{id}', function ($id) {
+    if (auth()->check()) {
+        return app(GioHangController::class)->increase($id);
+    } else {
+        return app(CookieGioHangController::class)->increase($id);
+    }
+})->name('cart.increase');
+
+Route::post('/cart/decrease/{id}', function ($id) {
+    if (auth()->check()) {
+        return app(GioHangController::class)->decrease($id);
+    } else {
+        return app(CookieGioHangController::class)->decrease($id);
+    }
+})->name('cart.decrease');*/

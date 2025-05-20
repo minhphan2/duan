@@ -64,8 +64,11 @@ class UserController extends Controller
 
 
     public function logout(Request $request)  {
-        Session::forget('customer');
-        return redirect()->route('home')->with('success', 'Đăng xuất thành công!');
+    Auth::logout(); // <- Đăng xuất Laravel
+    $request->session()->invalidate(); // reset toàn bộ session
+    $request->session()->regenerateToken(); // bảo mật CSRF mới
+
+    return redirect()->route('home')->with('success', 'Đăng xuất thành công!');
     }
 
     //quen mat khau -> gui email
@@ -129,6 +132,9 @@ class UserController extends Controller
     
         return redirect()->route('dangnhapdangky')->with('success', 'Đặt lại mật khẩu thành công');
     }
+
+
+    
 }
 
 ?>

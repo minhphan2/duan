@@ -192,7 +192,7 @@
 }
 
 .product-container {
-  flex: 1 1 calc(33.333% - 20px); /* Tính toán chiều rộng của mỗi sản phẩm */
+   /*flex: 1 1 calc(33.333% - 20px); Tính toán chiều rộng của mỗi sản phẩm */
   background-color: #F6F6F6;
   display: inline-block;
   transition: 0.5s;

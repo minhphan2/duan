@@ -84,9 +84,7 @@
                             </a>
                             <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="hoadon.php"> Hoá đơn</a>                                                            
-                                    <a class="nav-link" href="phuong-thuc-thanh-toan.php">Phương thức thanh toán</a>  
-                                    <a class="nav-link" href="khuyenmai.php">Khuyến mãi</a>                                 
+                                    <a class="nav-link" href="{{route('admin.qlydonhang')}}"> Hoá đơn</a>                                                                                        
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">

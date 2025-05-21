@@ -25,6 +25,12 @@ class UserController extends Controller
         return view('dangnhapdangky');
     }
 
+    public function adminkhachhang(){
+        $khachhang = DB::table('users')->get();
+        return view('admin.qlykhachhang', compact('khachhang'));
+    }
+      
+
     public function login(Request $request){
        $request->validate([
             'email' => 'required|email',

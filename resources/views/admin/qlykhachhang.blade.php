@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>VTQ | Quản trị hệ thống</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="{{ asset('admin/styles.css') }}" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="sb-nav-fixed">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>VTQ | Quản trị khách hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="{{ asset('admin/styles.css') }}" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</head>
+<body class="sb-nav-fixed">
         
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">VTQ Bakery</a>
@@ -84,9 +84,7 @@
                             </a>
                             <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="hoadon.php"> Hoá đơn</a>                                                            
-                                    <a class="nav-link" href="phuong-thuc-thanh-toan.php">Phương thức thanh toán</a>  
-                                    <a class="nav-link" href="khuyenmai.php">Khuyến mãi</a>                                 
+                                    <a class="nav-link" href="hoadon.php"> Hoá đơn</a>                                                                                          
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -112,77 +110,48 @@
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Quản trị sản phẩm</h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
-</ol>
-
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Danh sách sản phẩm | 
-        <a href="{{route('sanpham.formthem')}}">Thêm mới</a> 
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Hình 1</th>
-                    <th>Hình 2</th>
-                    <th>Hình 3</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Mã loại</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Mô tả</th>
-                    <th>Sửa</th>
-                    <th>Xoá</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($result as $index => $sp)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>
-                        <img src="{{ asset('uploads/' . $sp->HinhAnh) }}" width="80" height="80" style="object-fit: cover; border-radius: 6px;" alt="Ảnh SP">
-                    </td>
-                    <td>
-                @if ($sp->HinhAnh2)
-                    <img src="{{ asset('uploads/' .$sp->HinhAnh2) }}" width="80" height="80" style="object-fit: cover;" alt="Ảnh 2">
-                @else
-                    Không có
-                @endif
-            </td>
-            <td>
-                @if ($sp->HinhAnh3)
-                    <img src="{{ asset('uploads/' .$sp->HinhAnh3) }}" width="80" height="80" style="object-fit: cover;" alt="Ảnh 3">
-                @else
-                    Không có
-                @endif
-            </td>
-                    <td>{{ $sp->TenSP }}</td>
-                    <td>{{ $sp->Loaisp }}</td>
-                    <td>{{ number_format($sp->Gia, 0, ',', '.') }}đ</td>
-                    <td>{{ $sp->SoLuong }}</td>
-                    <td style="max-width: 200px;">{{ Str::limit($sp->MoTa, 100) }}</td>
-                    <td><a href="{{ route('sanpham.edit', $sp->MaSP) }}" class="btn btn-warning btn-sm">Sửa</a></td>
-                    <td> <form action="{{ route('sanpham.delete', $sp->MaSP) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
-        </form></td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Quản trị khách hàng</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
+                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Danh sách khách hàng
+                        </div>
+                        <div class="card-body">
+    <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tài khoản</th>
+     
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+  
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($khachhang as $index => $customer)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $customer->username }}</td>
+             
+                <td>{{ $customer->email }}</td>
+                <td>{{ $customer->phone }}</td>
+                <td>{{ $customer->address }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
                     </div>
-                </main>
-                <footer  class="py-4 bg-light mt-auto" >
+                </div>
+            </main>
+              <footer  class="py-4 bg-light mt-auto" >
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Bản Quyền &copy; Trang Web của bạn 2021</div>
@@ -194,16 +163,13 @@
                         </div>
                     </div>
                 </footer>
-            </div>
+          
         </div>
-        
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('admin/scripts.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
     <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
-    </body>
+</body>
 </html>
-

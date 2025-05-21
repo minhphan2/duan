@@ -18,13 +18,7 @@
     <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
 </head>
 <body class="sb-nav-fixed">
-    @if (!Auth::guard('admin')->check())
-        <script>
-            alert('Bạn không được phép truy cập');
-            window.location.href = '{{ route("admin.login") }}';
-        </script>
-    @endif
-
+        
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">VTQ Bakery</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
@@ -49,53 +43,79 @@
             </li>
         </ul>
     </nav>
-
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Hệ thống</div>
-                        <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Bảng điều khiển
-                        </a>
-
-                        <a class="nav-link" href="{{ url('nguoidung') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Quản trị người dùng
-                        </a>
-
-                        <a class="nav-link" href="{{ url('tintuc') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
-                            Quản trị tin tức
-                        </a>
-
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                            <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
-                            Quản trị sản phẩm
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseTwo" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="{{route('admin.qlysanpham')}}">Sản phẩm</a>
-                            </nav>
+        <div id="layoutSidenav">
+        <div id="layoutSidenav_nav" >
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Hệ thống</div>
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Bảng điều khiển
+                            </a>                           
+                            <a class="nav-link collapsed" href="nguoidung.php" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Quản trị người dùng
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link" href="nguoidung.php"> Người dùng</a>   
+                                    <a class="nav-link" href="dangky.php">  Đăng Ký</a>
+                                    <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>                                   
+                                </nav>
+                            </div>
+                            <a class="nav-link" href="tintuc.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
+                                    Quản trị tin tức
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
+                                Quản trị sản phẩm
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>                                                            
+                                </nav>
+                            </div>
+                            <a class="nav-link" href="{{route('admin.qlykhachhang')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Quản trị khách hàng
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                                Quản trị bán hàng
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link" href="hoadon.php"> Hoá đơn</a>                                                                                          
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+                                Quản trị yêu cầu
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseFour" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link" href="lien-he.php"> Liên hệ</a>                                                            
+                                    <a class="nav-link" href="tro-giup.php">Trợ giúp</a>             
+                                </nav>
+                            </div>
+                            <a class="nav-link" href="binhluan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                                Quản trị bình luận
+                            </a>                                                     
                         </div>
-
-                        <a class="nav-link" href="{{ url('khachhang') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Quản trị khách hàng
-                        </a>
                     </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Đã đăng nhập</div>
-                    {{ Auth::guard('admin')->user()->email }}
-                </div>
-            </nav>
-        </div>
-
-        <div id="layoutSidenav_content">
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Đã đăng nhập</div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Quản Lí Cửa Hàng</h1>

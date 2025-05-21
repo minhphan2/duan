@@ -8,7 +8,9 @@ use App\Http\Controllers\PageController;
 //thu vien ho tro day den dang nhap google
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\GioHangController;
+
 use App\Http\Controllers\CookieGioHangController;
+use App\Models\HoaDonModel;
 use Illuminate\Http\Request;
 
 
@@ -98,7 +100,9 @@ Route::post('/addtocart', [GioHangController::class, 'addToCart'])->name('cart.a
 Route::get('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/increase/{id}', [GioHangController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease'); 
-
+//dathang
+use App\Http\Controllers\HoaDonController;
+Route::post('/dathang', [GioHangController::class, 'datHang'])->name('cart.dathang');
 
 // cho admin
 use App\Http\Controllers\AdminController;
@@ -114,6 +118,8 @@ Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.logi
 // dangxuat
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
+
+//cua admin
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
@@ -136,6 +142,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('/sanpham/{id}', [ProductsController::class, 'update'])->name('sanpham.update');
 });
 
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard/quanlykhachhang', [UserController::class, 'adminkhachhang'])->name('admin.qlykhachhang');
+});
 
 /*
 Route::post('/addtocart', function (Request $request) {

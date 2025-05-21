@@ -11,13 +11,16 @@
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://kit.fontawesome.com/d69fb28507.js" crossorigin="anonymous"></script>
+    <!--<script src="https://kit.fontawesome.com/d69fb28507.js" crossorigin="anonymous"></script>-->
     <link href="{{asset('css/output.css')}}" rel="stylesheet">
     <link href="{{asset('css/input.css')}}" rel="stylesheet">
-    <!-- link font logo -->
+    <!-- link font logo  </script>-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+      <script src="{{ asset('js/cart.js') }}"></script>
+
+ 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
     // Tăng số lượng
@@ -161,9 +164,12 @@
                             <textarea class="border-2 rounded-md w-full" name="note" id="note" rows="4" class="form-input w-full"></textarea>
                         </div>
                         <div class="mt-4">
-                            <a href="thanhtoan.html" class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md block text-center">Tiến hành thanh toán</a>
+                            <a href="thanhtoan.html" class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md block text-center">ĐẶT HÀNG</a>
                         </div>
-                        <button type="button" onclick="window.location.href='sanpham.html'" class="mt-4 w-full">
+
+                        <button type="button" 
+                                onclick="window.location.href='{{ route('sanpham') }}'" 
+                                class="mt-4 w-full">
                             <span class="flex items-center justify-center">&larr; Tiếp tục mua hàng</span>
                         </button>
                     </div>
@@ -191,6 +197,12 @@
             <button type="submit" class="p-3 bg-green-500 text-white rounded-lg hover:bg-green-600">Đăng Ký</button>
         </form>
     </div>
+</div>
+</div>
+</form>
+     <script>
+</script>
+</div>
 </section>
 <!-- FOOTER -->
 <footer>
@@ -268,7 +280,10 @@
       </p>
     </div>
   </footer>
-  <script src="{{ asset('js/cart.js') }}"></script>
+
+
+<!-- Add JavaScript for alerts -->
+
 </body>
 @endsection
 

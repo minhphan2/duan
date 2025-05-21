@@ -1,3 +1,4 @@
+
 document.getElementById('emailForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Ngăn chặn hành động mặc định của form
     const email = document.getElementById('email').value;

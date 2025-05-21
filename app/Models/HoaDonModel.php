@@ -14,6 +14,10 @@ class HoaDonModel extends Model
     {
         return $this->hasMany(ChiTietHoaDonModel::class, 'hoa_don_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'user_id');
+    }
 }
 
 ?>

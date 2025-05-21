@@ -19,8 +19,60 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
       <script src="{{ asset('js/cart.js') }}"></script>
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showOrderConfirm() {
+    Swal.fire({
+        title: 'Xác nhận đặt hàng',
+        text: 'Bạn có chắc muốn đặt hàng không?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.getElementById('orderForm');
+            if (form) {
+                console.log('Form tìm thấy, tiến hành submit');
+                form.submit();
+            } else {
+                console.error('Không tìm thấy form để submit!');
+            }
+        }
+    });
+}
 
- 
+function showLoginAlert() {
+    Swal.fire({
+        title: 'Thông báo',
+        text: 'Vui lòng đăng nhập để đặt hàng',
+        icon: 'info',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Đăng nhập'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{{ route('dangnhapdangky') }}";
+        }
+    });
+}
+
+function showEmptyCartAlert() {
+    Swal.fire({
+        title: 'Giỏ hàng trống',
+        text: 'Vui lòng thêm sản phẩm vào giỏ hàng',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Tiếp tục mua hàng'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{{ route('sanpham') }}";
+        }
+    });
+}
+
+</script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
     // Tăng số lượng
@@ -144,6 +196,7 @@
                 @empty
                     <p>Giỏ hàng rỗng. <a href="{{ route('sanpham') }}" class="text-blue-500">Mua hàng</a></p>
                 @endforelse
+                </form>
                 
 
 <hr class="my-4">
@@ -164,9 +217,59 @@
                             <textarea class="border-2 rounded-md w-full" name="note" id="note" rows="4" class="form-input w-full"></textarea>
                         </div>
                         <div class="mt-4">
-                            <a href="thanhtoan.html" class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md block text-center">ĐẶT HÀNG</a>
-                        </div>
+    @if(Auth::check() || session()->has('customer')) 
+        @if(!empty($cart))
+            <button type="button" 
+                    onclick="showOrderConfirm()" 
+                    class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md w-full text-center"
+                    style="background: #9B592E">
+                ĐẶT HÀNG ({{ number_format($tong) }}₫)
+            </button>
+            
+            <!-- Form submit hidden -->
+            <form id="orderForm" action="{{ route('cart.dathang') }}" method="POST" style="display: none">
+    @csrf
+    @foreach($cart as $id => $item)
+        <input type="hidden" name="cart_items[{{$id}}][id]" value="{{ $id }}">
+        <input type="hidden" name="cart_items[{{$id}}][quantity]" value="{{ $item['quantity'] }}">
+        <input type="hidden" name="cart_items[{{$id}}][price]" value="{{ $item['price'] }}">
+        <!-- Thêm product_id vào form -->
+        <input type="hidden" name="cart_items[{{$id}}][product_id]" value="{{ $item['product_id'] }}">
+    @endforeach
+    
+    <!-- Thêm tổng tiền -->
+    <input type="hidden" name="total_amount" value="{{ $tong }}">
+    
+    <!-- Thêm user_id nếu user đã đăng nhập -->
+    @if(Auth::check())
+        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+    @endif
+    
+    <!-- Thêm ghi chú -->
+    <input type="hidden" name="note" id="orderNote">
 
+    <!-- Thêm trạng thái mặc định -->
+    <input type="hidden" name="trang_thai" value="Chờ xác nhận">
+</form>
+        @else
+            <button type="button" 
+                    onclick="showEmptyCartAlert()" 
+                    class="bg-gray-400 text-white py-2 px-4 rounded-md w-full text-center"
+                    style="background: #9B592E">
+                    
+                GIỎ HÀNG TRỐNG
+            </button>
+        @endif
+    @else
+        <button type="button" 
+                onclick="showLoginAlert()" 
+                class="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-md w-full text-center"
+                style="background: #9B592E">
+            ĐĂNG NHẬP ĐỂ ĐẶT HÀNG
+        </button>
+    @endif
+ 
+</div>
                         <button type="button" 
                                 onclick="window.location.href='{{ route('sanpham') }}'" 
                                 class="mt-4 w-full">
@@ -175,7 +278,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        
     </div>
 </section>
 

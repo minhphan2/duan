@@ -30,19 +30,29 @@ class HoaDonController extends Controller
         $hoadon->save();
 
         // Lưu chi tiết hóa đơn
-        foreach ($cart as $item) {
-            ChiTietHoaDonModel::create([
-                'hoa_don_id' => $hoadon->id,
-                'product_id' => $item['product_id'],
-                'so_luong' => $item['quantity'],
-                'don_gia' => $item['price'],
+        foreach ($cart as $id => $item) {
+          
+    ChiTietHoaDonModel::create([
+        'hoa_don_id' => $hoadon->id,
+        'product_id' => $id,
+        'so_luong' => $item['quantity'],
+        'don_gia' => $item['price'],
             ]);
+ 
         }
-
         // Xóa giỏ hàng
         session()->forget($cartKey);
 
-        return redirect()->route('cart.view')->with('success', 'Đặt hàng thành công!');
+        return redirect()->route('cart.show')->with('success', 'Đặt hàng thành công!');
     }
+
+ public function indexchoquanly()
+{
+    $donhangs = HoaDonModel::with('user')->orderByDesc('created_at')->get();
+
+    return view('admin.qlydonhang', compact('donhangs'));
 }
+
+}
+
 ?>

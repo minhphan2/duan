@@ -101,11 +101,12 @@ Route::get('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('car
 Route::post('/cart/increase/{id}', [GioHangController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease'); 
 //dathang
-use App\Http\Controllers\HoaDonController;
 Route::post('/dathang', [GioHangController::class, 'datHang'])->name('cart.dathang');
 
 // cho admin
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HoaDonController;
+
 //dang ky
 Route::get('/admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
 Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register.submit');
@@ -147,6 +148,9 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlykhachhang', [UserController::class, 'adminkhachhang'])->name('admin.qlykhachhang');
 });
 
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard/quanlydonhang', [HoaDonController::class, 'indexchoquanly'])->name('admin.qlydonhang');
+});
 /*
 Route::post('/addtocart', function (Request $request) {
     if (auth()->check()) {

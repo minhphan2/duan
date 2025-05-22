@@ -122,52 +122,38 @@
                             Danh sách khách hàng
                         </div>
                         <div class="card-body">
-    <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
-        <thead >
-        <tr>
-            <th class="border px-4 py-2">Mã HĐ</th>
-            <th class="border px-4 py-2">Tên khách</th>
-            <th class="border px-4 py-2">Số điện thoại</th>
-            <th class="border px-4 py-2">Địa chỉ</th>
-            <th class="border px-4 py-2">Tổng tiền</th>
-            <th class="border px-4 py-2">Ghi chú</th>
-            <th class="border px-4 py-2">Ngày tạo</th>
-            <th class="border px-4 py-2">Trạng thái</th>
-            <th class="border px-4 py-2">Thao tác</th>
-            <th class="border px-4 py-2">Chuyển Trạng Thái</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($donhangs as $don)
-        <tr>
-            <td class="border px-4 py-2">{{ $don->id }}</td>
-            <td class="border px-4 py-2">{{ $don->user->username }}</td>
-            <td class="border px-4 py-2">{{ $don->user->phone }}</td>
-            <td class="border px-4 py-2">{{ $don->dia_chi ?? $don->user->address }}</td>
-            <td class="border px-4 py-2">{{ number_format($don->tong_tien) }}₫</td>
-            <td class="border px-4 py-2">{{ $don->note }}</td>
-            <td class="border px-4 py-2">{{ $don->created_at }}</td>
-            <td class="border px-4 py-2">{{ $don->trang_thai }}</td>
-             <td class="border px-4 py-2">
-        <a href="{{ route('admin.donhang.chitiet', ['id' => $don->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
-            Xem chi tiết
-        </a>
-    </td>
-            <td class="border px-4 py-2">
-                <form action="" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <select name="trang_thai" class="form-select" onchange="this.form.submit()">
-                        <option value="Chờ xác nhận" {{ $don->trang_thai == 'Chờ xác nhận' ? 'selected' : '' }}>Chờ xác nhận</option>
-                        <option value="Đang giao hàng" {{ $don->trang_thai == 'Đang giao hàng' ? 'selected' : '' }}>Đang giao hàng</option>
-                        <option value="Đã giao hàng" {{ $don->trang_thai == 'Đã giao hàng' ? 'selected' : '' }}>Đã giao hàng</option>
-                    </select>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Chi tiết đơn hàng #{{ $donhang->id }}</h1>
+
+    <div class="bg-white shadow p-4 rounded mb-6">
+        <p><strong>Khách hàng:</strong> {{ $donhang->user->username }}</p>
+        <P><strong>SĐT:</strong> {{ $donhang->user->SDT }}</P>
+        <p><strong>Ngày đặt:</strong> {{ $donhang->created_at->format('d/m/Y H:i') }}</p>
+        <p><strong>Trạng thái:</strong> {{ $donhang->trang_thai }}</p>
+        <p><strong>Tổng tiền:</strong> {{ number_format($donhang->tong_tien) }}₫</p>
+    </div>
+
+    <table class="w-full bg-white shadow rounded">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="p-2 text-left">Sản phẩm</th>
+                <th class="p-2 text-center">Số lượng</th>
+                <th class="p-2 text-right">Đơn giá</th>
+                <th class="p-2 text-right">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($donhang->chiTietHoaDons as $ct)
+                <tr class="border-t">
+                    <td class="p-2">{{ $ct->product->TenSP ?? 'Sản phẩm đã xóa' }}</td>
+                    <td class="p-2 text-center">{{ $ct->so_luong }}</td>
+                    <td class="p-2 text-right">{{ number_format($ct->don_gia) }}₫</td>
+                    <td class="p-2 text-right">{{ number_format($ct->don_gia * $ct->so_luong) }}₫</td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
+</div>
 </div>
                     </div>
                 </div>

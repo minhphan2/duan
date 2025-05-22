@@ -222,6 +222,8 @@ public function datHang(Request $request)
 
     $hoadon = new HoaDonModel();
     $hoadon->user_id = auth()->id();
+    $hoadon->dia_chi = $request->input('dia_chi');
+    $hoadon->note = $request->input('note');
     $hoadon->tong_tien = collect($cart)->sum(function ($item) {
         return $item['price'] * $item['quantity'];
     });

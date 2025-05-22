@@ -21,7 +21,19 @@
       <script src="{{ asset('js/cart.js') }}"></script>
        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function showOrderConfirm() {
+      function showOrderConfirm() {
+    // Lấy giá trị địa chỉ từ input
+    const diaChiInput = document.getElementById('dia_chi');
+    if (!diaChiInput.value.trim()) {
+        Swal.fire({
+            title: 'Lỗi',
+            text: 'Vui lòng nhập địa chỉ nhận hàng',
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+        });
+        return;
+    }
+
     Swal.fire({
         title: 'Xác nhận đặt hàng',
         text: 'Bạn có chắc muốn đặt hàng không?',
@@ -33,17 +45,18 @@
         cancelButtonText: 'Hủy'
     }).then((result) => {
         if (result.isConfirmed) {
+            // Copy giá trị địa chỉ vào form ẩn
+            document.getElementById('orderAddress').value = diaChiInput.value;
+            // Copy giá trị ghi chú vào form ẩn
+            document.getElementById('orderNote').value = document.getElementById('note').value;
+            
             const form = document.getElementById('orderForm');
             if (form) {
-                console.log('Form tìm thấy, tiến hành submit');
                 form.submit();
-            } else {
-                console.error('Không tìm thấy form để submit!');
             }
         }
     });
 }
-
 function showLoginAlert() {
     Swal.fire({
         title: 'Thông báo',
@@ -217,6 +230,11 @@ function showEmptyCartAlert() {
                             <textarea class="border-2 rounded-md w-full" name="note" id="note" rows="4" class="form-input w-full"></textarea>
                         </div>
                         <div class="mt-4">
+                            <label for="dia_chi" class="block mb-2 font-semibold">Địa chỉ nhận hàng</label>
+                            <textarea class="border-2 rounded-md w-full" name="dia_chi" id="dia_chi" rows="3" class="form-input w-full"></textarea>
+                        </div>
+
+                        <div class="mt-4">
     @if(Auth::check() || session()->has('customer')) 
         @if(!empty($cart))
             <button type="button" 
@@ -244,7 +262,8 @@ function showEmptyCartAlert() {
     @if(Auth::check())
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
     @endif
-    
+    <!-- them dia chi-->
+    <input type="hidden" name="dia_chi" id="orderAddress">
     <!-- Thêm ghi chú -->
     <input type="hidden" name="note" id="orderNote">
 

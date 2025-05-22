@@ -53,6 +53,13 @@ class HoaDonController extends Controller
     return view('admin.qlydonhang', compact('donhangs'));
 }
 
+public function showDonHang($id)
+{
+    $donhang = HoaDonModel::with(['user', 'chiTietHoaDons.product'])->findOrFail($id);
+
+    return view('admin.chitietdonhang', compact('donhang'));
+}
+
 }
 
 ?>

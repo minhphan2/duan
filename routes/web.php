@@ -150,6 +150,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlydonhang', [HoaDonController::class, 'indexchoquanly'])->name('admin.qlydonhang');
+    Route::get('/admin/donhang/{id}', [HoaDonController::class, 'showDonHang'])->name('admin.donhang.chitiet');
+
 });
 /*
 Route::post('/addtocart', function (Request $request) {

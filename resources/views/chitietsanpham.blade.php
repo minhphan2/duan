@@ -34,8 +34,12 @@
                     <div class="mb-3">
                         <label for="soluong" class="form-label">Số lượng:</label>
                         <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                    </div>                
+                    <button type="submit" 
+    class="btn btn-primary {{ $result->SoLuong <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}" 
+    {{ $result->SoLuong <= 0 ? 'disabled' : '' }}>
+    {{ $result->SoLuong <= 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng' }}
+</button>
                 </form>
             </div>
         </div>

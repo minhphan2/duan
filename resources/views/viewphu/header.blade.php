@@ -1,5 +1,4 @@
-<?php
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,6 +11,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>#search-results {
+        width: 300px;
+        background: white;
+        border: 1px solid #ccc;
+          z-index: 9999;
+        position: absolute;
+    }</style>
    </head>
 
     <header>        
@@ -31,12 +38,42 @@
                             <svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#303030" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
                             <a href="tel:0987654321" class="contact">0987654321</a>
                         </li>
-                        <!--Nút tìm kiếm-->
+                        <!--Nút tìm kiếm   -->
                         <li class="search">
-                            <input id="search-input" placeholder="Tìm kiếm " type="search">
-                            <icon id="search-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="25" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#303030" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                           </icon>
+                            <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." style="width: 300px; padding: 5px;" />
+                            <div id="search-results" ></div>
+                            <script>
+                                document.getElementById("search").addEventListener("keyup", function () {
+                                    const keyword = this.value;
+                            
+                                    // Nếu không có gì trong ô tìm kiếm thì xóa kết quả
+                                    if (keyword.trim() === "") {
+                                        document.getElementById("search-results").innerHTML = "";
+                                        document.getElementById("search-results").style.display = "none";
+                                        return;
+                                    }
+                                    
+                                    document.getElementById("search-results").style.display = "block";
+
+                                    fetch("/timkiem?keyword=" + encodeURIComponent(keyword))
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            document.getElementById("search-results").innerHTML = data;
+                                        })
+                                        .catch(error => {
+                                            console.error("Lỗi khi tìm kiếm:", error);
+                                        });
+                                });
+
+                                    document.addEventListener('click', function(event) {
+                                        const searchResults = document.getElementById("search-results");
+                                        const searchInput = document.getElementById("search");
+                                        
+                                        if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+                                            searchResults.style.display = "none";
+                                        }
+                                    });
+                            </script>
                         </li>
                         <li id="account">                     
                             <svg fill="#303030" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 402.161 402.161" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g> <path d="M201.08,49.778c-38.794,0-70.355,31.561-70.355,70.355c0,18.828,7.425,40.193,19.862,57.151 c14.067,19.181,32,29.745,50.493,29.745c18.494,0,36.426-10.563,50.494-29.745c12.437-16.958,19.862-38.323,19.862-57.151 C271.436,81.339,239.874,49.778,201.08,49.778z M201.08,192.029c-13.396,0-27.391-8.607-38.397-23.616 c-10.46-14.262-16.958-32.762-16.958-48.28c0-30.523,24.832-55.355,55.355-55.355s55.355,24.832,55.355,55.355 C256.436,151.824,230.372,192.029,201.08,192.029z"></path> <path d="M201.08,0C109.387,0,34.788,74.598,34.788,166.292c0,91.693,74.598,166.292,166.292,166.292 s166.292-74.598,166.292-166.292C367.372,74.598,292.773,0,201.08,0z M201.08,317.584c-30.099-0.001-58.171-8.839-81.763-24.052 c0.82-22.969,11.218-44.503,28.824-59.454c6.996-5.941,17.212-6.59,25.422-1.615c8.868,5.374,18.127,8.099,27.52,8.099 c9.391,0,18.647-2.724,27.511-8.095c8.201-4.97,18.39-4.345,25.353,1.555c17.619,14.93,28.076,36.526,28.895,59.512 C259.25,308.746,231.178,317.584,201.08,317.584z M296.981,283.218c-3.239-23.483-15.011-45.111-33.337-60.64 c-11.89-10.074-29.1-11.256-42.824-2.939c-12.974,7.861-26.506,7.86-39.483-0.004c-13.74-8.327-30.981-7.116-42.906,3.01 c-18.31,15.549-30.035,37.115-33.265,60.563c-33.789-27.77-55.378-69.868-55.378-116.915C49.788,82.869,117.658,15,201.08,15 c83.423,0,151.292,67.869,151.292,151.292C352.372,213.345,330.778,255.448,296.981,283.218z"></path> <path d="M302.806,352.372H99.354c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h203.452c4.142,0,7.5-3.358,7.5-7.5 C310.307,355.73,306.948,352.372,302.806,352.372z"></path> <path d="M302.806,387.161H99.354c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h203.452c4.142,0,7.5-3.358,7.5-7.5 C310.307,390.519,306.948,387.161,302.806,387.161z"></path> </g> </g> </g> </g></svg>
@@ -112,27 +149,9 @@ if (isset($_SESSION['usernamesql']) && $_SESSION['usernamesql']) {
                 </div>
             </div> 
           </div>
+
+          <!-- Tìm kiếm -->
+          
         </header>
-           <!-- Tìm kiếm -->
-           <script>
-            document.getElementById('search-button').addEventListener('click', function() {
-            var query = document.getElementById('search-input').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); 
-            // normalize và loại bỏ dấu
-            
-            if (query.includes('banh')) {
-                window.location.href = 'sanpham.html';
-            } else if (query.includes('lien')) {
-                window.location.href = 'lienhe.html';
-            } else if (query.includes('nhap')) {
-                window.location.href = 'dangnhap.html';    
-            } else {
-                alert('Không có sản phẩm');
-            }
-        });
-    
-        </script>  
-
-        <body>
-    
-
-        </body>
+           
+      

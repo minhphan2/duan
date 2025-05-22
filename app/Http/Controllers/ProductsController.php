@@ -126,6 +126,25 @@ public function PhukienbanhAjax(Request $request) {
         return view('chitietsanpham', compact('result'));
     }
 
+    public function timKiem(Request $request)
+    {
+        $keyword = $request->query('keyword');
+    
+        $results = ProductsModel::where('TenSP', 'like', '%' . $keyword . '%')->get();
+    
+        // Trả về HTML nhỏ để chèn vào #search-results
+        $html = '';
+        foreach ($results as $sp) {
+           $html .= '<div class="search-item" onclick="window.location.href=\'' . route('chitietsanpham', $sp->MaSP) . '\'" style="cursor: pointer;">';
+        $html .= '<img src="' . asset('uploads/' . $sp->HinhAnh) . '" alt="' . $sp->TenSP . '" width="30%">';
+        $html .= '<strong>' . $sp->TenSP . '</strong><br>';
+        $html .= 'Giá: ' . number_format($sp->Gia) . 'đ<br>';
+        $html .= '</div><hr>';
+        }
+    
+        return response($html);
+    }
+
     public function laytatcasanpham(){
         $result = DB::table('sanpham')->get();
         return view('admin.qlysanpham', compact('result'));

@@ -154,15 +154,16 @@
         </a>
     </td>
             <td class="border px-4 py-2">
-                <form action="" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <select name="trang_thai" class="form-select" onchange="this.form.submit()">
-                        <option value="Chờ xác nhận" {{ $don->trang_thai == 'Chờ xác nhận' ? 'selected' : '' }}>Chờ xác nhận</option>
-                        <option value="Đang giao hàng" {{ $don->trang_thai == 'Đang giao hàng' ? 'selected' : '' }}>Đang giao hàng</option>
-                        <option value="Đã giao hàng" {{ $don->trang_thai == 'Đã giao hàng' ? 'selected' : '' }}>Đã giao hàng</option>
-                    </select>
-                </form>
+                <form action="{{ route('admin.donhang.trangthai', $don->id) }}" method="POST">
+    @csrf
+    <select name="trang_thai" class="border p-1 rounded">
+        <option value="Chờ xác nhận" {{ $don->trang_thai === 'Chờ xác nhận' ? 'selected' : '' }}>Chờ xác nhận</option>
+        <option value="Đã xác nhận" {{ $don->trang_thai === 'Đã xác nhận' ? 'selected' : '' }}>Đã xác nhận</option>
+        <option value="Đang giao" {{ $don->trang_thai === 'Đang giao' ? 'selected' : '' }}>Đang giao</option>
+        <option value="Hoàn tất" {{ $don->trang_thai === 'Hoàn tất' ? 'selected' : '' }}>Hoàn tất</option>
+    </select>
+    <button type="submit" class="ml-2 px-2 py-1 bg-blue-500 text-white rounded">Cập nhật</button>
+</form>
             </td>
         </tr>
         @endforeach

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\HoaDonModel;
 use App\Models\ChiTietHoaDonModel;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ThongBaoTrangThaiDonHangMail;
 
 class HoaDonController extends Controller
 {
@@ -58,7 +60,50 @@ public function showDonHang($id)
     $donhang = HoaDonModel::with(['user', 'chiTietHoaDons.product'])->findOrFail($id);
 
     return view('admin.chitietdonhang', compact('donhang'));
+
+
 }
+
+public function capNhatTrangThai(Request $request, $id)
+{
+    $trangThaiMoi = $request->trang_thai;
+
+    // Load đơn hàng kèm chi tiết và sản phẩm
+    $donhang = HoaDonModel::with('chiTietHoaDons.product')->findOrFail($id);
+
+    // Lưu trạng thái cũ để kiểm tra
+    $trangThaiCu = $donhang->trang_thai;
+
+    // Cập nhật trạng thái mới
+    $donhang->trang_thai = $trangThaiMoi;
+    $donhang->save();
+
+    // Kiểm tra và giảm số lượng
+   if ($trangThaiMoi === 'Đã xác nhận' && $trangThaiCu !== 'Đã xác nhận') {
+    if ($donhang->chiTietHoaDons && count($donhang->chiTietHoaDons) > 0) {
+        foreach ($donhang->chiTietHoaDons as $ct) {
+            if ($ct->product) {
+                $ct->product->SoLuong -= $ct->so_luong;
+                $ct->product->save();
+            }
+        }
+    }
+
+    
+}
+    // gui mai thong bao 
+    if (in_array($trangThaiMoi, ['Đang giao', 'Hoàn tất'])) {
+        $tenKhach = $donhang->user->name ?? 'Quý khách';
+        $email = $donhang->user->email ?? null;
+
+        if ($email) {
+            Mail::to($email)->send(new ThongBaoTrangThaiDonHangMail($tenKhach, $trangThaiMoi));
+        }
+    }
+
+    return redirect()->back()->with('success', 'Cập nhật trạng thái thành công!');
+}
+
 
 }
 

@@ -127,7 +127,7 @@
 
     <div class="bg-white shadow p-4 rounded mb-6">
         <p><strong>Khách hàng:</strong> {{ $donhang->user->username }}</p>
-        <P><strong>SĐT:</strong> {{ $donhang->user->SDT }}</P>
+        <P><strong>SĐT:</strong> {{ $donhang->user->phone }}</P>
         <p><strong>Ngày đặt:</strong> {{ $donhang->created_at->format('d/m/Y H:i') }}</p>
         <p><strong>Trạng thái:</strong> {{ $donhang->trang_thai }}</p>
         <p><strong>Tổng tiền:</strong> {{ number_format($donhang->tong_tien) }}₫</p>

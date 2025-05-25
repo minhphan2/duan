@@ -95,8 +95,8 @@
             <div id="main-header">
                 <div class="main-header-container">
                     <ul id="main-menu-1">
-                        <li><a href="index.html"><img src="{{asset('images/logo cake 1.png')}}"  alt="logo"></a></li>
-                        <li><a href="index.html" class="bakery-name">VTQ Bakery</a></li> <!-- Thêm class cho tên cửa hàng -->
+                        <li><a href="{{route('home')}}"><img src="{{asset('images/logo cake 1.png')}}"  alt="logo"></a></li>
+                        <li><a href="{{route('home')}}" class="bakery-name">VTQ Bakery</a></li> <!-- Thêm class cho tên cửa hàng -->
                     </ul>
                         
                         
@@ -111,10 +111,11 @@
                                     <li><a href="{{ route('banhnuae') }}">Bánh nửa Entremet</a></li>
                                     <li><a href="{{ route('phukienbanh') }}">Phụ kiện bánh</a></li>
                                 </ul>
-                            </li>
                             <li><a href="{{ route('tintuc') }}">Tin Tức</a></li>
                             <li><a href="{{ route('doingu') }}">Đội Ngũ</a></li>
                             <li><a href="{{ route('lienhe') }}">Liên Hệ</a></li>
+                            </li>
+                            
                         </ul>
         
                         <label for="nav-mobile-input" class="navbar-button">
@@ -125,26 +126,24 @@
                             <label for="nav-mobile-input" class="nav-close__mobile">                       
                                 <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#7dc642" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>
                             </label><br> <br> <br>
-                            <li><a onclick="loadPage('index')" class="nav-mobile">TRANG CHỦ</a></li>
-                            <li><a href="#" onclick="loadPage('gioithieu')" class="nav-mobile">GIỚI THIỆU</a></li>
-                            <li><a href="#" onclick="loadPage('hoidap')" class="nav-mobile">HỎI - ĐÁP</a></li>
-                            <li><a href="#" onclick="loadPage('sanpham')" class="nav-mobile">SẢN PHẨM</a></li>
-                            <li><a href="#" onclick="loadPage('tintuc')">TIN TỨC</a></li>
-                            <li><a href="#" onclick="loadPage('doingu')">ĐỘI NGŨ</a></li>
-                            <li><a href="#" onclick="loadPage('lienhe')">LIÊN HỆ</a></li>
-                            <li><a href="dangnhap.php" class="nav-mobile"> <?php
-
-
-if (isset($_SESSION['usernamesql']) && $_SESSION['usernamesql']) {
-    // Dùng giá trị trong session
-    $userDisplayName = htmlspecialchars($_SESSION['usernamesql']);
-    echo '<a href="profile.php" class="contact">' . $userDisplayName . '</a>';
-    echo '<a href="controler/dangxuat.php">  Đăng XUẤT</a>';
-} else {
-    echo '<a href="#" onclick="loadPage(\'dangnhap\')" class="contact">ĐĂNG NHẬP</a>';
-}
-?></a></li>
-                            <li><a href="#" onclick="loadPage('giohang')">GIỎ HÀNG CỦA BẠN</a></li>
+                            <li><a href="{{ route('home') }}" class="nav-mobile">TRANG CHỦ</a></li>
+                            <li><a href="{{ route('gioithieu') }}" class="nav-mobile">GIỚI THIỆU</a></li>
+                            <li><a href="{{ route('hoidap') }}" class="nav-mobile">HỎI - ĐÁP</a></li>
+                            <li><a href="{{ route('sanpham') }}"class="nav-mobile">SẢN PHẨM</a></li>
+                            <li><a href="{{ route('tintuc') }}" class="nav-mobile">TIN TỨC</a></li>
+                            <li><a href="{{ route('doingu') }}" class="nav-mobile">ĐỘI NGŨ</a></li>
+                            <li><a href="{{ route('lienhe') }}"class="nav-mobile">LIÊN HỆ</a></li>
+                            <li>
+    @if (Session::has('customer'))
+        <a href="" class="nav-mobile ">
+            {{ Session::get('customer')->username }}
+        </a>
+        <a href="{{ route('dangxuat') }}" class="nav-mobile">Đăng xuất</a>
+    @else
+        <a href="{{ route('dangnhapdangky') }}" class="nav-mobile ">ĐĂNG NHẬP</a>
+    @endif
+</li>
+                            <li><a href="{{route('cart.show')}}" class="nav-mobile">GIỎ HÀNG CỦA BẠN</a></li>
                         </ul>  
                 </div>
             </div> 

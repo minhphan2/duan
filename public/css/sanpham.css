@@ -1,4 +1,165 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+/* Reset các style cũ */
+.contaner-product-section-1 {
+    padding: 20px;
+    background-color: #F6EFEA;
+}
+
+.banhnua,
+.banhsinhnhat,
+.phukien {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .banhnua,
+    .banhsinhnhat,
+    .phukien {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* Widget style */
+.banh-widget {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: 300px;
+    margin: 0 auto 20px;
+}
+
+/* Danh sách sản phẩm - Desktop view */
+.banh-list {
+    display: grid; /* Thay đổi từ flex sang grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 cột bằng nhau */
+    gap: 20px;
+    padding: 15px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Card sản phẩm */
+.product-container {
+  background-color: #F6F6F6;
+  border-radius: 10%;
+  padding: 20px;
+  width: 100%;
+  height: 530px;
+  transition: 0.5s;
+  margin: 0 auto;
+}
+
+.product-container img {
+  max-width: 100%;
+  height: 400px;
+  display: block;
+  margin-top: 10px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.product-container .product-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.product-container .price {
+    font-size: 1rem;
+    color: #553633f3;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+    .banh-list {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 1005px) {
+    .banh-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Hiển thị thẻ đầu tiên, ẩn các thẻ còn lại trên mobile */
+    .product-container:not(:first-child) {
+        display: none;
+    }
+
+    .product-container {
+        width: 350px;
+        height: 480px;
+    }
+
+    .product-container img {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banh-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-container:not(:first-child) {
+        display: none;
+    }
+
+    .product-container {
+        width: 350px;
+        height: 480px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-container {
+        width: 300px;
+        height: 430px;
+    }
+
+    .product-container img {
+        height: 300px;
+    }
+}
+
+/* Animations */
+.product-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Typography */
+.widget-content h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 20px;
+}
+
+.widget-content a {
+    display: inline-block;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 25px;
+    background: white;
+    color: #3C2A23;
+    transition: all 0.3s ease;
+}
+
+.widget-content a:hover {
+    background: #4D4637;
+    color: white;
+    transform: translateY(-2px);
+}
+
 .banh-widget {
   display: flex;
   justify-content: center;
@@ -66,7 +227,6 @@
   margin: 40px 40px;
 }
 .banh-list {
-  display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   width: 900px;
@@ -192,39 +352,27 @@
 }
 
 .product-container {
-   /*flex: 1 1 calc(33.333% - 20px); Tính toán chiều rộng của mỗi sản phẩm */
   background-color: #F6F6F6;
-  display: inline-block;
-  transition: 0.5s;
   border-radius: 10%;
-  padding: 20px; /* Thêm khoảng cách bên trong để nhìn thoáng hơn */
-  width: 30%;
+  padding: 20px;
+  height: 530px;
+  transition: 0.5s;
+  margin: 0 auto;
 }
 
 .product-container:hover {
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Bóng mờ nhẹ */
-  transform: scale(1.05); /* Tăng nhẹ kích thước để thêm hiệu ứng nổi */
-}
-
-.product-container p {
-  font-size: 40px;
-  text-align: left;
-  margin: 0;
-  padding-left: 10px; /* Đẩy chữ sang phải một chút */
-}
-
-.product-container .price {
-  font-family: "Signika", sans-serif;
-  font-size: 20px; /* Giảm kích thước chữ */
-  margin-top: 5px; /* Tạo khoảng cách giữa các đoạn văn */
-  padding-left: 10px; /* Canh lề đồng nhất với phần tên sản phẩm */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .product-container img {
-  max-width: 100%; /* Đảm bảo hình ảnh không bị vỡ */
-  height: auto;
+  max-width: 100%;
+  height: 400px;
   display: block;
-  margin-top: 10px; /* Thêm khoảng cách giữa ảnh và chữ */
+  margin-top: 10px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
 .hidden {

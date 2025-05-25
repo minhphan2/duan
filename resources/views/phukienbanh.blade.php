@@ -33,6 +33,15 @@
     </div>
 
     <!-- Bánh sinh nhật -->
+    <div style="text-align: right; margin: 20px;">
+    <label for="sortOption">Sắp xếp: </label>
+    <select id="sortOption">
+        <option value="name_asc">Tên A-Z</option>
+        <option value="name_desc">Tên Z-A</option>
+        <option value="price_asc">Giá tăng dần</option>
+        <option value="price_desc">Giá giảm dần</option>
+    </select>
+</div>
  <div class='banhsinhnhat'>
 <div id="product-list" class="banh-list"></div>
 </div>
@@ -43,20 +52,28 @@
 </nav>
 <script>
     function loadProducts(page = 1) {
-        fetch(`/phukienbanh/ajax?page=${page}`)
+        const sort = document.getElementById('sortOption').value;
+
+        fetch(`/phukienbanh/ajax?page=${page}&sort=${sort}`)
             .then(res => res.json())
             .then(data => {
                 document.getElementById('product-list').innerHTML = data.html;
 
-                let pagination = '';
+                let paginationHtml = '';
                 for (let i = 1; i <= data.totalPages; i++) {
-                    pagination += `<button onclick="loadProducts(${i})">${i}</button>`;
+                    paginationHtml += `<li><button onclick="loadProducts(${i})">${i}</button></li>`;
                 }
-                document.getElementById('pagination').innerHTML = pagination;
+                document.getElementById('pagination').innerHTML = paginationHtml;
             });
     }
+    document.getElementById('sortOption').addEventListener('change', function () {
+        loadProducts(1); // Reset về trang 1 khi đổi sort
+    });
 
-    loadProducts();
+    // Load lần đầu
+    document.addEventListener('DOMContentLoaded', function () {
+        loadProducts();
+    });
 </script>
 
     <script src="././js/brand.js"></script>

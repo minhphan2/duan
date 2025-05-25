@@ -72,9 +72,9 @@
             </div>
             <div class="banh-list">
                 @if ($result_bsn->count() > 0)
-                    @foreach ($result_bsn as $row)
+                    @foreach ($result_bsn->take(3) as $row)
                         <div class="product-container product-container-bne ">
-                            <a href="{{ url('/sanpham/' . $row->MaSP) }}">
+                            <a href="{{ route('chitietsanpham', ['id' => $row->MaSP]) }}">
                                 <img src="{{ asset($row->HinhAnh) }}" alt="">
                                 <p class="product-name">{{ $row->TenSP }}</p>
                                 <p class="price">{{ $row->MoTa }} <br> {{ number_format($row->Gia, 0, ',', '.') }} ₫</p>
@@ -99,10 +99,10 @@
             </div>
             <div class="banh-list">
                 @if ($result_bne->count() > 0)
-                    @foreach ($result_bne as $row)
+                    @foreach ($result_bne->take(3) as $row)
                         <div class="product-container product-container-bne ">
-                            <a href="{{ url('/sanpham/' . $row->MaSP) }}">
-                                <img src="{{ asset($row->HinhAnh) }}" alt="">
+                            <a href="{{ route('chitietsanpham', ['id' => $row->MaSP]) }}">
+                                <img src="{{ asset('uploads/'. $row->HinhAnh) }}" alt="">
                                 <p class="product-name">{{ $row->TenSP }}</p>
                                 <p class="price">{{ $row->MoTa }} <br> {{ number_format($row->Gia, 0, ',', '.') }} ₫</p>
                             </a>
@@ -126,9 +126,9 @@
             </div>
             <div class="banh-list">
                 @if ($result_pkb->count() > 0)
-                    @foreach ($result_pkb as $row)
+                    @foreach ($result_pkb->take(3) as $row)
                         <div class="product-container product-container-bne ">
-                            <a href="{{ url('/sanpham/' . $row->MaSP) }}">
+                            <a href="{{ route('chitietsanpham', ['id' => $row->MaSP]) }}">
                                 <img src="{{ asset($row->HinhAnh) }}" alt="">
                                 <p class="product-name">{{ $row->TenSP }}</p>
                                 <p class="price">{{ $row->MoTa }} <br> {{ number_format($row->Gia, 0, ',', '.') }} ₫</p>

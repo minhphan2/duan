@@ -66,11 +66,26 @@ class ProductsController extends Controller
 
     public function BanhsinhnhatAjax(Request $request)
 {
+    $sort = $request->input('sort', 'name_asc'); 
     $page = $request->input('page', 1);
     $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'BSN');
+    switch ($sort) {
+        case 'name_asc':
+            $query->orderBy('TenSP', 'asc');
+            break;
+        case 'name_desc':
+            $query->orderBy('TenSP', 'desc');
+            break;
+        case 'price_asc':
+            $query->orderBy('Gia', 'asc');
+            break;
+        case 'price_desc':
+            $query->orderBy('Gia', 'desc');
+            break;
+    }
     $total = $query->count();
     $products = $query->offset($offset)->limit($limit)->get();
     $totalPages = ceil($total / $limit);
@@ -85,10 +100,27 @@ class ProductsController extends Controller
 
 public function BanhnuaeAjax(Request $request){
     $page = $request->input('page', 1);
+    $sort = $request->input('sort', 'name_asc'); 
     $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'BNE');
+    switch ($sort) {
+        case 'name_asc':
+            $query->orderBy('TenSP', 'asc');
+            break;
+        case 'name_desc':
+            $query->orderBy('TenSP', 'desc');
+            break;
+        case 'price_asc':
+            $query->orderBy('Gia', 'asc');
+            break;
+        case 'price_desc':
+            $query->orderBy('Gia', 'desc');
+            break;
+    }
+
+
     $total = $query->count();
     $products = $query->offset($offset)->limit($limit)->get();
     $totalPages = ceil($total / $limit);
@@ -102,11 +134,29 @@ public function BanhnuaeAjax(Request $request){
 }
 
 public function PhukienbanhAjax(Request $request) {
-    $page = $request->input('page', 1);
+  $page = $request->input('page', 1);
+    $sort = $request->input('sort', 'name_asc'); 
     $limit = 4;
     $offset = ($page - 1) * $limit;
 
     $query = ProductsModel::where('LoaiSP', 'PKB');
+
+    // Áp dụng sắp xếp
+    switch ($sort) {
+        case 'name_asc':
+            $query->orderBy('TenSP', 'asc');
+            break;
+        case 'name_desc':
+            $query->orderBy('TenSP', 'desc');
+            break;
+        case 'price_asc':
+            $query->orderBy('Gia', 'asc');
+            break;
+        case 'price_desc':
+            $query->orderBy('Gia', 'desc');
+            break;
+    }
+
     $total = $query->count();
     $products = $query->offset($offset)->limit($limit)->get();
     $totalPages = ceil($total / $limit);
@@ -281,6 +331,16 @@ public function update(Request $request, $id)
 
     return redirect()->route('admin.qlysanpham')->with('success', 'Cập nhật sản phẩm thành công!');
 }
+
+public function sort(Request $request)
+{
+    $order = $request->get('order');
+
+    $products = ProductsModel::orderBy('Gia', $order)->get();
+
+    return view('sanpham.partials.product_list', compact('products'));
+}
+
 
 }
 ?>

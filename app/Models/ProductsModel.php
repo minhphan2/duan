@@ -18,6 +18,10 @@ class ProductsModel extends Model
         'HinhAnh3',
         'SoLuong',
     ];
+    public function reviews()
+{
+    return $this->hasMany(ReviewModel::class);
+}
 
 }
 

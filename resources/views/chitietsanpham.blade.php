@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/review.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('images/logo_cake_1-removebg-preview.png') }}" type="image/x-icon">
 </head>
 <body>
@@ -43,6 +45,94 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <div class="review-box" data-product-id="{{ $result->MaSP }}">
+        <div class="star-rating">
+            <input type="radio" name="rating" value="5" id="5"><label for="5">★</label>
+            <input type="radio" name="rating" value="4" id="4"><label for="4">★</label>
+            <input type="radio" name="rating" value="3" id="3"><label for="3">★</label>
+            <input type="radio" name="rating" value="2" id="2"><label for="2">★</label>
+            <input type="radio" name="rating" value="1" id="1"><label for="1">★</label>
+        </div>
+        <input type="text" id="reviewer_name" placeholder="Nhập tên của bạn">
+        <textarea id="comment" placeholder="Viết đánh giá..."></textarea>
+        <button id="submit-review">Gửi đánh giá</button>
+        <div id="review-message"></div>
+    </div>
+    
+    <hr>
+    <h3>Đánh giá:</h3>
+    <div id="review-list"></div>
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                const productId = $('.review-box').data('product-id');
+                let selectedRating = 0;
+        
+                $('input[name="rating"]').on('change', function () {
+                    selectedRating = $(this).val();
+                });
+        
+                $('#submit-review').on('click', function () {
+                    let comment = $('#comment').val();
+        
+                    if (!selectedRating) {
+                        $('#review-message').text('Vui lòng chọn sao đánh giá!').css('color', 'red');
+                        return;
+                    }
+                    if (!$('#reviewer_name').val()) {
+                        $('#review-message').text('Vui lòng nhập tên của bạn!').css('color', 'red');
+                        return;
+                    }
+        
+                    $.ajax({
+                        url: '{{ route("reviews.store") }}',
+                        method: 'POST',
+                        data: {
+                           
+                            name: $('#reviewer_name').val(),
+                            product_id: productId,
+                            rating: selectedRating,
+                            comment: comment,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (res) {
+                            $('#review-message').text(res.message).css('color', 'green');
+                            $('#comment').val('');
+                            $('input[name="rating"]').prop('checked', false);
+                            selectedRating = 0;
+                            loadReviews();
+                        },
+                        error: function () {
+                            $('#review-message').text('Có lỗi xảy ra!').css('color', 'red');
+                        }
+                    });
+                });
+        
+                function loadReviews() {
+                    $.get('/reviews/' + productId, function (res) {
+                        $('#review-list').html('');
+                        res.forEach(function (review) {
+                            $('#review-list').append(`
+                                <div class="single-review">
+                                    <h5>${review.name}</h5>
+                                    <div class="review-date">${new Date(review.created_at).toLocaleDateString()}</div>
+                                    <div>${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                                    <div>${review.comment}</div>
+                                    <hr>
+                                </div>
+                            `);
+                        });
+                    });
+                }
+        
+                loadReviews();
+            });
+        </script>
     </div>
 
     <!-- Gợi ý phụ kiện -->

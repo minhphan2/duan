@@ -49,6 +49,8 @@ Route::get('/banhnuae/ajax', [ProductsController::class, 'BanhnuaeAjax']);
 Route::get('/phukienbanh', [ProductsController::class, 'phukienbanh'])->name('phukienbanh');
 Route::get('/phukienbanh/ajax', [ProductsController::class, 'PhukienbanhAjax']);
 Route::get('/sanpham/chitietsanpham/{id}', [ProductsController::class, 'chitietsanpham'])->name('chitietsanpham');
+Route::get('/sap-xep-san-pham', [ProductsController::class, 'sort']);
+
 //timkiem
 Route::get('/timkiem', [ProductsController::class, 'timKiem']);
 
@@ -124,6 +126,14 @@ Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.logi
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
+//danh gia
+use App\Http\Controllers\ReviewController;
+Route::get('/reviews/{product_id}', [ReviewController::class, 'getReviews']);
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+
+
+
 //cua admin
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -158,6 +168,12 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/donhang/trangthai/{id}', [HoaDonController::class, 'capNhatTrangThai'])->name('admin.donhang.trangthai');
 
 });
+
+//danh gia
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard/quanlybinhluan', [ReviewController::class, 'laytatcareview'])->name('admin.qlybinhluan');
+});
+
 /*
 Route::post('/addtocart', function (Request $request) {
     if (auth()->check()) {

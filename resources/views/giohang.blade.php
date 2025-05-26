@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
-      <script src="{{ asset('js/cart.js') }}"></script>
+
        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       function showOrderConfirm() {
@@ -86,7 +86,7 @@ function showEmptyCartAlert() {
 }
 
 </script>
-    <script>
+    <!--<script>
       document.addEventListener('DOMContentLoaded', function () {
     // Tăng số lượng
     document.querySelectorAll('.increase-btn').forEach(button => {
@@ -137,8 +137,9 @@ function showEmptyCartAlert() {
         }
     }
 });
-    </script>
+    </script>-->
    
+
 
     
 </head>
@@ -181,31 +182,29 @@ function showEmptyCartAlert() {
                         $thanhtien = $item['price'] * $item['quantity'];
                         $tong += $thanhtien;
                     @endphp
-                    <div class="item-clear item-product productid-1 flex items-center">
-                        <!-- Xóa -->
-                        <a href="{{ route('cart.remove', ['id' => $id]) }}" class="text-red-500 hover:underline mr-4">Xóa</a>
-                
-                        <!-- Ảnh -->
-                        <img src="{{ asset(  'uploads/' .$item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
-                
-                        <!-- Thông tin -->
-                        <div class="flex-1 mr-4">
-                            <span class="text-lg font-semibold">{{ $item['name'] }}</span>
-                            <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
-                        </div>
-                
-                        <!-- Số lượng và nút -->
-                         <div class="flex items-center space-x-2 mr-4">
-        <button class="decrease-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">-</button>
-        <span class="quantity">{{ $item['quantity'] }}</span>
-        <button class="increase-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">+</button>
+                   <div class="item-clear item-product flex items-center product-row" data-id="{{ $id }}">
+    <!-- Xóa -->
+    <button type="button" class="remove-btn text-red-500 hover:underline mr-4" data-id="{{ $id }}">Xóa</button>
+
+    <!-- Ảnh -->
+    <img src="{{ asset('uploads/' . $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
+
+    <!-- Thông tin -->
+    <div class="flex-1 mr-4">
+        <span class="text-lg font-semibold">{{ $item['name'] }}</span>
+        <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
     </div>
-                
-                        <!-- Thành tiền -->
-                        <div class="font-semibold">
-                            = {{ number_format($thanhtien) }}₫
-                        </div>
-                    </div>
+
+    <!-- Số lượng và nút -->
+    <div class="flex items-center space-x-2 mr-4">
+        <button type="button" class="decrease-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">-</button>
+        <span class="quantity">{{ $item['quantity'] }}</span>
+        <button type="button" class="increase-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">+</button>
+    </div>
+
+    <!-- Thành tiền -->
+    <div class="font-semibold subtotal">{{ number_format($thanhtien) }}₫</div>
+</div>
                 @empty
                     <p>Giỏ hàng rỗng. <a href="{{ route('sanpham') }}" class="text-blue-500">Mua hàng</a></p>
                 @endforelse
@@ -215,7 +214,8 @@ function showEmptyCartAlert() {
 <hr class="my-4">
 <div class="flex justify-between items-center">
     <h3 class="text-lg font-semibold">Tổng tiền</h3>
-    <span class="text-lg font-semibold">{{ number_format($tong) }}₫</span>
+    <span class="text-lg font-semibold" id="total-price">{{ number_format($tong) }}₫</span>
+
 </div>
                 </div>
 
@@ -223,7 +223,7 @@ function showEmptyCartAlert() {
                     <div class="flex-col justify-center">
                         <div class="flex items-center gap-4 lg:gap-14">
                             <h3 class="text-lg font-semibold">Tổng tiền</h3>
-                            <span id="totalPrice" class="text-lg font-semibold">{{ number_format($tong) }}₫</span>
+                            <span class="text-lg font-semibold" id="total-price">{{ number_format($tong) }}₫</span>
                         </div>
                         <div class="mt-3">
                             <label for="note" class="control-label">Lưu ý cho đơn hàng</label> <br> <br>
@@ -322,8 +322,8 @@ function showEmptyCartAlert() {
 </div>
 </div>
 </form>
-     <script>
-</script>
+     
+      <script src="{{ asset('js/cart.js') }}"></script>
 </div>
 </section>
 <!-- FOOTER -->
@@ -410,4 +410,84 @@ function showEmptyCartAlert() {
 @endsection
 
 </html>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cartItems = document.getElementById('cartItems');
+    if (!cartItems) return;
+
+    cartItems.addEventListener('click', function (e) {
+        const btn = e.target;
+        const id = btn.dataset.id;
+        const row = btn.closest('.product-row');
+
+        if (btn.classList.contains('increase-btn')) {
+            fetch(`/cart/increase/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.cart && data.cart[id]) {
+                    const item = data.cart[id];
+                    row.querySelector('.quantity').textContent = item.quantity;
+                    row.querySelector('.subtotal').textContent = (item.price * item.quantity).toLocaleString('vi-VN') + '₫';
+                }
+                updateTotal();
+            });
+        }
+
+        if (btn.classList.contains('decrease-btn')) {
+            fetch(`/cart/decrease/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.cart[id]) {
+                    row.remove();
+                } else {
+                    const item = data.cart[id];
+                    row.querySelector('.quantity').textContent = item.quantity;
+                    row.querySelector('.subtotal').textContent = (item.price * item.quantity).toLocaleString('vi-VN') + '₫';
+                }
+                updateTotal();
+            });
+        }
+
+        if (btn.classList.contains('remove-btn')) {
+            fetch(`/cart/remove/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    row.remove();
+                    updateTotal();
+                }
+            });
+        }
+
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('.product-row').forEach(r => {
+                const quantity = parseInt(r.querySelector('.quantity').textContent);
+                const priceText = r.querySelector('.product-price').textContent.replace(/[^\d]/g, '');
+                const price = parseInt(priceText);
+                total += price * quantity;
+            });
+            document.getElementById('total-price').textContent = total.toLocaleString('vi-VN') + '₫';
+        }
+    });
+});
+</script>
+
 

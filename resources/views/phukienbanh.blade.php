@@ -61,7 +61,7 @@
 
                 let paginationHtml = '';
                 for (let i = 1; i <= data.totalPages; i++) {
-                    paginationHtml += `<li><button onclick="loadProducts(${i})">${i}</button></li>`;
+                    paginationHtml += `<li><button onclick="loadProducts(${i})" style="background-color: #694922">${i}</button></li>`;
                 }
                 document.getElementById('pagination').innerHTML = paginationHtml;
             });

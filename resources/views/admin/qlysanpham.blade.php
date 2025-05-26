@@ -98,7 +98,7 @@
                                     <a class="nav-link" href="tro-giup.php">Trợ giúp</a>             
                                 </nav>
                             </div>
-                            <a class="nav-link" href="binhluan.php">
+                            <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                                 Quản trị bình luận
                             </a>                                                     

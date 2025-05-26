@@ -1,24 +1,82 @@
+/* Vùng chứa đánh giá */
+.review-box {
+    margin-left: 30%;
+    margin-right: 30%;
+    max-width: 500px;
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Phần đánh sao */
 .star-rating {
-    direction: rtl;
-    display: inline-block;
-    font-size: 2em;
-    unicode-bidi: bidi-override;
-    text-align: center;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
     margin-bottom: 10px;
 }
 
-.star-rating input {
+.star-rating input[type="radio"] {
     display: none;
 }
 
 .star-rating label {
+    font-size: 24px;
     color: #ccc;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: color 0.2s;
 }
 
-.star-rating input:checked ~ label,
+.star-rating input[type="radio"]:checked ~ label,
 .star-rating label:hover,
 .star-rating label:hover ~ label {
     color: gold;
+}
+
+/* Input và textarea */
+#reviewer_name,
+#comment {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Nút gửi */
+#submit-review {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+#submit-review:hover {
+    background-color: #218838;
+}
+
+/* Thông báo sau gửi */
+#review-message {
+    margin-top: 10px;
+    font-style: italic;
+    color: green;
+}
+
+/* Danh sách đánh giá */
+#review-list {
+    margin-top: 15px;
+}
+
+#review-list .single-review {
+    border-bottom: 1px dashed #ccc;
+    padding: 10px 0;
 }

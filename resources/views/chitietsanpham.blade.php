@@ -40,7 +40,7 @@
                     <button type="submit" 
     class="btn btn-primary {{ $result->SoLuong <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}" 
     {{ $result->SoLuong <= 0 ? 'disabled' : '' }}>
-    {{ $result->SoLuong <= 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng' }}
+    {{ $result->SoLuong <= 0 ? 'Không đủ hàng' : 'Thêm vào giỏ hàng' }}
 </button>
                 </form>
             </div>

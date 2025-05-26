@@ -103,7 +103,8 @@ Route::get('/chitietsanpham/{id}', [ProductsController::class, 'chitietsanpham']
 //them vao gio hang
 Route::get('/giohang', [GioHangController::class, 'viewCart'])->name('cart.show');
 Route::post('/addtocart', [GioHangController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/remove/{id}', [GioHangController::class, 'remove'])->name('cart.remove');
+
 Route::post('/cart/increase/{id}', [GioHangController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [GioHangController::class, 'decrease'])->name('cart.decrease'); 
 //dathang

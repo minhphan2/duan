@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -183,34 +183,32 @@ function showEmptyCartAlert() {
                         $tong += $thanhtien;
                     @endphp
                    <div class="item-clear item-product flex items-center product-row" data-id="{{ $id }}">
-    <!-- Xóa -->
-    <button type="button" class="remove-btn text-red-500 hover:underline mr-4" data-id="{{ $id }}">Xóa</button>
+                            <!-- Xóa -->
+                            <button type="button" class="remove-btn text-red-500 hover:underline mr-4" data-id="{{ $id }}">Xóa</button>
 
-    <!-- Ảnh -->
-    <img src="{{ asset('uploads/' . $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
+                            <!-- Ảnh -->
+                            <img src="{{ asset('uploads/' . $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
 
-    <!-- Thông tin -->
-    <div class="flex-1 mr-4">
-        <span class="text-lg font-semibold">{{ $item['name'] }}</span>
-        <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
-    </div>
+                            <!-- Thông tin -->
+                            <div class="flex-1 mr-4">
+                                <span class="text-lg font-semibold">{{ $item['name'] }}</span>
+                                <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
+                            </div>
 
-    <!-- Số lượng và nút -->
-    <div class="flex items-center space-x-2 mr-4">
-        <button type="button" class="decrease-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">-</button>
-        <span class="quantity">{{ $item['quantity'] }}</span>
-        <button type="button" class="increase-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">+</button>
-    </div>
+                            <!-- Số lượng và nút -->
+                            <div class="flex items-center space-x-2 mr-4">
+                                <button type="button" class="decrease-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">-</button>
+                                <span class="quantity">{{ $item['quantity'] }}</span>
+                                <button type="button" class="increase-btn px-3 py-1 bg-gray-200 rounded-md" data-id="{{ $id }}">+</button>
+                            </div>
 
-    <!-- Thành tiền -->
-    <div class="font-semibold subtotal">{{ number_format($thanhtien) }}₫</div>
-</div>
+                            <!-- Thành tiền -->
+                            <div class="font-semibold subtotal">{{ number_format($thanhtien) }}₫</div>
+                    </div>
                 @empty
                     <p>Giỏ hàng rỗng. <a href="{{ route('sanpham') }}" class="text-blue-500">Mua hàng</a></p>
                 @endforelse
                 </form>
-                
-
 <hr class="my-4">
 <div class="flex justify-between items-center">
     <h3 class="text-lg font-semibold">Tổng tiền</h3>
@@ -457,24 +455,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     row.querySelector('.subtotal').textContent = (item.price * item.quantity).toLocaleString('vi-VN') + '₫';
                 }
                 updateTotal();
+                checkIfCartEmpty();
             });
         }
 
-        if (btn.classList.contains('remove-btn')) {
-            fetch(`/cart/remove/${id}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => {
-                if (res.ok) {
-                    row.remove();
-                    updateTotal();
-                }
-            });
+       if (btn.classList.contains('remove-btn')) {
+    fetch(`/cart/remove/${id}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
         }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Xóa sản phẩm khỏi giao diện
+            if (row) row.remove();
+            updateTotal();
+            checkIfCartEmpty();
+        } else {
+            console.error('Lỗi từ server:', response.status);
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi fetch:', error);
+    });
+}
 
         function updateTotal() {
             let total = 0;
@@ -486,6 +492,23 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             document.getElementById('total-price').textContent = total.toLocaleString('vi-VN') + '₫';
         }
+
+        function checkIfCartEmpty() {
+    const items = document.querySelectorAll('.product-row');
+    if (items.length === 0) {
+        cartItems.innerHTML = `<p>Giỏ hàng rỗng. <a href="/sanpham" class="text-blue-500">Mua hàng</a></p>
+        <hr class="my-4">
+<div class="flex justify-between items-center">
+    <h3 class="text-lg font-semibold">Tổng tiền</h3>
+    <span class="text-lg font-semibold" id="total-price">{{ number_format($tong) }}₫</span>
+
+</div>
+        `;
+        document.getElementById('total-price').textContent = '0₫';
+        
+    }
+}
+
     });
 });
 </script>

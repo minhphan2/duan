@@ -73,6 +73,7 @@ Route::get('/lienhe', [PageController::class, 'lienhe'])->name('lienhe');
 //dangnhap va dang ky
 Route::get('/dangnhapdangky', [UserController::class, 'hienthiView'])->name('dangnhapdangky');
 Route::post('/dangky', [UserController::class, 'register'])->name('dangky');
+Route::get('/verify-email/{token}', [UserController::class, 'verifyEmail'])->name('verify.email');
 Route::post('/dangnhap', [UserController::class, 'login'])->name('dangnhap');
 Route::get('/dangxuat', [UserController::class, 'logout'])->name('dangxuat');
 

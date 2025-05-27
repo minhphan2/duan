@@ -15,6 +15,8 @@ class UserModel extends Authenticatable
         'avatar',
         'phone',
         'address',
+        'verify_token',  
+        'email_verified', 
     ];
 
     protected $hidden = [

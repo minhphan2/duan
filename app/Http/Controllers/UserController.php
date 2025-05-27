@@ -17,6 +17,8 @@ use App\Rules\Captcha;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use App\Mail\VerifyEmail;
+
 
 
 class UserController extends Controller
@@ -31,25 +33,55 @@ class UserController extends Controller
     }
       
 
-    public function login(Request $request){
-       $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-            'g-recaptcha-response' => new Captcha(),
-        ]);
+   public function login(Request $request){
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:6',
+        'g-recaptcha-response' => new Captcha(),
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->put('customer', Auth::user());
-            return redirect()->route('home'); // hoặc redirect()->route('home');
-        } else {
-            return redirect()->back()->with('error', 'Sai email hoặc mật khẩu');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $request->session()->put('customer', $user);
+
+        // TẢI GIỎ HÀNG TỪ DATABASE
+        $cart = \App\Models\CartModel::firstOrCreate(
+            ['user_id' => $user->id],
+            ['created_at' => now(), 'updated_at' => now()]
+        );
+
+        $items = \App\Models\CartitemsModel::where('cart_id', $cart->id)->get();
+
+        $cartSession = [];
+
+        foreach ($items as $item) {
+            $product = \App\Models\ProductsModel::find($item->product_id);
+            if ($product) {
+                $cartSession[$item->product_id] = [
+                    'name' => $product->TenSP,
+                    'price' => $product->Gia,
+                    'quantity' => $item->quantity,
+                    'image' => $product->HinhAnh
+                ];
+            }
         }
+
+        session()->put('cart_user_' . $user->id, $cartSession);
+
+        return redirect()->route('home');
+    } else {
+        return redirect()->back()->with('swal_error', [
+            'title' => 'Đăng nhập thất bại!',
+            'text' => 'Sai email hoặc mật khẩu',
+            'icon' => 'error']);
     }
+}
 
 
-    public function register(Request $request)
+
+    /*public function register(Request $request)
     {
         $request->validate([
             'username' => 'required|string',
@@ -67,6 +99,57 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('success', 'Đăng ký thành công, hãy đăng nhập!');
     }
+*/
+public function register(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6|confirmed',
+        'g-recaptcha-response' => new Captcha(),
+    ]);
+
+    $verifyToken = Str::random(60);
+
+    $user = UserModel::create([
+        'username' => $request->username,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'verify_token' => $verifyToken,
+        'email_verified' => false,
+    ]);
+
+    Mail::to($user->email)->send(new VerifyEmail($user));
+
+    return redirect()->back()->with('swal_success', [
+        'title' => 'Đăng ký thành công!',
+        'text' => 'Vui lòng kiểm tra email để xác nhận tài khoản',
+        'icon' => 'success'
+    ]);
+}
+
+public function verifyEmail($token)
+{
+    $user = UserModel::where('verify_token', $token)->first();
+
+    if (!$user) {
+        return redirect('/dangnhapdangky')->with('swal_error', [
+            'title' => 'Xác minh thất bại!',
+            'text' => 'Mã xác minh không hợp lệ',
+            'icon' => 'error'
+        ]);
+    }
+
+    $user->email_verified = true;
+    $user->verify_token = null;
+    $user->save();
+
+    return redirect('/dangnhapdangky')->with('swal_success', [
+        'title' => 'Xác minh thành công!',
+        'text' => 'Bạn có thể đăng nhập ngay bây giờ',
+        'icon' => 'success'
+    ]);
+}
 
 
     public function logout(Request $request)  {
@@ -74,7 +157,11 @@ class UserController extends Controller
     $request->session()->invalidate(); // reset toàn bộ session
     $request->session()->regenerateToken(); // bảo mật CSRF mới
 
-    return redirect()->route('home')->with('success', 'Đăng xuất thành công!');
+    return redirect()->route('home')->with('swal_success', [
+        'title' => 'Đăng xuất thành công!',
+        'text' => 'Hẹn gặp lại bạn',
+        'icon' => 'success'
+    ]);
     }
 
     //quen mat khau -> gui email

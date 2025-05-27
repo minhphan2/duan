@@ -120,7 +120,10 @@ public function viewCart()
         }
     }
 
-    return redirect()->route('cart.show')->with('success', 'Đã thêm vào giỏ hàng');
+    return redirect()->back()->with('swal_success', [
+        'title' => 'Thêm giỏ hàng thành công!',
+        'text' => '',
+        'icon' => 'success']);
 }
     public function remove($id)
     {

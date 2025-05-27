@@ -20,16 +20,12 @@
         </header>
         <!-- Tìm kiếm -->
 
-        </script>
         <div class="body">
         <div class="container" id="container">
+        
 
-            @if(session('success'))
-            <p style="color: green;">{{ session('success') }}</p>
-            @endif
-            @if(session('error'))
-            <p style="color: red;">{{ session('error') }}</p>
-            @endif
+
+
 
             <div class="form-container register-container">
             <form action="{{ route('dangky') }}" method="POST">
@@ -38,7 +34,9 @@
 
                 <input type="text" name="username" placeholder="Name">
                 <input type="email" name="email" placeholder="Email">
-                <input type="password" name="password" placeholder="Password">
+                <input type="password" name="password" placeholder="Mật khẩu">
+                <input type="password" name="password_confirmation" placeholder="Nhập lại mật khẩu">
+
                 
                 <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
                 <br/>
@@ -119,10 +117,18 @@
     </div>
     </div>
     </div>
-    <script src="{{ asset('js/header.js') }}"></script>
-    <script src="{{ asset('js/dangnhap.js') }}"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/thongbao.js') }}"></script>
+    @if(session('swal_success'))
+    <meta name="swal-success" content='@json(session('swal_success'))'>
+@endif
+@if(session('swal_error'))
+    <meta name="swal-error" content='@json(session('swal_error'))'>
+@endif
 
     </body>
     </html>
+    

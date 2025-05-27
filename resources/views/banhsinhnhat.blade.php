@@ -36,8 +36,8 @@
     <!-- Bánh sinh nhật -->
        <!-- Bánh sinh nhật -->
        <div style="text-align: right; margin: 20px;">
-    <label for="sortOption">Sắp xếp: </label>
-    <select id="sortOption">
+    <label for="sortOption" style="font-size: 25px; font-weight: bold; font-family: 'Signika', serif; color: #694922;">Sắp xếp: </label>
+    <select id="sortOption" style="font-size: 20px; font-weight: bold; font-family: 'Signika', serif; color: #694922;">
         <option value="name_asc">Tên A-Z</option>
         <option value="name_desc">Tên Z-A</option>
         <option value="price_asc">Giá tăng dần</option>

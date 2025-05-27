@@ -1,4 +1,6 @@
 .profile-container {
+    font-family: 'Signika', serif;
+    color: #694922;
     max-width: 500px;
     margin: 40px auto;
     background: #fff;
@@ -8,6 +10,9 @@
 }
 
 .profile-container h2 {
+    font-size: 25px;
+    font-weight: bold;
+    font-family: 'Signika', serif;
     text-align: center;
     margin-bottom: 24px;
     color: #2d3a4b;

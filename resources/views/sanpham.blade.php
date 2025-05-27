@@ -93,7 +93,7 @@
         <div class="banhnua">
             <div class="banh-widget">
                 <div class="widget-content">
-                    <h3>Bánh sinh nhật</h3>
+                    <h3>Bánh nửa Entremet</h3>
                     <a href="{{ url('/banhnuae') }}">Xem thêm</a>
                 </div>
             </div>
@@ -120,7 +120,7 @@
         <div class="phukien">
             <div class="banh-widget">
                 <div class="widget-content">
-                    <h3>Bánh sinh nhật</h3>
+                    <h3>Phụ kiện bánh</h3>
                     <a href="{{ url('/phukienbanh') }}">Xem thêm</a>
                 </div>
             </div>

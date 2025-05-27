@@ -236,6 +236,8 @@ public function verifyEmail($token)
         ]);
         $user->username = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
         $user->save();
         return redirect()->route('profile.edit')->with('success', 'Cập nhật thành công!');
     }

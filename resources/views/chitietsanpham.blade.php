@@ -34,13 +34,11 @@
                     <input type="hidden" name="TenSP" value="{{ $result->TenSP }}">
                     <input type="hidden" name="HinhAnh" value="{{ $result->HinhAnh }}">
                     <div class="mb-3">
-                        <label for="soluong" class="form-label">Số lượng:</label>
-                        <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">
-                    </div>                
-                    <button type="submit" 
-    class="btn btn-primary {{ $result->SoLuong <= 0 ? 'opacity-50 cursor-not-allowed' : '' }}" 
-    {{ $result->SoLuong <= 0 ? 'disabled' : '' }}>
-    {{ $result->SoLuong <= 0 ? 'Không đủ hàng' : 'Thêm vào giỏ hàng' }}
+    <label for="soluong" class="form-label">Số lượng:</label>
+    <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">
+</div>
+<button type="submit" id="addToCartBtn" class="btn btn-primary">
+    Thêm vào giỏ hàng
 </button>
                 </form>
             </div>
@@ -236,6 +234,27 @@
     @if(session('swal_error'))
     <meta name="swal-error" content='@json(session('swal_error'))'>
     @endif
+    <script>
+    const maxStock =  {{$result->SoLuong }};
+    const input = document.getElementById('soluong');
+    const btn = document.getElementById('addToCartBtn');
+
+    function checkStock() {
+        if (parseInt(input.value) > maxStock) {
+            btn.disabled = true;
+            btn.textContent = 'Không đủ hàng';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            btn.disabled = false;
+            btn.textContent = 'Thêm vào giỏ hàng';
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    }
+
+    input.addEventListener('input', checkStock);
+    // Gọi 1 lần khi load trang
+    checkStock();
+</script>
 </body>
 @endsection
 </html>

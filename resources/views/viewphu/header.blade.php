@@ -18,7 +18,64 @@
         border: 1px solid #ccc;
           z-index: 9999;
         position: absolute;
-    }</style>
+    }
+    
+    .dropdown-user {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 10s;
+}
+
+.dropdown-toggle:hover {
+    background: #e0e7ff;
+}
+
+.arrow {
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+.dropdown-menu-user {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    min-width: 140px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    z-index: 100;
+    margin-top: 4px;
+    padding: 8px 0;
+}
+
+.dropdown-menu-user a {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    transition: background 2s;
+}
+
+.dropdown-menu-user a:hover {
+    background: #f0f4ff;
+    color: #2355d8;
+}
+
+.dropdown-user:hover .dropdown-menu-user {
+    display: block;
+}
+    </style>
    </head>
 
     <header>        
@@ -78,12 +135,20 @@
                         <li id="account">                     
                             <svg fill="#303030" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 402.161 402.161" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g> <path d="M201.08,49.778c-38.794,0-70.355,31.561-70.355,70.355c0,18.828,7.425,40.193,19.862,57.151 c14.067,19.181,32,29.745,50.493,29.745c18.494,0,36.426-10.563,50.494-29.745c12.437-16.958,19.862-38.323,19.862-57.151 C271.436,81.339,239.874,49.778,201.08,49.778z M201.08,192.029c-13.396,0-27.391-8.607-38.397-23.616 c-10.46-14.262-16.958-32.762-16.958-48.28c0-30.523,24.832-55.355,55.355-55.355s55.355,24.832,55.355,55.355 C256.436,151.824,230.372,192.029,201.08,192.029z"></path> <path d="M201.08,0C109.387,0,34.788,74.598,34.788,166.292c0,91.693,74.598,166.292,166.292,166.292 s166.292-74.598,166.292-166.292C367.372,74.598,292.773,0,201.08,0z M201.08,317.584c-30.099-0.001-58.171-8.839-81.763-24.052 c0.82-22.969,11.218-44.503,28.824-59.454c6.996-5.941,17.212-6.59,25.422-1.615c8.868,5.374,18.127,8.099,27.52,8.099 c9.391,0,18.647-2.724,27.511-8.095c8.201-4.97,18.39-4.345,25.353,1.555c17.619,14.93,28.076,36.526,28.895,59.512 C259.25,308.746,231.178,317.584,201.08,317.584z M296.981,283.218c-3.239-23.483-15.011-45.111-33.337-60.64 c-11.89-10.074-29.1-11.256-42.824-2.939c-12.974,7.861-26.506,7.86-39.483-0.004c-13.74-8.327-30.981-7.116-42.906,3.01 c-18.31,15.549-30.035,37.115-33.265,60.563c-33.789-27.77-55.378-69.868-55.378-116.915C49.788,82.869,117.658,15,201.08,15 c83.423,0,151.292,67.869,151.292,151.292C352.372,213.345,330.778,255.448,296.981,283.218z"></path> <path d="M302.806,352.372H99.354c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h203.452c4.142,0,7.5-3.358,7.5-7.5 C310.307,355.73,306.948,352.372,302.806,352.372z"></path> <path d="M302.806,387.161H99.354c-4.142,0-7.5,3.358-7.5,7.5c0,4.142,3.358,7.5,7.5,7.5h203.452c4.142,0,7.5-3.358,7.5-7.5 C310.307,390.519,306.948,387.161,302.806,387.161z"></path> </g> </g> </g> </g></svg>
                             
-     @if (Session::has('customer'))
-    <a href="" class="contact">{{ Session::get('customer')->username }}</a>
-    <a href="{{ route('dangxuat') }}">Đăng xuất</a>
-    @else
-    <a href="{{ route('dangnhapdangky') }}" class="contact">Đăng nhập</a>
-    @endif                                 
+                            @if (Session::has('customer'))
+                                <div class="dropdown-user" id="dropdownUser">
+                                    <a href="javascript:void(0)" class="contact dropdown-toggle" id="dropdownUserBtn">
+                                        {{ Session::get('customer')->username }}
+                                        <span class="arrow">&#9662;</span>
+                                    </a>
+                                    <div class="dropdown-menu-user" id="dropdownUserMenu">
+                                        <a href="{{ route('profile.edit') }}">Hồ sơ</a>
+                                        <a href="{{ route('dangxuat') }}">Đăng xuất</a>
+                                    </div>
+                                </div>
+                            @else
+                            <a href="{{ route('dangnhapdangky') }}" class="contact">Đăng nhập</a>
+                            @endif                                 
 
                         </li>
                         <li id="cart"><svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#303030" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
@@ -152,5 +217,24 @@
           <!-- Tìm kiếm -->
           
         </header>
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('dropdownUserBtn');
+        const menu = document.getElementById('dropdownUserMenu');
+        const dropdown = document.getElementById('dropdownUser');
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        });
+
+        // Ẩn dropdown khi click ra ngoài
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    });
+</script>
            
       

@@ -227,6 +227,37 @@ public function verifyEmail($token)
     }
 
 
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        ]);
+        $user->username = $request->name;
+        $user->email = $request->email;
+        $user->save();
+        return redirect()->route('profile.edit')->with('success', 'Cập nhật thành công!');
+    }
+
+    public function changePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|min:6|confirmed',
+    ]);
+
+    $user = Auth::user();
+
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->with('password_error', 'Mật khẩu hiện tại không đúng!');
+    }
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return back()->with('password_success', 'Đổi mật khẩu thành công!');
+}
     
 }
 

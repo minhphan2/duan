@@ -76,7 +76,13 @@ Route::post('/dangky', [UserController::class, 'register'])->name('dangky');
 Route::get('/verify-email/{token}', [UserController::class, 'verifyEmail'])->name('verify.email');
 Route::post('/dangnhap', [UserController::class, 'login'])->name('dangnhap');
 Route::get('/dangxuat', [UserController::class, 'logout'])->name('dangxuat');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/edit', function() {
+        return view('profileuser');
+    })->name('profile.edit');
+    Route::post('/profile/update', [UserController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [UserController::class, 'changePassword'])->name('profile.password');
+});
 //dangnhapbang google
 
 Route::get('auth/google', [SocialController::class, 'redirectToGoogle'])->name('auth.google');

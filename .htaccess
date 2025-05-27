@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Nếu là file hoặc thư mục thực thì không rewrite
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    # Chuyển tất cả request về thư mục public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

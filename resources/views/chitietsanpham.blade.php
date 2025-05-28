@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/product.css') }}">
     <link rel="stylesheet" href="{{ asset('css/review.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chitiet.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('images/logo_cake_1-removebg-preview.png') }}" type="image/x-icon">
 </head>
@@ -19,14 +20,21 @@
 
     <!-- Chi tiết sản phẩm -->
     <div class="container mt-4">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <img src="{{ asset('uploads/' . $result->HinhAnh) }}" class="img-fluid rounded" alt="{{ $result->TenSP }}">
+        <div class="row g-4" style="height: 600px">
+            <div class="col-md-6" style="width:50%;">
+                <div class="gallery" style="height: 100%">
+                    <img id="mainImage" src="{{ asset('uploads/' . $result->HinhAnh) }}" alt="Ảnh chính" class="main-img">
+                    <div class="thumbnails">
+                      <img src="{{ asset('uploads/' . $result->HinhAnh) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
+                      <img src="{{ asset('uploads/' . $result->HinhAnh2) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
+                      <img src="{{ asset('uploads/' . $result->HinhAnh3) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
+                    </div>
+                  </div>
             </div>
-            <div class="col-md-6">
-                <h2 class="product-title">{{ $result->TenSP }}</h2>
-                <p class="product-price text-danger"><b>{{ number_format($result->Gia) }} VNĐ</b></p>
-                <p class="product-description">{{ $result->MoTa }}</p>
+            <div class="col-md-6" style="width:50%;">
+                <h2 class="product-title" style="font-family:Signika;font-size:100px;color: #694922;">{{ $result->TenSP }}</h2>
+                <p class="product-price "style="font-family:Signika;font-size:70px;color: #694922;"><b>{{ number_format($result->Gia) }} VNĐ</b></p>
+                <p class="product-description"style="font-family:Signika;font-size:30px;color: #694922;">{{ $result->MoTa }}</p>
                 <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $result->MaSP }}">
@@ -34,7 +42,7 @@
                     <input type="hidden" name="TenSP" value="{{ $result->TenSP }}">
                     <input type="hidden" name="HinhAnh" value="{{ $result->HinhAnh }}">
                     <div class="mb-3">
-    <label for="soluong" class="form-label">Số lượng:</label>
+    <label style="font-family:Signika;color: #694922;" for="soluong" class="form-label">Số lượng:</label>
     <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">
 </div>
 <button type="submit" id="addToCartBtn" class="btn btn-primary">
@@ -255,6 +263,13 @@
     // Gọi 1 lần khi load trang
     checkStock();
 </script>
+<script>
+    function changeImage(element) {
+      const mainImage = document.getElementById("mainImage");
+      mainImage.src = element.src;
+    }
+  </script>
+  
 </body>
 @endsection
 </html>

@@ -195,7 +195,7 @@
         </div>
         <div class ="box-service">
             <div class="box">
-                <a href ="banhsinhnhat.html" class = "btn-service">
+                <a href ="{{route('banhsinhnhat')}}" class = "btn-service">
                 <img src="images/box pic 01.avif" width="70" height="70">
                 <h4>Bánh sinh nhật</h4>
                 <p>Dành cho 2-10 người</p>
@@ -204,7 +204,7 @@
                 &rarr;</a>
             </div>
             <div class="box">
-                <a href ="banhsinhnhat.html" class = "btn-service">
+                <a href ="{{route('banhnuae')}}" class = "btn-service">
                 <img src="images/box pic 02.avif" width="70" height="70">
                 <h4>Bánh nửa Entremet</h4>
                 <p>Bánh cho 2-5 người</p>
@@ -213,7 +213,7 @@
                 &rarr;</a>
             </div>
             <div class="box">
-                <a href ="banhsinhnhat.html" class = "btn-service">
+                <a href ="{{route('phukienbanh')}}" class = "btn-service">
                 <img src="images/box pic 03.avif" width="70" height="70">
                 <h4>Phụ kiện bánh</h4>
                 <p>Nến, thiệp & phụ kiện</p>

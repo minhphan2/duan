@@ -122,7 +122,83 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Trang quản trị hệ thống</li>
                     </ol>
-                    <!-- Nội dung dashboard ở đây -->
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Danh Sách Quản Lí</li>
+                    </ol>
+                    <h3>Phân Mục Khách Hàng</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6" >
+                            <div class="card bg-danger text-white mb-4" >
+                                <div class="card-body">Khách Hàng</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="khachhang.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    <h3>Phân Mục Bán Hàng</h3>
+                    <br><br>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-secondary text-white mb-4">
+                                <div class="card-body">Hóa Đơn</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="hoadon.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>                            
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-warning text-white mb-4">
+                                <div class="card-body">Khuyến Mãi</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="khuyenmai.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    <h3>Phân Mục Sản Phẩm</h3>
+                    <br><br>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Sản Phẩm</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="sanpham.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    <h3>Phân Mục Yêu Cầu</h3>
+                    <br><br>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-info text-white mb-4">
+                                <div class="card-body">Liên Hệ</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="lien-he.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-danger text-white mb-4">
+                                <div class="card-body">Trợ giúp</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="tro-giup.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    <h3>Phân Mục Khác</h3>
+                    <br><br>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">Bình luận</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="binhluan.php">Chi Tiết</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">

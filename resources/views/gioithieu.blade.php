@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-    @extends('layout.app')
-
-    @section('title', 'Giới thiệu')
-    
-    
-    
-    @section('content')
+  
 <head>
         
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giới Thiệu</title>
-    <link rel="icon" href="./images/logo_cake_1-removebg-preview.png" type = "image/x-icon"> <!--FAVICON-->
+    <link rel="icon" href="{{ asset('images/logo_cake_1-removebg-preview.png') }}" type = "image/x-icon"> <!--FAVICON-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -47,7 +44,13 @@
          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
          integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
          crossorigin="anonymous" referrerpolicy="no-referrer" />
+         @extends('layout.app')
 
+         @section('title', 'Giới thiệu')
+         
+         
+         
+         @section('content')
         <body>
             <header>       
                 </header>

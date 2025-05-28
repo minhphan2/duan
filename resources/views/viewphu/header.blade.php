@@ -167,18 +167,18 @@
                         
                     
                         <ul id="main-menu">
-                            <li><a href="{{ route('home') }}">Trang chủ</a></li>
-                            <li><a href="{{ route('gioithieu') }}">Giới thiệu</a></li>
-                            <li><a href="{{ route('hoidap') }}">Hỏi đáp</a></li>
-                            <li><a href="{{ route('sanpham') }}">Sản phẩm</a>
+                            <li><a style=" color: #694922;" href="{{ route('home') }}">Trang chủ</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('gioithieu') }}">Giới thiệu</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('hoidap') }}">Hỏi đáp</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('sanpham') }}">Sản phẩm</a>
                                 <ul class="sp-menu" style="z-index: 999;">
-                                    <li><a href="{{ route('banhsinhnhat') }}">Bánh sinh nhật</a></li>
-                                    <li><a href="{{ route('banhnuae') }}">Bánh nửa Entremet</a></li>
-                                    <li><a href="{{ route('phukienbanh') }}">Phụ kiện bánh</a></li>
+                                    <li><a style=" color: #694922;" href="{{ route('banhsinhnhat') }}">Bánh sinh nhật</a></li>
+                                    <li><a style=" color: #694922;" href="{{ route('banhnuae') }}">Bánh nửa Entremet</a></li>
+                                    <li><a style=" color: #694922;" href="{{ route('phukienbanh') }}">Phụ kiện bánh</a></li>
                                 </ul>
-                            <li><a href="{{ route('tintuc') }}">Tin Tức</a></li>
-                            <li><a href="{{ route('doingu') }}">Đội Ngũ</a></li>
-                            <li><a href="{{ route('lienhe') }}">Liên Hệ</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('tintuc') }}">Tin Tức</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('doingu') }}">Đội Ngũ</a></li>
+                            <li><a style=" color: #694922;" href="{{ route('lienhe') }}">Liên Hệ</a></li>
                             </li>
                             
                         </ul>

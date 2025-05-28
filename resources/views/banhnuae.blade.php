@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bánh sinh nhật</title>
+    <title>Bánh nửa Entremet</title>
     <link rel="icon" href="images/logo_cake_1-removebg-preview.png" type="image/x-icon"> <!--FAVICON-->
     <link rel="stylesheet" href="{{ asset('css/banhsinhnhat.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sanpham.css') }}">

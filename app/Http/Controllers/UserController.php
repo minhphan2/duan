@@ -176,7 +176,11 @@ public function verifyEmail($token)
     $user = UserModel::where('email', $request->email)->first();
 
     if (!$user) {
-        return back()->withErrors(['email' => 'Email không tồn tại']);
+        return back()->with('swal_error', [
+            'title' => 'Lỗi!',
+            'text' => 'Email không tồn tại',
+            'icon' => 'error'
+        ]);
     }
 
     $token = Str::random(6);
@@ -193,7 +197,11 @@ public function verifyEmail($token)
     $message->to($request->email)->subject('Khôi phục mật khẩu');
     });
 
-    return back()->with('status', 'Mã khôi phục đã được gửi qua email');
+    return back()->with('swal_success', [
+        'title' => 'Thành công!',
+        'text' => 'Mã khôi phục đã được gửi qua email',
+        'icon' => 'success'
+    ]);
     }
 
 
@@ -215,7 +223,11 @@ public function verifyEmail($token)
                     ->first();
     
         if (!$user) {
-            return back()->withErrors(['token' => 'Mã không đúng hoặc đã hết hạn.']);
+            return redirect()->route('dangnhapdangky')->with('swal_error', [
+                'title' => 'Lỗi!',
+                'text' => 'Mã không đúng hoặc đã hết hạn.',
+                'icon' => 'error'
+            ]);
         }
     
         $user->password = Hash::make($request->password);
@@ -223,7 +235,10 @@ public function verifyEmail($token)
         $user->reset_token_expires_at = null;
         $user->save();
     
-        return redirect()->route('dangnhapdangky')->with('success', 'Đặt lại mật khẩu thành công');
+        return redirect()->route('dangnhapdangky')->with('swal_success', [
+        'title' => 'Thành công!',
+        'text' => 'Đặt lại mật khẩu thành công',
+        'icon' => 'success']);
     }
 
 
@@ -259,6 +274,41 @@ public function verifyEmail($token)
     $user->save();
 
     return back()->with('password_success', 'Đổi mật khẩu thành công!');
+}
+
+public function resendVerificationEmail(Request $request)
+{
+    // Lấy người dùng hiện tại
+    $user = Auth::user();
+
+    // Kiểm tra xem người dùng đã xác minh chưa (đề phòng trường hợp người dùng xác minh rồi mà link vẫn hiện)
+    if ($user->email_verified) {
+         // Chuyển hướng về trang nào đó với thông báo email đã được xác minh
+         return redirect()->route('home')->with('swal_success', [
+            'title' => 'Thông báo',
+            'text' => 'Email của bạn đã được xác minh rồi!',
+            'icon' => 'info'
+        ]);
+    }
+
+    // Tạo token mới (tùy chọn, nếu bạn muốn mỗi lần gửi lại là token mới)
+    // Dựa trên code register của bạn, có vẻ bạn lưu verify_token trong DB
+    // Nếu logic của bạn là gửi lại email với token cũ, bạn có thể bỏ qua phần này
+    // Nhưng tốt nhất nên tạo token mới và cập nhật DB
+    $newVerifyToken = Str::random(60);
+    $user->verify_token = $newVerifyToken;
+    $user->save(); // Lưu token mới vào DB
+
+    // Gửi lại email xác minh
+    // Sử dụng Mailable VerifyEmail mà bạn đã có
+    Mail::to($user->email)->send(new VerifyEmail($user));
+
+    // Chuyển hướng trở lại trang trước với thông báo thành công
+    return back()->with('swal_success', [
+        'title' => 'Thành công!',
+        'text' => 'Email xác minh mới đã được gửi.',
+        'icon' => 'success'
+    ]);
 }
     
 }

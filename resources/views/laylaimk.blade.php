@@ -2,7 +2,7 @@
     @csrf
     <h2>Nhập mã và mật khẩu mới</h2>
 
-    <input type="email" name="email" placeholder="Email" required>
+    <input type="email" name="email" value="{{ request('email') }}" readonly>
     <input type="text" name="token" placeholder="Mã xác nhận" required>
     <input type="password" name="password" placeholder="Mật khẩu mới" required>
     <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu mới" required>

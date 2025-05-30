@@ -12,6 +12,44 @@
     <link rel="stylesheet" href="{{ asset('css/chitiet.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('images/logo_cake_1-removebg-preview.png') }}" type="image/x-icon">
+    <style>
+@media (max-width: 768px) {
+    .product-title {
+        font-size: 2rem !important;
+        text-align: center;
+    }
+    .product-price {
+        font-size: 1.5rem !important;
+        text-align: center;
+    }
+    .product-description {
+        font-size: 1rem !important;
+        text-align: center;
+    }
+    .gallery {
+        text-align: center;
+    }
+    .main-img {
+        max-width: 90vw;
+        height: auto;
+    }
+    .col-md-6 {
+        width: 100% !important;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+    .row.g-4 {
+        height: auto !important;
+        flex-direction: column;
+    }
+    .mb-3 {
+        align-items: center;
+        justify-content: center;
+        justify-self: center;
+    }
+
+}
+</style>
 </head>
 <body>
     <!-- HEADER -->
@@ -20,11 +58,11 @@
 
     <!-- Chi tiết sản phẩm -->
     <div class="container mt-4">
-        <div class="row g-4" style="height: 600px">
+        <div class="row g-4" style="height: auto">
             <div class="col-md-6" style="width:50%;">
                 <div class="gallery" style="height: 100%">
                     <img id="mainImage" src="{{ asset('uploads/' . $result->HinhAnh) }}" alt="Ảnh chính" class="main-img">
-                    <div class="thumbnails">
+                    <div class="thumbnails" style="justify-content: center;">
                       <img src="{{ asset('uploads/' . $result->HinhAnh) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
                       <img src="{{ asset('uploads/' . $result->HinhAnh2) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
                       <img src="{{ asset('uploads/' . $result->HinhAnh3) }}" onclick="changeImage(this)" alt="{{ $result->TenSP }}">
@@ -44,10 +82,11 @@
                     <div class="mb-3">
     <label style="font-family:Signika;color: #694922;" for="soluong" class="form-label">Số lượng:</label>
     <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">
-</div>
+
 <button type="submit" id="addToCartBtn" class="btn btn-primary">
     Thêm vào giỏ hàng
 </button>
+</div>
                 </form>
             </div>
         </div>

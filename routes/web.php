@@ -74,6 +74,12 @@ Route::get('/lienhe', [PageController::class, 'lienhe'])->name('lienhe');
 Route::get('/dangnhapdangky', [UserController::class, 'hienthiView'])->name('dangnhapdangky');
 Route::post('/dangky', [UserController::class, 'register'])->name('dangky');
 Route::get('/verify-email/{token}', [UserController::class, 'verifyEmail'])->name('verify.email');
+//gui lai maill
+Route::post('/email/verification-notification', [UserController::class, 'resendVerificationEmail'])
+     ->middleware(['auth']) // Chỉ cho phép người dùng đã đăng nhập
+     ->name('verification.resend');
+
+
 Route::post('/dangnhap', [UserController::class, 'login'])->name('dangnhap');
 Route::get('/dangxuat', [UserController::class, 'logout'])->name('dangxuat');
 Route::middleware('auth')->group(function () {

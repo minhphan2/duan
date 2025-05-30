@@ -23,6 +23,7 @@ class SocialController extends Controller
         [
             'username' => $googleUser->getName(),
             'password' => bcrypt(Str::random(16)),
+            'email_verified' => 1,
         ]
     );
 

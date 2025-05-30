@@ -25,4 +25,35 @@
   .thumbnails img:hover {
     border: 2px solid #f00;
   }
+
+  @media (max-width: 768px) {
+    .product-title {
+        font-size: 2rem !important;
+        text-align: center;
+    }
+    .product-price {
+        font-size: 1.5rem !important;
+        text-align: center;
+    }
+    .product-description {
+        font-size: 1rem !important;
+        text-align: center;
+    }
+    .gallery {
+        text-align: center;
+    }
+    .main-img {
+        max-width: 90vw;
+        height: auto;
+    }
+    .col-md-6 {
+        width: 100% !important;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+    .row.g-4 {
+        height: auto !important;
+        flex-direction: column;
+    }
+}
   

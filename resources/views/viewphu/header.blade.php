@@ -215,6 +215,16 @@
           </div>
 
           <!-- Tìm kiếm -->
+          @if(Auth::check() && Auth::user()->email_verified == 0)
+    <div class="alert alert-warning">
+        Tài khoản của bạn chưa xác minh email.
+        {{-- Thay đổi link để gọi route verification.resend bằng form POST --}}
+        <form action="{{ route('verification.resend') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Gửi lại email xác minh</button>
+        </form>
+    </div>
+@endif
           
         </header>
         <script>

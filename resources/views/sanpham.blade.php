@@ -55,7 +55,7 @@
     <div class="bookmark">
         <div class="content-bookmark">
             <div>
-                <h1>Sản Phẩm</h1>
+                <h1 style="text-align: center;">Sản Phẩm</h1>
                 <h3>HOT SALE</h3>
             </div>
         </div>
@@ -71,19 +71,36 @@
                 </div>
             </div>
             <div class="banh-list">
-                @if ($result_bsn->count() > 0)
-                    @foreach ($result_bsn->take(3) as $row)
-                        <div class="product-container product-container-bne ">
-                            <a href="{{ route('chitietsanpham', ['id' => $row->MaSP]) }}">
-                                <img src="{{ asset($row->HinhAnh) }}" alt="">
-                                <p class="product-name">{{ $row->TenSP }}</p>
-                                <p class="price">{{ $row->MoTa }} <br> {{ number_format($row->Gia, 0, ',', '.') }} ₫</p>
-                            </a>
-                        </div>
-                    @endforeach
-                @else
-                    <p>Không có sản phẩm nào.</p>
-                @endif
+               @if ($result_bsn->count() > 0)
+    @foreach ($result_bsn->take(3) as $row)
+        <div class="product-container product-container-bne">
+            <a href="{{ route('chitietsanpham', ['id' => $row->MaSP]) }}">
+                <img src="{{ asset($row->HinhAnh) }}" alt="">
+                <p class="product-name">{{ $row->TenSP }}</p>
+
+                <p class="price">
+                    {{ $row->MoTa }} <br>
+
+                    @if(isset($row->giam_gia) && $row->giam_gia > 0)
+                        <span style="color: red; font-weight: bold;">
+                            {{ number_format($row->Gia * (1 - $row->giam_gia / 100), 0, ',', '.') }} ₫
+                        </span>
+                        <span style="text-decoration: line-through; color: gray;">
+                            {{ number_format($row->Gia, 0, ',', '.') }} ₫
+                        </span>
+                        <span style="color: green;">-{{ $row->giam_gia }}%</span>
+                    @else
+                        <span style="font-weight: bold;">
+                            {{ number_format($row->Gia, 0, ',', '.') }} ₫
+                        </span>
+                    @endif
+                </p>
+            </a>
+        </div>
+    @endforeach
+@else
+    <p>Không có sản phẩm nào.</p>
+@endif
             </div>
         </div>
     </div>

@@ -79,7 +79,7 @@ public function capNhatTrangThai(Request $request, $id)
     $donhang->save();
 
     // Kiểm tra và giảm số lượng
-   if ($trangThaiMoi === 'Đã xác nhận' && $trangThaiCu !== 'Đã xác nhận') {
+   if ($trangThaiMoi === 'Hoàn tất' && $trangThaiCu !== 'Hoàn tất') {
     if ($donhang->chiTietHoaDons && count($donhang->chiTietHoaDons) > 0) {
         foreach ($donhang->chiTietHoaDons as $ct) {
             if ($ct->product) {

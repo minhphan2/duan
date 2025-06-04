@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>VTQ | Quản trị khách hàng</title>
+    <title>VTQ | Quản trị hóa đơn</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="{{ asset('admin/styles.css') }}" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
@@ -59,9 +59,9 @@
                                     <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>                                   
                                 </nav>
                             </div>
-                            <a class="nav-link" href="tintuc.php">
+                            <a class="nav-link" href="{{ route('admin.thongke') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
-                                    Quản trị tin tức
+                                    Thống kê doanh thu
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
@@ -98,7 +98,7 @@
                                     <a class="nav-link" href="tro-giup.php">Trợ giúp</a>             
                                 </nav>
                             </div>
-                            <a class="nav-link" href="binhluan.php">
+                            <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                                 Quản trị bình luận
                             </a>                                                     
@@ -112,7 +112,7 @@
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Quản trị khách hàng</h1>
+                    <h1 class="mt-4">Quản trị hóa đơn</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
                     </ol>
@@ -149,7 +149,7 @@
             <td class="border px-4 py-2">{{ $don->created_at }}</td>
             <td class="border px-4 py-2">{{ $don->trang_thai }}</td>
              <td class="border px-4 py-2">
-        <a href="{{ route('admin.donhang.chitiet', ['id' => $don->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
+        <a href="{{ route('admin.donhang.chitiet', ['id' => $don->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-black font-bold py-1 px-3 rounded">
             Xem chi tiết
         </a>
     </td>
@@ -162,7 +162,7 @@
         <option value="Đang giao" {{ $don->trang_thai === 'Đang giao' ? 'selected' : '' }}>Đang giao</option>
         <option value="Hoàn tất" {{ $don->trang_thai === 'Hoàn tất' ? 'selected' : '' }}>Hoàn tất</option>
     </select>
-    <button type="submit" class="ml-2 px-2 py-1 bg-blue-500 text-white rounded">Cập nhật</button>
+    <button type="submit" class="ml-2 px-2 py-1 bg-blue-500 text-black rounded">Cập nhật</button>
 </form>
             </td>
         </tr>

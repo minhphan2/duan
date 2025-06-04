@@ -142,6 +142,8 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 
 //danh gia
 use App\Http\Controllers\ReviewController;
+use App\Models\Admin;
+
 Route::get('/reviews/{product_id}', [ReviewController::class, 'getReviews']);
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
@@ -187,6 +189,12 @@ Route::middleware(['auth:admin'])->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlybinhluan', [ReviewController::class, 'laytatcareview'])->name('admin.qlybinhluan');
 });
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/thongke', [AdminController::class, 'thongke'])->name('admin.thongke');
+});
+
+
+
 
 /*
 Route::post('/addtocart', function (Request $request) {

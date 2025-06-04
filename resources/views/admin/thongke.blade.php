@@ -59,7 +59,7 @@
                                     <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>                                   
                                 </nav>
                             </div>
-                          <a class="nav-link" href="{{ route('admin.thongke') }}">
+                           <a class="nav-link" href="{{ route('admin.thongke') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
                                     Thống kê doanh thu
                             </a>
@@ -112,108 +112,112 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Quản trị sản phẩm</h1>
+                        <h1 class="mt-4">Thống kê</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
 </ol>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Danh sách sản phẩm | 
-        <a href="{{route('sanpham.formthem')}}">Thêm mới</a> 
+
+    <h2 class="text-xl font-bold mb-4">Thống kê doanh thu</h2>
+    <form method="GET" action="{{ route('admin.thongke') }}" class="mb-4 flex gap-2">
+    <label>
+        Từ ngày: <input type="date" name="start_date" value="{{ $start }}" class="border rounded px-2 py-1">
+    </label>
+    <label>
+        Đến ngày: <input type="date" name="end_date" value="{{ $end }}" class="border rounded px-2 py-1">
+    </label>
+    <button type="submit" class="bg-blue-500 text-black px-4 py-1 rounded">Lọc</button>
+</form>
+
+    <!-- Tổng doanh thu -->
+    <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
+        <strong>Tổng doanh thu:</strong> {{ number_format($doanhThu, 0, ',', '.') }} đ
     </div>
-    <div class="card-body">
-        <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
-            <thead>
+
+    <!-- Biểu đồ doanh thu theo ngày -->
+    <canvas id="doanhThuChart" height="100"></canvas>
+
+    <!-- Top sản phẩm bán chạy -->
+    <h3 class="mt-8 text-lg font-semibold">Top sản phẩm bán chạy</h3>
+    <table class="table-auto w-full border mt-2">
+        <thead>
+            <tr>
+                <th class="border px-2 py-1">Tên sản phẩm</th>
+                <th class="border px-2 py-1">Số lượng đã bán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($sanPhamBanChay as $item)
                 <tr>
-                    <th>STT</th>
-                    <th>Hình 1</th>
-                    <th>Hình 2</th>
-                    <th>Hình 3</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Mã loại</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Tình trạng</th>
-                    <th>Mô tả</th>
-                    <th>Giảm giá</th>
-                    <th>Sửa</th>
-                    <th>Xoá</th>
+                    <td class="border px-2 py-1">{{ $item['product']->TenSP?? 'N/A' }}</td>
+                    <td class="border px-2 py-1">{{ $item['tong_so_luong'] }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($result as $index => $sp)
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Top khách hàng mua nhiều -->
+    <h3 class="mt-8 text-lg font-semibold">Top khách hàng mua nhiều</h3>
+    <table class="table-auto w-full border mt-2">
+        <thead>
+            <tr>
+                <th class="border px-2 py-1">Tên khách hàng</th>
+                <th class="border px-2 py-1">Tổng chi tiêu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($khachHangMuaNhieu as $item)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>
-                        <img src="{{ asset('uploads/' . $sp->HinhAnh) }}" width="80" height="80" style="object-fit: cover; border-radius: 6px;" alt="Ảnh SP">
-                    </td>
-                    <td>
-                @if ($sp->HinhAnh2)
-                    <img src="{{ asset('uploads/' .$sp->HinhAnh2) }}" width="80" height="80" style="object-fit: cover;" alt="Ảnh 2">
-                @else
-                    Không có
-                @endif
-            </td>
-            <td>
-                @if ($sp->HinhAnh3)
-                    <img src="{{ asset('uploads/' .$sp->HinhAnh3) }}" width="80" height="80" style="object-fit: cover;" alt="Ảnh 3">
-                @else
-                    Không có
-                @endif
-            </td>
-                    <td>{{ $sp->TenSP }}</td>
-                    <td>{{ $sp->Loaisp }}</td>
-                    <td>{{ number_format($sp->Gia, 0, ',', '.') }}đ</td>
-                    <td>{{ $sp->SoLuong }}</td>
-                    <td>
-                        @if($sp->SoLuong == 0)
-                        <span style="color: red; font-weight: bold;">Hết hàng</span>
-                    @elseif($sp->SoLuong < 5)
-                        <span style="color: orange; font-weight: bold;">Sắp hết</span>
-                    @else
-                        <span style="color: green;">Còn hàng</span>
-                    @endif
-                    </td>
-                    <td style="max-width: 200px;">{{ Str::limit($sp->MoTa, 100) }}</td>
-                    <td>{{ $sp->giam_gia }}%</td>
-                    <td><a href="{{ route('sanpham.edit', $sp->MaSP) }}" class="btn btn-warning btn-sm">Sửa</a></td>
-                    <td> <form action="{{ route('sanpham.delete', $sp->MaSP) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
-        </form></td>
+                    <td class="border px-2 py-1">{{ $item['user']->username ?? 'N/A' }}</td>
+                    <td class="border px-2 py-1">{{ number_format($item['tong_chi_tieu'], 0, ',', '.') }} đ</td>
                 </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
+
 </div>
-                    </div>
-                </main>
-                <footer  class="py-4 bg-light mt-auto" >
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Bản Quyền &copy; Trang Web của bạn 2021</div>
-                            <div>
-                                <a href="chinhsachbaomat.php">Chính sách bảo mật</a>
-                                &middot;
-                                <a href="chinhsachbaomat.php">Điều khoản và điều kiện</a>
-                            </div>
+<footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex justify-content-between small">
+                        <div class="text-muted">Bản quyền &copy; Trang Web của bạn 2025</div>
+                        <div>
+                            <a href="#">Chính sách bảo mật</a>
+                            &middot;
+                            <a href="#">Điều khoản</a>
                         </div>
                     </div>
-                </footer>
+                </div>
+            </footer>
+                </main>
             </div>
-        </div>
-        
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('admin/scripts.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
-    <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
-    </body>
-</html>
-
+<script src="{{ asset('admin/scripts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('doanhThuChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($doanhThuTheoNgay->keys()) !!},
+            datasets: [{
+                label: 'Doanh thu theo ngày',
+                data: {!! json_encode($doanhThuTheoNgay->values()) !!},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.3,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

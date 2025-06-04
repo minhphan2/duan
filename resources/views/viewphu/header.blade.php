@@ -7,6 +7,7 @@
     <link rel="icon" href="{{asset('image/logo_cake_1-removebg-preview.png')}}" type = "image/x-icon"> <!--FAVICON-->
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/root.css') }}">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -216,12 +217,16 @@
 
           <!-- Tìm kiếm -->
           @if(Auth::check() && Auth::user()->email_verified == 0)
-    <div class="alert alert-warning">
+    <div class="alert2 alert-warning" style="
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+">
         Tài khoản của bạn chưa xác minh email.
         {{-- Thay đổi link để gọi route verification.resend bằng form POST --}}
         <form action="{{ route('verification.resend') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Gửi lại email xác minh</button>
+            <button type="submit" class="btn2 btn-link2 p-0 m-0 align-baseline">Gửi lại email xác minh</button>
         </form>
     </div>
 @endif

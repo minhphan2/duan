@@ -293,7 +293,7 @@ public function update(Request $request, $id)
     $sp->SoLuong = $request->so_luong;
     $sp->MoTa = $request->mo_ta;
     $sp->Loaisp = $request->ma_loai;
-
+    $sp->giam_gia = $request->giam_gia;
     if ($request->hasFile('hinh1')) {
         if ($sp->HinhAnh && file_exists(public_path('uploads/' . $sp->HinhAnh))) {
             unlink(public_path('uploads/' . $sp->HinhAnh));

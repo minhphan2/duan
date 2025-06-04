@@ -139,9 +139,9 @@
 
                                 <div class="form-floating mb-3">
         <select name="ma_loai" class="form-control" id="ma_loai">
-        <option value="PKB" {{ $sp->LoaiSP == 'PKB' ? 'selected' : '' }}>PKB</option>
-        <option value="BNE" {{ $sp->LoaiSP == 'BNE' ? 'selected' : '' }}>BNE</option>
-        <option value="BSN" {{ $sp->LoaiSP == 'BSN' ? 'selected' : '' }}>BSN</option>
+        <option value="PKB" {{ $sp->LoaiSP == 'PKB' ? 'selected' : '' }}>Phụ Kiện Bánh</option>
+        <option value="BNE" {{ $sp->LoaiSP == 'BNE' ? 'selected' : '' }}>Bánh Nửa Etremet</option>
+        <option value="BSN" {{ $sp->LoaiSP == 'BSN' ? 'selected' : '' }}>Bánh Sinh Nhật</option>
     </select>
     <label for="ma_loai">Loại Sản Phẩm</label>
 </div>
@@ -185,6 +185,12 @@
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" name="mo_ta" id="mo_ta" style="height: 100px">{{ old('mo_ta', $sp->MoTa) }}</textarea>
                                     <label for="mo_ta">Mô Tả</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" name="giam_gia" id="giam_gia" type="number"
+                                        value="{{ old('giam_gia', $sp->giam_gia) }}" />
+                                    <label for="giam_gia">Giảm giá</label>
                                 </div>
 
                                 <div class="mt-4 mb-0">

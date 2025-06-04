@@ -190,6 +190,7 @@ function showEmptyCartAlert() {
                             <img src="{{ asset('uploads/' . $item['image']) }}" width="64" height="64" class="rounded-full object-cover mr-4">
 
                             <!-- Thông tin -->
+                            <!-- Thông tin -->
                             <div class="flex-1 mr-4">
                                 <span class="text-lg font-semibold">{{ $item['name'] }}</span>
                                 <span class="product-price price ml-72">{{ number_format($item['price']) }}₫</span>
@@ -219,10 +220,6 @@ function showEmptyCartAlert() {
 
                 <div class="w-full lg:w-1/4 mt-10 lg:mt-0 lg:ml-20">
                     <div class="flex-col justify-center">
-                        <div class="flex items-center gap-4 lg:gap-14">
-                            <h3 class="text-lg font-semibold">Tổng tiền</h3>
-                            <span class="text-lg font-semibold" id="total-price">{{ number_format($tong) }}₫</span>
-                        </div>
                         <div class="mt-3">
                             <label for="note" class="control-label">Lưu ý cho đơn hàng</label> <br> <br>
                             <textarea class="border-2 rounded-md w-full" name="note" id="note" rows="4" class="form-input w-full"></textarea>
@@ -233,60 +230,64 @@ function showEmptyCartAlert() {
                         </div>
 
                         <div class="mt-4">
-    @if(Auth::check() || session()->has('customer')) 
-        @if(!empty($cart))
-            <button type="button" 
-                    onclick="showOrderConfirm()" 
-                    class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md w-full text-center"
-                    style="background: #9B592E">
-                ĐẶT HÀNG ({{ number_format($tong) }}₫)
-            </button>
-            
-            <!-- Form submit hidden -->
-            <form id="orderForm" action="{{ route('cart.dathang') }}" method="POST" style="display: none">
-    @csrf
-    @foreach($cart as $id => $item)
-        <input type="hidden" name="cart_items[{{$id}}][id]" value="{{ $id }}">
-        <input type="hidden" name="cart_items[{{$id}}][quantity]" value="{{ $item['quantity'] }}">
-        <input type="hidden" name="cart_items[{{$id}}][price]" value="{{ $item['price'] }}">
-        <!-- Thêm product_id vào form -->
-        <input type="hidden" name="cart_items[{{$id}}][product_id]" value="{{ $item['product_id'] }}">
-    @endforeach
-    
-    <!-- Thêm tổng tiền -->
-    <input type="hidden" name="total_amount" value="{{ $tong }}">
-    
-    <!-- Thêm user_id nếu user đã đăng nhập -->
-    @if(Auth::check())
-        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-    @endif
-    <!-- them dia chi-->
-    <input type="hidden" name="dia_chi" id="orderAddress">
-    <!-- Thêm ghi chú -->
-    <input type="hidden" name="note" id="orderNote">
-
-    <!-- Thêm trạng thái mặc định -->
-    <input type="hidden" name="trang_thai" value="Chờ xác nhận">
-</form>
-        @else
-            <button type="button" 
-                    onclick="showEmptyCartAlert()" 
-                    class="bg-gray-400 text-white py-2 px-4 rounded-md w-full text-center"
-                    style="background: #9B592E">
-                    
-                GIỎ HÀNG TRỐNG
-            </button>
-        @endif
-    @else
-        <button type="button" 
-                onclick="showLoginAlert()" 
-                class="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-md w-full text-center"
-                style="background: #9B592E">
-            ĐĂNG NHẬP ĐỂ ĐẶT HÀNG
-        </button>
-    @endif
- 
-</div>
+                            @if(Auth::check() || session()->has('customer')) 
+                                @if(!empty($cart))
+                                    @if(Auth::check() && Auth::user()->email_verified == 0)
+                                        <!-- Người chưa xác minh email -->
+                                        <button type="button" 
+                                                onclick="alert('Bạn cần xác minh email trước khi đặt hàng.')" 
+                                                class="bg-orange-500 text-white py-2 px-4 rounded-md w-full text-center"
+                                                style="background: #9B592E; opacity: 0.6;">
+                                            XÁC MINH EMAIL ĐỂ ĐẶT HÀNG
+                                        </button>
+                                    @else
+                                        <!-- Người đã xác minh -->
+                                        <button type="button" 
+                                                onclick="showOrderConfirm()" 
+                                                class="bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md w-full text-center"
+                                                style="background: #9B592E">
+                                            ĐẶT HÀNG
+                                        </button>
+                        
+                                        <!-- Form submit hidden -->
+                                        <form id="orderForm" action="{{ route('cart.dathang') }}" method="POST" style="display: none">
+                                            @csrf
+                                            @foreach($cart as $id => $item)
+                                                <input type="hidden" name="cart_items[{{$id}}][id]" value="{{ $id }}">
+                                                <input type="hidden" name="cart_items[{{$id}}][quantity]" value="{{ $item['quantity'] }}">
+                                                <input type="hidden" name="cart_items[{{$id}}][price]" value="{{ $item['price'] }}">
+                                                <input type="hidden" name="cart_items[{{$id}}][product_id]" value="{{ $item['product_id'] }}">
+                                            @endforeach
+                        
+                                            <input type="hidden" name="total_amount" value="{{ $tong }}">
+                                            @if(Auth::check())
+                                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                            @endif
+                                            <input type="hidden" name="dia_chi" id="orderAddress">
+                                            <input type="hidden" name="note" id="orderNote">
+                                            <input type="hidden" name="trang_thai" value="Chờ xác nhận">
+                                        </form>
+                                    @endif
+                                @else
+                                    <!-- Giỏ hàng trống -->
+                                    <button type="button" 
+                                            onclick="showEmptyCartAlert()" 
+                                            class="bg-gray-400 text-white py-2 px-4 rounded-md w-full text-center"
+                                            style="background: #9B592E">
+                                        GIỎ HÀNG TRỐNG
+                                    </button>
+                                @endif
+                            @else
+                                <!-- Người chưa đăng nhập -->
+                                <button type="button" 
+                                        onclick="showLoginAlert()" 
+                                        class="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-md w-full text-center"
+                                        style="background: #9B592E">
+                                    ĐĂNG NHẬP ĐỂ ĐẶT HÀNG
+                                </button>
+                            @endif
+                        </div>
+                        
                         <button type="button" 
                                 onclick="window.location.href='{{ route('sanpham') }}'" 
                                 class="mt-4 w-full">

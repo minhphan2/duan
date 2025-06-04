@@ -71,7 +71,21 @@
             </div>
             <div class="col-md-6" style="width:50%;">
                 <h2 class="product-title" style="font-family:Signika;font-size:100px;color: #694922;">{{ $result->TenSP }}</h2>
-                <p class="product-price "style="font-family:Signika;font-size:70px;color: #694922;"><b>{{ number_format($result->Gia) }} VNĐ</b></p>
+                @if(isset($result->giam_gia) && $result->giam_gia > 0)
+    <p class="product-price" style="font-family:Signika;font-size:60px;color: red;">
+        <b>{{ number_format($result->Gia * (1 - $result->giam_gia / 100)) }} VNĐ</b>
+        <span style="font-size: 40px; text-decoration: line-through; color: gray;">
+            {{ number_format($result->Gia) }} VNĐ
+        </span>
+        <span style="font-size: 35px; color: green;">
+            (-{{ $result->giam_gia}}%)
+        </span>
+    </p>
+@else
+    <p class="product-price" style="font-family:Signika;font-size:70px;color: #694922;">
+        <b>{{ number_format($result->Gia) }} VNĐ</b>
+    </p>
+@endif
                 <p class="product-description"style="font-family:Signika;font-size:30px;color: #694922;">{{ $result->MoTa }}</p>
                 <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
@@ -79,6 +93,7 @@
                     <input type="hidden" name="Gia" value="{{ $result->Gia }}">
                     <input type="hidden" name="TenSP" value="{{ $result->TenSP }}">
                     <input type="hidden" name="HinhAnh" value="{{ $result->HinhAnh }}">
+                    <input type="hidden" name="giam_gia" value="{{ $result->giam_gia }}"> 
                     <div class="mb-3">
     <label style="font-family:Signika;color: #694922;" for="soluong" class="form-label">Số lượng:</label>
     <input type="number" name="soluong" id="soluong" class="form-control w-25" value="1" min="1">

@@ -17,6 +17,7 @@ class ProductsModel extends Model
         'HinhAnh2',
         'HinhAnh3',
         'SoLuong',
+        'giam_gia',
     ];
     public function reviews()
 {

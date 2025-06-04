@@ -18,6 +18,13 @@ class GioHangController extends Controller
     return auth()->check() ? 'cart_' . auth()->id() : 'cart_guest_' . session()->getId();
 }
 
+
+private function tinhtoanGiamGia($price, $giamgia = 0)
+{
+    if ($giamgia <= 0) return $price;
+
+    return round($price * (1 - $giamgia / 100));
+}
 public function viewCart()
 {
     $cartKey = $this->getCartKey();
@@ -34,14 +41,18 @@ public function viewCart()
 
         foreach ($cartItems as $item) {
             $product = ProductsModel::find($item->product_id);
-
+            
             if ($product) {
+                // Tính giá sau giảm giá
+                $giasaukhigiam = $this->tinhtoanGiamGia($product->Gia, $product->giam_gia);
+                
                 $cart[$item->product_id] = [
                     'product_id' => $item->product_id,
                     'name'       => $product->TenSP,
-                    'price'      => $product->Gia,
+                    'price'      => $giasaukhigiam, 
                     'quantity'   => $item->quantity,
-                    'image'      => $product->HinhAnh
+                    'image'      => $product->HinhAnh,
+                    'giam_gia'   => $product->giam_gia  
                 ];
             }
         }
@@ -77,8 +88,12 @@ public function viewCart()
     $price = $request->input('Gia');
     $quantity = $request->input('soluong');
     $image = $request->input('HinhAnh');
+    $giamgia = $request->input('giam_gia', 0); 
 
-    $cartKey = $this->getCartKey(); // thường là 'cart' hoặc 'cart_user_{id}'
+    // Tính giá đã giảm
+    $giasaukhigiam = $this->tinhtoanGiamGia($price, $giamgia);
+
+    $cartKey = $this->getCartKey();
     $cart = session()->get($cartKey, []);
 
     // Cập nhật session
@@ -88,9 +103,10 @@ public function viewCart()
         $cart[$productId] = [
             'product_id' => $productId,
             'name' => $name,
-            'price' => $price,
+            'price' => $giasaukhigiam,  // Lưu giá sau giảm giá
             'quantity' => $quantity,
-            'image' => $image
+            'image' => $image,
+            'giam_gia' => $giamgia  // Lưu thông tin giảm giá
         ];
     }
 
@@ -152,6 +168,11 @@ public function viewCart()
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] += 1;
+            $product = ProductsModel::find($id);
+            if ($product) {
+                $cart[$id]['price'] = $this->tinhtoanGiamGia($product->Gia, $product->giam_gia);
+                $cart[$id]['giam_gia'] = $product->giam_gia;
+            }
             session()->put($cartKey, $cart);
 
             // Cập nhật vào DB
@@ -182,6 +203,11 @@ public function viewCart()
     if (isset($cart[$id])) {
         if ($cart[$id]['quantity'] > 1) {
             $cart[$id]['quantity'] -= 1;
+            $product = ProductsModel::find($id);
+            if ($product) {
+                $cart[$id]['price'] = $this->tinhtoanGiamGia($product->Gia, $product->giam_gia);
+                $cart[$id]['giam_gia'] = $product->giam_gia;
+            }
 
             if (auth()->check()) {
                 $cartId = $this->getOrCreateCartId(); // ✅ gọi trong đây mới đúng

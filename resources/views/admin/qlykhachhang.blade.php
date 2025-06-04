@@ -59,9 +59,9 @@
                                     <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>                                   
                                 </nav>
                             </div>
-                            <a class="nav-link" href="tintuc.php">
+                           <a class="nav-link" href="{{ route('admin.thongke') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
-                                    Quản trị tin tức
+                                    Thống kê doanh thu
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>

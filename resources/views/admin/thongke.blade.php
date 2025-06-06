@@ -94,8 +94,8 @@
                             </a>
                             <div class="collapse" id="collapseFour" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="lien-he.php"> Liên hệ</a>                                                            
-                                    <a class="nav-link" href="tro-giup.php">Trợ giúp</a>             
+                                <a class="nav-link" href="{{route('admin.qlyhotro')}}"> Liên hệ</a> 
+                                <a class="nav-link" href="{{route('admin.qlytuyendung')}}">Tuyển dụng</a>           
                                 </nav>
                             </div>
                             <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">

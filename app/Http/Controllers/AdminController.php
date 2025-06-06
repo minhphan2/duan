@@ -9,6 +9,8 @@ use App\Models\HoaDonModel;
 use App\Models\ProductsModel;
 use App\Models\UserModel;
 use Carbon\Carbon;
+use App\Models\TuyenDungModel;
+use App\Models\HoTroModel;
 
 
 
@@ -131,5 +133,28 @@ public function thongke(Request $request)
 }
 
 
+public function danhSachTuyenDung()
+{
+    $tuyenDung = TuyenDungModel::all();
+    return view('admin.qlytuyendung', compact('tuyenDung'));
+}
+
+public function danhSachHoTro()
+{
+    $hoTro = HoTroModel::all();
+    return view('admin.qlyhotro', compact('hoTro'));
+}
+
+public function deleteTuyenDung($id){
+    $tuyenDung = TuyenDungModel::find($id);
+    $tuyenDung->delete();
+    return redirect()->route('admin.qlytuyendung')->with('success', 'Yêu cầu tuyển dụng đã được xóa thành công.');
+}
+
+public function deleteHoTro($id){
+    $hoTro = HoTroModel::find($id);
+    $hoTro->delete();
+    return redirect()->route('admin.qlyhotro')->with('success', 'Yêu cầu hỗ trợ đã được xóa thành công.');
+}
 }
 ?>

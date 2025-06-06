@@ -100,8 +100,8 @@
                             </a>
                             <div class="collapse" id="collapseFour" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="lien-he.php"> Liên hệ</a>                                                            
-                                    <a class="nav-link" href="tro-giup.php">Trợ giúp</a>             
+                                <a class="nav-link" href="{{route('admin.qlyhotro')}}"> Liên hệ</a> 
+                                <a class="nav-link" href="{{route('admin.qlytuyendung')}}">Tuyển dụng</a>            
                                 </nav>
                             </div>
                             <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">
@@ -132,7 +132,7 @@
                             <div class="card bg-danger text-white mb-4" >
                                 <div class="card-body">Khách Hàng</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="khachhang.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlykhachhang')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -143,27 +143,18 @@
                             <div class="card bg-secondary text-white mb-4">
                                 <div class="card-body">Hóa Đơn</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="hoadon.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlydonhang')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
                         </div>                            
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Khuyến Mãi</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="khuyenmai.php">Chi Tiết</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
                     <h3>Phân Mục Sản Phẩm</h3>
                     <br><br>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-primary text-white mb-4">
                                 <div class="card-body">Sản Phẩm</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="sanpham.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlysanpham')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -174,16 +165,16 @@
                             <div class="card bg-info text-white mb-4">
                                 <div class="card-body">Liên Hệ</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="lien-he.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlyhotro')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Trợ giúp</div>
+                                <div class="card-body">Tuyển Dụng</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="tro-giup.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlytuyendung')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -194,7 +185,7 @@
                             <div class="card bg-success text-white mb-4">
                                 <div class="card-body">Bình luận</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="binhluan.php">Chi Tiết</a>
+                                    <a class="small text-white stretched-link" href="{{route('admin.qlybinhluan')}}">Chi Tiết</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>

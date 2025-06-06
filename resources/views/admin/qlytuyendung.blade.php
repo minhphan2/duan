@@ -6,13 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>VTQ | Quản trị hệ thống</title>
+        <title>VTQ | Quản trị hệ thống - Tuyển dụng</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="{{ asset('admin/styles.css') }}" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">VTQ Bakery</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
@@ -46,7 +46,7 @@
                             <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Bảng điều khiển
-                            </a>                           
+                            </a>
                             <a class="nav-link collapsed" href="nguoidung.php" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                 Quản trị người dùng
@@ -54,12 +54,12 @@
                             </a>
                             <div class="collapse" id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="nguoidung.php"> Người dùng</a>   
+                                    <a class="nav-link" href="nguoidung.php"> Người dùng</a>
                                     <a class="nav-link" href="dangky.php">  Đăng Ký</a>
-                                    <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>                                   
+                                    <a class="nav-link" href="dangxuat.php">Đăng Xuất</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="{{ route('admin.thongke') }}">
+                             <a class="nav-link" href="{{ route('admin.thongke') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
                                     Thống kê doanh thu
                             </a>
@@ -70,21 +70,21 @@
                             </a>
                             <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>                                                            
+                                    <a class="nav-link" href="{{route('admin.qlysanpham')}}"> Sản phẩm</a>
                                 </nav>
                             </div>
                             <a class="nav-link" href="{{route('admin.qlykhachhang')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Quản trị khách hàng
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                                 Quản trị bán hàng
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="{{route('admin.qlydonhang')}}"> Hoá đơn</a>                                                                                        
+                                    <a class="nav-link" href="{{route('admin.qlydonhang')}}"> Hoá đơn</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -94,14 +94,14 @@
                             </a>
                             <div class="collapse" id="collapseFour" aria-labelledby="headingFour" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link" href="{{route('admin.qlyhotro')}}"> Liên hệ</a> 
-                                <a class="nav-link" href="{{route('admin.qlytuyendung')}}">Tuyển dụng</a>            
+                                    <a class="nav-link" href="{{route('admin.qlyhotro')}}"> Liên hệ</a>
+                                    <a class="nav-link" href="{{route('admin.qlytuyendung')}}">Tuyển dụng</a> 
                                 </nav>
                             </div>
-                            <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">
+                             <a class="nav-link" href="{{ route('admin.qlybinhluan') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                                 Quản trị bình luận
-                            </a>                                                     
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -112,51 +112,55 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Quản trị bình luận</h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
-</ol>
+                        <h1 class="mt-4">Quản trị yêu cầu tuyển dụng</h1> {{-- Cập nhật tiêu đề --}}
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Yêu cầu tuyển dụng</li> {{-- Cập nhật breadcrumb --}}
+                        </ol>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Danh sách bình luận
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Tên</th>
-                    <th>Sản Phẩm</th>
-                    <th>Đánh giá</th>
-                    <th>Comment</th>
-                    <th>Ngày đánh giá</th>
-                    <th>Xoá</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($kqreview as $index => $review)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $review->name }}</td>
-                    <td>{{ $review->product->TenSP }}</td>
-                    <td>{{$review->rating}}</td>
-                    <td>{{ $review->comment }}</td>
-                    <td>{{ $review->created_at->format('d-m-Y H:i') }}</td>
-                    <td>
-                        <form action="">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Danh sách yêu cầu tuyển dụng {{-- Cập nhật tiêu đề bảng --}}
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Họ và tên</th> {{-- Cập nhật cột --}}
+                                            <th>Email</th> {{-- Cập nhật cột --}}
+                                            <th>Số điện thoại</th> {{-- Cập nhật cột --}}
+                                            <th>Địa chỉ</th> {{-- Cập nhật cột --}}
+                                            <th>Nội dung/Hồ sơ</th> {{-- Cập nhật cột --}}
+                                            <th>Ngày gửi</th> {{-- Cập nhật cột --}}
+                                            <th>Xoá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Giả định biến được truyền vào là $tuyenDungRequests --}}
+                                        @foreach ($tuyenDung as $index => $request) {{-- Cập nhật tên biến và lặp --}}
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $request->full_name }}</td> {{-- Cập nhật tên cột --}}
+                                                <td>{{ $request->email }}</td> {{-- Cập nhật tên cột --}}
+                                                <td>{{ $request->phone }}</td> {{-- Cập nhật tên cột --}}
+                                                <td>{{ $request->address }}</td> {{-- Cập nhật tên cột --}}
+                                                <td>{{ $request->content }}</td> {{-- Cập nhật tên cột --}}
+                                                <td>{{ $request->created_at->format('d-m-Y H:i') }}</td> {{-- Sử dụng created_at --}}
+                                                <td>
+                                                    <form action="{{ route('admin.tuyendung.delete', $request->id) }}" method="POST"> {{-- Cập nhật route và method --}}
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa yêu cầu tuyển dụng này không?');">Xoá</button> {{-- Thêm xác nhận xóa --}}
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </main>
                 <footer  class="py-4 bg-light mt-auto" >
@@ -173,14 +177,13 @@
                 </footer>
             </div>
         </div>
-        
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('admin/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+    {{-- <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script> --}} {{-- Có thể không cần các script biểu đồ --}}
+    {{-- <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
-    <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
+    <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script> {{-- Script cho DataTables --}}
     </body>
 </html>
-

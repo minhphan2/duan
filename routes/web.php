@@ -199,6 +199,18 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/thongke', [AdminController::class, 'thongke'])->name('admin.thongke');
 });
 
+Route::middleware(['auth:admin'])->group(function () {
+
+    // Routes cho Quản lý yêu cầu Liên hệ (Hỗ trợ)
+    Route::get('/admin/dashboard/quanlyhotro', [App\Http\Controllers\AdminController::class, 'danhSachHoTro'])->name('admin.qlyhotro');
+    Route::delete('/admin/hotro/{id}', [App\Http\Controllers\AdminController::class, 'deleteHotro'])->name('admin.hotro.delete');
+
+    // Routes cho Quản lý yêu cầu Tuyển dụng
+    Route::get('/admin/dashboard/quanlytuyendung', [App\Http\Controllers\AdminController::class, 'danhSachTuyenDung'])->name('admin.qlytuyendung');
+    Route::delete('/admin/tuyendung/{id}', [App\Http\Controllers\AdminController::class, 'deleteTuyenDung'])->name('admin.tuyendung.delete');
+
+});
+
 
 
 

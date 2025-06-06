@@ -44,7 +44,7 @@
         </script>
         <main>			
     <!-- SECTION -->
-    <div class="bookmark">
+    <div class="bookmark"></div>
         <div class="content-bookmark">
             <div>
                 <h1 style="text-align: center;">Liên Hệ</h1>
@@ -87,28 +87,28 @@
           <div class="contact-content">
               <h3 class="fs36">Thông Tin Liên Hệ</h3>
 
-              <form action="{{ route('gui.ho_tro') }}" method="POST">
+              <form action="{{ route('gui.ho_tro') }}" method="POST" id="contactForm">
                   @csrf
                   <div class="contact-form" id="contact-form">
                       <div class="form-ten-sdt">
                           <span class="contact-form-item error">
                               <input size="40" class="wpcf7-form-control width" id="input-name"
-                                  placeholder="Tên :" type="text" name="name" required />
+                                  placeholder="Tên :" type="text" name="name" />
                           </span>
                           <span class="contact-form-item error">
                               <input size="40" class="wpcf7-form-control width" id="input-phone"
-                                  placeholder="Số điện thoại :" type="text" name="phone" required />
+                                  placeholder="Số điện thoại :" type="text" name="phone" />
                           </span>
                       </div>
 
                       <span class="contact-form-item error">
                           <input size="40" class="wpcf7-form-control" id="input-email"
-                              placeholder="Email :" type="email" name="email" required />
+                              placeholder="Email :" type="email" name="email" />
                       </span>
 
                       <span class="contact-form-item error">
                           <textarea id="input-message" cols="40" rows="10" class="wpcf7-form-control"
-                              placeholder="Nhập nội dung của bạn :" name="message" required></textarea>
+                              placeholder="Nhập nội dung của bạn :" name="message"></textarea>
                       </span>
                   </div>
 
@@ -219,6 +219,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu có session flash 'success'
+            @if(session('success'))
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            // Kiểm tra nếu có session flash 'error'
+            @if(session('error'))
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: '{{ session('error') }}',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            // Kiểm tra nếu có lỗi validation từ Laravel (được tự động đưa vào $errors)
+            // Mặc dù bạn nói không cần hiển thị lỗi dưới input,
+            // việc hiển thị thông báo lỗi chung khi validation fail cũng hữu ích
+            @if ($errors->any())
+                let errorMessages = '';
+                @foreach ($errors->all() as $error)
+                    errorMessages += '{{ $error }}<br>';
+                @endforeach
+                Swal.fire({
+                    title: 'Lỗi nhập liệu!',
+                    html: errorMessages,
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
+    </script>
 </body>
 @endsection
 </html>

@@ -91,6 +91,8 @@ const inputMessage = document.getElementById("input-message");
     });
   }
 });*/
+
+
 document.addEventListener("DOMContentLoaded", () => {
   gsap.registerPlugin(ScrollTrigger);
   console.log("ScrollTrigger và GSAP đã được khởi tạo");

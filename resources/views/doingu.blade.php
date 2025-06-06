@@ -176,30 +176,35 @@
             </div>
             <!-- -------------------------------- TEAM --------------------------------- -->
             <!-- ----------------------------- TUYỂN DỤNG ------------------------------ -->
-            <div class="form">
+          
+
+  <div class="form">
                 <h1>Tuyển dụng</h1>
                 <br>
-                <div class="contact-form" id="contact-form">
-                    <div>
-                        <span class="contact-form-item">
-                            <input class="name" id="input-name" type="text" placeholder="Họ và tên">
-                        </span>
-                        <span class="contact-form-item">
-                            <input type="text" id="input-email" placeholder="Email">
-                        </span>
-                        <span class="contact-form-item">
-                            <input type="text" id="input-phone" placeholder="Số điện thoại">
-                        </span>
-                        <span class="contact-form-item">
-                            <input type="text" id="input-address" placeholder="Địa chỉ">
-                        </span>
-                    </div>
-                    <span class="contact-form-item" data-after="">
-                        <textarea name="" id="input-message" placeholder="Nội dung"></textarea>
-                    </span>
-                    <button id="btn-submit">Gửi ngay</button>
-                </div>
-            </div>
+              <div class="contact-form" id="contact-form">
+              <form action="{{ route('gui.tuyen_dung') }}" method="POST">
+                  @csrf
+                  <div class="contact-form" id="contact-form"> {{-- Bạn có thể giữ ID này hoặc đổi tên nếu nó gây nhầm lẫn với form liên hệ --}}
+                       <div>
+                           <span class="contact-form-item">
+                              <input class="name" id="input-name" type="text" placeholder="Họ và tên" name="full_name">
+                           </span>
+                          <span class="contact-form-item">
+                              <input type="text" id="input-email" placeholder="Email" name="email">
+                          </span>                           <span class="contact-form-item">
+                              <input type="text" id="input-phone" placeholder="Số điện thoại" name="phone">
+                          </span>
+                          <span class="contact-form-item">
+                               <input type="text" id="input-address" placeholder="Địa chỉ" name="address">
+                         </span>
+                      </div>
+                     <span class="contact-form-item" data-after="">
+                           <textarea name="content" id="input-message" placeholder="Nội dung"></textarea> {{-- Thêm name="content" cho textarea --}}
+                       </span>
+                       <button id="btn-submit" type="submit">Gửi ngay</button> {{-- Đổi type thành submit --}}
+                   </div>
+               </form>
+             </div>
             <!-- ----------------------------- TUYỂN DỤNG ------------------------------ -->
             <!-- -------------------------------- BRAND -------------------------------- -->
             <div class="brand" id="brandContainer">
@@ -325,6 +330,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="js/header.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Script để hiển thị SweetAlert2 từ session flash -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Kiểm tra nếu có session flash 'success'
+        @if(session('success'))
+            Swal.fire({
+                title: 'Thành công!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        // Kiểm tra nếu có session flash 'error'
+        @if(session('error'))
+            Swal.fire({
+                title: 'Lỗi!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        // Kiểm tra nếu có lỗi validation từ Laravel (được tự động đưa vào $errors)
+        @if ($errors->any())
+            let errorMessages = '';
+            @foreach ($errors->all() as $error)
+                errorMessages += '{{ $error }}<br>';
+            @endforeach
+            Swal.fire({
+                title: 'Lỗi nhập liệu!',
+                html: errorMessages,
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    });
+</script>
 </body>
 @endsection
 </html>

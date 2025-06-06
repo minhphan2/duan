@@ -149,6 +149,12 @@ Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store
 
 
 
+Route::post('/gui-ho-tro', [PageController::class, 'guiHoTro'])->name('gui.ho_tro');
+Route::post('/gui-tuyen-dung', [PageController::class, 'guiTuyenDung'])->name('gui.tuyen_dung');
+
+
+
+
 
 //cua admin
 Route::middleware(['auth:admin'])->group(function () {

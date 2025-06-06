@@ -59,7 +59,7 @@
         <div class="bookmark">
             <div class="content-bookmark">
                 <div>
-                    <h1>Đội ngũ</h1>
+                    <h1 style="text-align: center;">Đội ngũ</h1>
                     <h3>Trang chủ || Đội ngũ</h3>
                 </div>
             </div>

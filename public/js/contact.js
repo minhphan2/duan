@@ -24,7 +24,7 @@ const inputPhone = document.getElementById("input-phone");
 const inputEmail = document.getElementById("input-email");
 const inputMessage = document.getElementById("input-message");
 
-btnSubmit.addEventListener("mouseup", (e) => {
+/*btnSubmit.addEventListener("mouseup", (e) => {
   const name = inputName?.value?.trim();
   const phone = inputPhone?.value?.trim();
   const email = inputEmail?.value?.trim();
@@ -90,7 +90,7 @@ btnSubmit.addEventListener("mouseup", (e) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
-});
+});*/
 document.addEventListener("DOMContentLoaded", () => {
   gsap.registerPlugin(ScrollTrigger);
   console.log("ScrollTrigger và GSAP đã được khởi tạo");

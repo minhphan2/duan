@@ -43,7 +43,7 @@ public function viewCart()
             $product = ProductsModel::find($item->product_id);
             
             if ($product) {
-                // Tính giá sau giảm giá
+                // tinh gia sau giam gia
                 $giasaukhigiam = $this->tinhtoanGiamGia($product->Gia, $product->giam_gia);
                 
                 $cart[$item->product_id] = [
@@ -63,11 +63,11 @@ public function viewCart()
     return view('giohang', compact('cart'));
 }
 
-    // Hàm tạo hoặc lấy giỏ hàng trong DB
+    // tao hoac lay gio hang trong db
    public function getOrCreateCartId()
 {
     if (!auth()->check()) {
-        return null; // hoặc throw exception
+        return null; 
     }
 
     $userId = auth()->id();
@@ -90,31 +90,31 @@ public function viewCart()
     $image = $request->input('HinhAnh');
     $giamgia = $request->input('giam_gia', 0); 
 
-    // Tính giá đã giảm
+    // gia giam
     $giasaukhigiam = $this->tinhtoanGiamGia($price, $giamgia);
 
     $cartKey = $this->getCartKey();
     $cart = session()->get($cartKey, []);
 
-    // Cập nhật session
+    // cap nha section
     if (isset($cart[$productId])) {
         $cart[$productId]['quantity'] += $quantity;
     } else {
         $cart[$productId] = [
             'product_id' => $productId,
             'name' => $name,
-            'price' => $giasaukhigiam,  // Lưu giá sau giảm giá
+            'price' => $giasaukhigiam,  
             'quantity' => $quantity,
             'image' => $image,
-            'giam_gia' => $giamgia  // Lưu thông tin giảm giá
+            'giam_gia' => $giamgia  
         ];
     }
 
     session()->put($cartKey, $cart);
 
-    // Chỉ lưu vào DB nếu người dùng đã đăng nhập
+    // luu vao db neu ng dung da dang nhap
     if (auth()->check()) {
-        $cartId = $this->getOrCreateCartId(); // tạo cart nếu chưa có
+        $cartId = $this->getOrCreateCartId(); // tao cart neu chua co
 
         $existing = CartitemsModel::where('cart_id', $cartId)
             ->where('product_id', $productId)
@@ -167,9 +167,19 @@ public function viewCart()
         $cart = session()->get($cartKey, []);
 
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] += 1;
             $product = ProductsModel::find($id);
             if ($product) {
+                // Kiểm tra số lượng trong kho
+                if ($cart[$id]['quantity'] >= $product->SoLuong) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Số lượng sản phẩm trong kho không đủ!',
+                        'cart' => $cart,
+                        'totalQuantity' => array_sum(array_column($cart, 'quantity')),
+                    ]);
+                }
+
+                $cart[$id]['quantity'] += 1;
                 $cart[$id]['price'] = $this->tinhtoanGiamGia($product->Gia, $product->giam_gia);
                 $cart[$id]['giam_gia'] = $product->giam_gia;
             }
@@ -177,15 +187,15 @@ public function viewCart()
 
             // Cập nhật vào DB
             if (auth()->check()) {
-            $cartId = $this->getOrCreateCartId();
+                $cartId = $this->getOrCreateCartId();
 
-            CartitemsModel::where('cart_id', $cartId)
-                ->where('product_id', $id)
-                ->update([
-                    'quantity' => $cart[$id]['quantity'],
-                    'updated_at' => now()
-                ]);
-        }
+                CartitemsModel::where('cart_id', $cartId)
+                    ->where('product_id', $id)
+                    ->update([
+                        'quantity' => $cart[$id]['quantity'],
+                        'updated_at' => now()
+                    ]);
+            }
         }
 
         return response()->json([
@@ -210,7 +220,7 @@ public function viewCart()
             }
 
             if (auth()->check()) {
-                $cartId = $this->getOrCreateCartId(); // ✅ gọi trong đây mới đúng
+                $cartId = $this->getOrCreateCartId();
                 CartitemsModel::where('cart_id', $cartId)
                     ->where('product_id', $id)
                     ->update([
@@ -268,7 +278,14 @@ public function datHang(Request $request)
         ]);
     }
 
+    // Xóa giỏ hàng trong session
     session()->forget($cartKey);
+
+    // Xóa giỏ hàng trong database nếu user đã đăng nhập
+    if (auth()->check()) {
+        $cartId = $this->getOrCreateCartId();
+        CartitemsModel::where('cart_id', $cartId)->delete();
+    }
 
     return redirect()->route('cart.show')->with('success', 'Đặt hàng thành công!');
 }

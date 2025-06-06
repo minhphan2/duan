@@ -54,7 +54,7 @@
         <div class="bookmark">
             <div class="content-bookmark">
                 <div>
-                    <h1>Tin tức</h1>
+                    <h1 style="text-align: center;">Tin tức</h1>
                     <h3>Cập nhật</h3>
                 </div>
             </div>

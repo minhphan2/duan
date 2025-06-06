@@ -47,7 +47,7 @@
     <div class="bookmark">
         <div class="content-bookmark">
             <div>
-                <h1>Liên Hệ</h1>
+                <h1 style="text-align: center;">Liên Hệ</h1>
                 <h3><a href="trangchu.html">Trang chủ</a> || Liên Hệ</h3>
             </div>
         </div>
@@ -80,39 +80,48 @@
         </div>
     </div>
     <!-- FORM LIÊN HỆ -->
-    <div class="lienhe">
-        <div class="contact-area">
-            <div class="contact-bg">
-                <div class="contact-content">
-                    <h3 class="fs36">Thông Tin Liên Hệ</h3>
-                    <div class="contact-form" id="contact-form">
-                        <div class="form-ten-sdt">
-                            <span class="contact-form-item error" data-after="">
-                                <input size="40" class="wpcf7-form-control width" id="input-name" aria-invalid="false"
-                                    placeholder="Tên :" value="" type="text" name="your-name" />
-                            </span>
-                            <span class="contact-form-item error">
-                                <input size="40" class="wpcf7-form-control width" id="input-phone" aria-invalid="false"
-                                    placeholder="Số điện thoại :" value="" type="text" name="your-phone" />
-                            </span>
+    <!-- FORM LIÊN HỆ -->
+<div class="lienhe">
+  <div class="contact-area">
+      <div class="contact-bg">
+          <div class="contact-content">
+              <h3 class="fs36">Thông Tin Liên Hệ</h3>
 
-                        </div>
-                        <span class="contact-form-item error">
-                            <input size="40" class="wpcf7-form-control " id="input-email" aria-invalid="false"
-                                placeholder="Email :" value="" type="text" name="your-email" />
-                        </span>
-                        <span class="contact-form-item error">
-                            <textarea id="input-message" cols="40" rows="10" class="wpcf7-form-control "
-                                aria-required="true" aria-invalid="false" placeholder="Nhập nội dung của bạn :"
-                                name="your-message"></textarea>
-                        </span>
-                    </div>
-                    <div class="contact-button">
-                        <input class="wpcf7-form-control wpcf7-submit" id="btn-submit" type="submit" value="GỬI NGAY" />
-                    </div>
-                </div>
-            </div>
-        </div>
+              <form action="{{ route('gui.ho_tro') }}" method="POST">
+                  @csrf
+                  <div class="contact-form" id="contact-form">
+                      <div class="form-ten-sdt">
+                          <span class="contact-form-item error">
+                              <input size="40" class="wpcf7-form-control width" id="input-name"
+                                  placeholder="Tên :" type="text" name="name" required />
+                          </span>
+                          <span class="contact-form-item error">
+                              <input size="40" class="wpcf7-form-control width" id="input-phone"
+                                  placeholder="Số điện thoại :" type="text" name="phone" required />
+                          </span>
+                      </div>
+
+                      <span class="contact-form-item error">
+                          <input size="40" class="wpcf7-form-control" id="input-email"
+                              placeholder="Email :" type="email" name="email" required />
+                      </span>
+
+                      <span class="contact-form-item error">
+                          <textarea id="input-message" cols="40" rows="10" class="wpcf7-form-control"
+                              placeholder="Nhập nội dung của bạn :" name="message" required></textarea>
+                      </span>
+                  </div>
+
+                  <div class="contact-button">
+                      <input class="wpcf7-form-control wpcf7-submit" id="btn-submit" type="submit" value="GỬI NGAY" />
+                  </div>
+              </form>
+
+          </div>
+      </div>
+  </div>
+</div>
+
         <div class="map">
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.5884919834416!2d105.82623827531152!3d21.009126380635294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac800f450807%3A0x419a49bcd94b693a!2zSOG7jWMgVmnhu4duIE5nw6JuIEjDoG5n!5e0!3m2!1svi!2s!4v1715367973344!5m2!1svi!2s"

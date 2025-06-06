@@ -53,6 +53,16 @@
             const form = document.getElementById('orderForm');
             if (form) {
                 form.submit();
+                // Xóa tất cả sản phẩm trong giỏ hàng
+                const cartItems = document.getElementById('cartItems');
+                if (cartItems) {
+                    cartItems.innerHTML = `<p>Giỏ hàng rỗng. <a href="/sanpham" class="text-blue-500">Mua hàng</a></p>
+                    <hr class="my-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tổng tiền</h3>
+                        <span class="text-lg font-semibold" id="total-price">0₫</span>
+                    </div>`;
+                }
             }
         }
     });
@@ -429,12 +439,24 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(res => res.json())
             .then(data => {
-                if (data.cart && data.cart[id]) {
+                if (data.success) {
                     const item = data.cart[id];
                     row.querySelector('.quantity').textContent = item.quantity;
                     row.querySelector('.subtotal').textContent = (item.price * item.quantity).toLocaleString('vi-VN') + '₫';
+                    updateTotal();
+                } else {
+                    // Hiển thị thông báo lỗi
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: data.message,
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    // Disable nút tăng
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
                 }
-                updateTotal();
             });
         }
 
@@ -454,34 +476,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     const item = data.cart[id];
                     row.querySelector('.quantity').textContent = item.quantity;
                     row.querySelector('.subtotal').textContent = (item.price * item.quantity).toLocaleString('vi-VN') + '₫';
+                    // Enable lại nút tăng khi giảm số lượng
+                    const increaseBtn = row.querySelector('.increase-btn');
+                    increaseBtn.disabled = false;
+                    increaseBtn.style.opacity = '1';
+                    increaseBtn.style.cursor = 'pointer';
                 }
                 updateTotal();
                 checkIfCartEmpty();
             });
         }
 
-       if (btn.classList.contains('remove-btn')) {
-    fetch(`/cart/remove/${id}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
+        if (btn.classList.contains('remove-btn')) {
+            fetch(`/cart/remove/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    if (row) row.remove();
+                    updateTotal();
+                    checkIfCartEmpty();
+                } else {
+                    console.error('Lỗi từ server:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi fetch:', error);
+            });
         }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Xóa sản phẩm khỏi giao diện
-            if (row) row.remove();
-            updateTotal();
-            checkIfCartEmpty();
-        } else {
-            console.error('Lỗi từ server:', response.status);
-        }
-    })
-    .catch(error => {
-        console.error('Lỗi fetch:', error);
-    });
-}
 
         function updateTotal() {
             let total = 0;
@@ -495,21 +521,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function checkIfCartEmpty() {
-    const items = document.querySelectorAll('.product-row');
-    if (items.length === 0) {
-        cartItems.innerHTML = `<p>Giỏ hàng rỗng. <a href="/sanpham" class="text-blue-500">Mua hàng</a></p>
-        <hr class="my-4">
-<div class="flex justify-between items-center">
-    <h3 class="text-lg font-semibold">Tổng tiền</h3>
-    <span class="text-lg font-semibold" id="total-price">{{ number_format($tong) }}₫</span>
-
-</div>
-        `;
-        document.getElementById('total-price').textContent = '0₫';
-        
-    }
-}
-
+            const items = document.querySelectorAll('.product-row');
+            if (items.length === 0) {
+                cartItems.innerHTML = `<p>Giỏ hàng rỗng. <a href="/sanpham" class="text-blue-500">Mua hàng</a></p>
+                <hr class="my-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold">Tổng tiền</h3>
+                    <span class="text-lg font-semibold" id="total-price">0₫</span>
+                </div>`;
+                document.getElementById('total-price').textContent = '0₫';
+            }
+        }
     });
 });
 </script>

@@ -194,5 +194,56 @@
     <script src="{{ asset('admin/scripts.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
     <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script>
+        $(document).ready(function() {
+            // Hiển thị thông báo thành công
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            // Hiển thị thông báo lỗi
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            // Xác nhận khi chuyển trạng thái
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+                const form = $(this);
+                const select = form.find('select[name="trang_thai"]');
+                const trangThaiCu = select.find('option:selected').text();
+                const trangThaiMoi = select.val();
+
+                Swal.fire({
+                    title: 'Xác nhận thay đổi trạng thái?',
+                    text: `Bạn có chắc muốn chuyển trạng thái từ "${trangThaiCu}" sang "${trangThaiMoi}"?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.off('submit').submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

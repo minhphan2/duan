@@ -73,6 +73,10 @@ public function capNhatTrangThai(Request $request, $id)
 
     // Lưu trạng thái cũ để kiểm tra
     $trangThaiCu = $donhang->trang_thai;
+    // Thêm kiểm tra tính hợp lệ của việc chuyển đổi trạng thái
+    if (!$this->isValidStatusTransition($trangThaiCu, $trangThaiMoi)) {
+        return redirect()->back()->with('error', 'Không thể chuyển từ trạng thái "' . $trangThaiCu . '" sang "' . $trangThaiMoi . '"!');
+    }
 
     // Nếu chuyển sang trạng thái Hủy
     if ($trangThaiMoi === 'Hủy' && $trangThaiCu !== 'Hủy') {
@@ -115,6 +119,20 @@ public function capNhatTrangThai(Request $request, $id)
     }
 
     return redirect()->back()->with('success', 'Cập nhật trạng thái thành công!');
+}
+
+private function isValidStatusTransition($trangThaiCu, $trangThaiMoi)
+{
+    $validTransitions = [
+        'Chờ xác nhận' => ['Đã xác nhận', 'Hủy'],
+        'Đã xác nhận' => ['Đang giao', 'Hủy'],
+        'Đang giao' => ['Hoàn tất', 'Hủy'],
+        'Hoàn tất' => [], // khong chuyen trang thai khac duoc
+        'Hủy' => [], // y nh utren
+    ];
+
+    return isset($validTransitions[$trangThaiCu]) && 
+           in_array($trangThaiMoi, $validTransitions[$trangThaiCu]);
 }
 
 

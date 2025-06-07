@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\CartModel;
 use App\Models\HoaDonModel;
 use App\Models\ChiTietHoaDonModel;
+use Illuminate\Support\Facades\DB;
 
 class GioHangController extends Controller
 {
@@ -259,34 +260,58 @@ public function datHang(Request $request)
         return redirect()->back()->with('error', 'Giỏ hàng trống!');
     }
 
-    $hoadon = new HoaDonModel();
-    $hoadon->user_id = auth()->id();
-    $hoadon->dia_chi = $request->input('dia_chi');
-    $hoadon->note = $request->input('note');
-    $hoadon->tong_tien = collect($cart)->sum(function ($item) {
-        return $item['price'] * $item['quantity'];
-    });
-    $hoadon->trang_thai = 'Chờ xác nhận';
-    $hoadon->save();
+    // Dùng transaction để đảm bảo tính toàn vẹn dữ liệu
+    DB::beginTransaction();
+    try {
+        // Kiểm tra tồn kho từng sản phẩm
+        foreach ($cart as $productId => $item) {
+            $product = ProductsModel::where('MaSP', $productId)->lockForUpdate()->first();
+            if (!$product || $product->SoLuong < $item['quantity']) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Sản phẩm "' . $item['name'] . '" không đủ số lượng trong kho!');
+            }
+        }
 
-    foreach ($cart as $productId => $item) {
-        ChiTietHoaDonModel::create([
-            'hoa_don_id' => $hoadon->id,
-            'product_id' => $productId,
-            'so_luong' => $item['quantity'],
-            'don_gia' => $item['price'],
-        ]);
+        // Trừ tồn kho ngay khi đặt hàng
+        foreach ($cart as $productId => $item) {
+            $product = ProductsModel::where('MaSP', $productId)->lockForUpdate()->first();
+            $product->SoLuong -= $item['quantity'];
+            $product->save();
+        }
+
+        $hoadon = new HoaDonModel();
+        $hoadon->user_id = auth()->id();
+        $hoadon->dia_chi = $request->input('dia_chi');
+        $hoadon->note = $request->input('note');
+        $hoadon->tong_tien = collect($cart)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+        $hoadon->trang_thai = 'Chờ xác nhận';
+        $hoadon->save();
+
+        foreach ($cart as $productId => $item) {
+            ChiTietHoaDonModel::create([
+                'hoa_don_id' => $hoadon->id,
+                'product_id' => $productId,
+                'so_luong' => $item['quantity'],
+                'don_gia' => $item['price'],
+            ]);
+        }
+
+        // Xóa giỏ hàng trong session
+        session()->forget($cartKey);
+
+        // Xóa giỏ hàng trong database nếu user đã đăng nhập
+        if (auth()->check()) {
+            $cartId = $this->getOrCreateCartId();
+            CartitemsModel::where('cart_id', $cartId)->delete();
+        }
+
+        DB::commit();
+        return redirect()->route('cart.show')->with('success', 'Đặt hàng thành công!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại!');
     }
-
-    // Xóa giỏ hàng trong session
-    session()->forget($cartKey);
-
-    // Xóa giỏ hàng trong database nếu user đã đăng nhập
-    if (auth()->check()) {
-        $cartId = $this->getOrCreateCartId();
-        CartitemsModel::where('cart_id', $cartId)->delete();
-    }
-
-    return redirect()->route('cart.show')->with('success', 'Đặt hàng thành công!');
 }
 }

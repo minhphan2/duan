@@ -161,6 +161,7 @@
         <option value="Đã xác nhận" {{ $don->trang_thai === 'Đã xác nhận' ? 'selected' : '' }}>Đã xác nhận</option>
         <option value="Đang giao" {{ $don->trang_thai === 'Đang giao' ? 'selected' : '' }}>Đang giao</option>
         <option value="Hoàn tất" {{ $don->trang_thai === 'Hoàn tất' ? 'selected' : '' }}>Hoàn tất</option>
+        <option value="Hủy" {{ $don->trang_thai === 'Hủy' ? 'selected' : '' }}>Hủy</option>
     </select>
     <button type="submit" class="ml-2 px-2 py-1 bg-blue-500 text-black rounded">Cập nhật</button>
 </form>

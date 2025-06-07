@@ -174,6 +174,9 @@
             @endforeach
         </tbody>
     </table>
+    <br>
+    <br>
+    <a href="{{ route('xuat.excel') }}" class="btn btn-success" style="color: white;">Xuất Excel</a>
 
 </div>
 <footer class="py-4 bg-light mt-auto">

@@ -11,6 +11,8 @@ use App\Models\UserModel;
 use Carbon\Carbon;
 use App\Models\TuyenDungModel;
 use App\Models\HoTroModel;
+use App\Exports\DoanhThuExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -131,6 +133,16 @@ public function thongke(Request $request)
         'start', 'end'
     ));
 }
+
+
+
+public function xuatExcel()
+{
+    $duLieu = HoaDonModel::all(); // hoặc lọc theo ngày tháng
+
+    return Excel::download(new DoanhThuExport($duLieu), 'doanhthu.xlsx');
+}
+
 
 
 public function danhSachTuyenDung()

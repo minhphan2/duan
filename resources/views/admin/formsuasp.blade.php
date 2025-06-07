@@ -222,5 +222,43 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('admin/scripts.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Hiển thị thông báo thành công
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: '{{ session('success') }}',
+                });
+            @endif
+
+            // Hiển thị thông báo lỗi chung
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: '{{ session('error') }}',
+                });
+            @endif
+
+            // Hiển thị lỗi validation
+            @if($errors->any())
+                let errorMessages = '';
+                @foreach ($errors->all() as $error)
+                    errorMessages += '{{ $error }}<br>';
+                @endforeach
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi dữ liệu đầu vào!',
+                    html: errorMessages,
+                });
+            @endif
+        });
+        </script>
+
 </body>
 </html>

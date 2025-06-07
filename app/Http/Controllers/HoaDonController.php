@@ -74,25 +74,38 @@ public function capNhatTrangThai(Request $request, $id)
     // Lưu trạng thái cũ để kiểm tra
     $trangThaiCu = $donhang->trang_thai;
 
-    // Cập nhật trạng thái mới
+    // Nếu chuyển sang trạng thái Hủy
+    if ($trangThaiMoi === 'Hủy' && $trangThaiCu !== 'Hủy') {
+        // Cộng lại số lượng sản phẩm
+        if ($donhang->chiTietHoaDons && count($donhang->chiTietHoaDons) > 0) {
+            foreach ($donhang->chiTietHoaDons as $ct) {
+                if ($ct->product) {
+                    $ct->product->SoLuong += $ct->so_luong;
+                    $ct->product->save();
+                }
+            }
+        }
+        $tenKhach = $donhang->user->name ?? 'Quý khách';
+        $email = $donhang->user->email ?? null;
+        if ($email) {
+            Mail::to($email)->send(new ThongBaoTrangThaiDonHangMail($tenKhach, $trangThaiMoi));
+        }
+
+        // Xóa chi tiết hóa đơn
+        ChiTietHoaDonModel::where('hoa_don_id', $id)->delete();
+        
+        // Xóa hóa đơn
+        $donhang->delete();
+
+        return redirect()->back()->with('success', 'Đã hủy và xóa đơn hàng thành công!');
+    }
+
+    // Nếu không phải hủy đơn, cập nhật trạng thái bình thường
     $donhang->trang_thai = $trangThaiMoi;
     $donhang->save();
 
-    // Kiểm tra và giảm số lượng
-   if ($trangThaiMoi === 'Hoàn tất' && $trangThaiCu !== 'Hoàn tất') {
-    if ($donhang->chiTietHoaDons && count($donhang->chiTietHoaDons) > 0) {
-        foreach ($donhang->chiTietHoaDons as $ct) {
-            if ($ct->product) {
-                $ct->product->SoLuong -= $ct->so_luong;
-                $ct->product->save();
-            }
-        }
-    }
-
-    
-}
-    // gui mai thong bao 
-    if (in_array($trangThaiMoi, ['Đang giao', 'Hoàn tất'])) {
+    // Gửi mail thông báo 
+    if (in_array($trangThaiMoi, ['Đã Xác Nhận','Đang giao', 'Hoàn tất'])) {
         $tenKhach = $donhang->user->name ?? 'Quý khách';
         $email = $donhang->user->email ?? null;
 

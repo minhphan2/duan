@@ -33,51 +33,81 @@ class UserController extends Controller
     }
       
 
-   public function login(Request $request){
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:6',
-        'g-recaptcha-response' => new Captcha(),
-    ]);
-
-    $credentials = $request->only('email', 'password');
-
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        $request->session()->put('customer', $user);
-
-        // TẢI GIỎ HÀNG TỪ DATABASE
-        $cart = \App\Models\CartModel::firstOrCreate(
-            ['user_id' => $user->id],
-            ['created_at' => now(), 'updated_at' => now()]
-        );
-
-        $items = \App\Models\CartitemsModel::where('cart_id', $cart->id)->get();
-
-        $cartSession = [];
-
-        foreach ($items as $item) {
-            $product = \App\Models\ProductsModel::find($item->product_id);
-            if ($product) {
-                $cartSession[$item->product_id] = [
-                    'name' => $product->TenSP,
-                    'price' => $product->Gia,
-                    'quantity' => $item->quantity,
-                    'image' => $product->HinhAnh
-                ];
+    public function login(Request $request){
+        try {
+            $request->validate([
+                'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                'password' => 'required|min:6',
+                'g-recaptcha-response' => new Captcha(),
+            ], [
+                'email.required' => 'Vui lòng nhập email',
+                'email.email' => 'Email không hợp lệ',
+                'email.regex' => 'Email không đúng định dạng',
+                'password.required' => 'Vui lòng nhập mật khẩu',
+                'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+                'g-recaptcha-response.required' => 'Vui lòng xác nhận captcha!',
+            ]);
+    
+            // Kiem tra ton tai email
+            $user = \App\Models\User::where('email', $request->email)->first();
+            if (!$user) {
+                return redirect()->back()->with('swal_error', [
+                    'title' => 'Đăng nhập thất bại!',
+                    'text' => 'Email không tồn tại trong hệ thống',
+                    'icon' => 'error'
+                ]);
             }
+    
+            $credentials = $request->only('email', 'password');
+    
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                $request->session()->put('customer', $user);
+    
+                // Tai gio hang tu db
+                $cart = \App\Models\CartModel::firstOrCreate(
+                    ['user_id' => $user->id],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
+    
+                $items = \App\Models\CartitemsModel::where('cart_id', $cart->id)->get();
+    
+                $cartSession = [];
+    
+                foreach ($items as $item) {
+                    $product = \App\Models\ProductsModel::find($item->product_id);
+                    if ($product) {
+                        $cartSession[$item->product_id] = [
+                            'name' => $product->TenSP,
+                            'price' => $product->Gia,
+                            'quantity' => $item->quantity,
+                            'image' => $product->HinhAnh
+                        ];
+                    }
+                }
+    
+                session()->put('cart_user_' . $user->id, $cartSession);
+    
+                return redirect()->route('home')->with('swal_success', [
+                    'title' => 'Đăng nhập thành công!',
+                    'text' => 'Chào mừng bạn quay trở lại',
+                    'icon' => 'success'
+                ]);
+            } else {
+                return redirect()->back()->with('swal_error', [
+                    'title' => 'Đăng nhập thất bại!',
+                    'text' => 'Mật khẩu không chính xác',
+                    'icon' => 'error'
+                ]);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->with('swal_error', [
+                'title' => 'Lỗi đăng nhập!',
+                'text' => $e->validator->errors()->first(),
+                'icon' => 'error'
+            ]);
         }
-
-        session()->put('cart_user_' . $user->id, $cartSession);
-
-        return redirect()->route('home');
-    } else {
-        return redirect()->back()->with('swal_error', [
-            'title' => 'Đăng nhập thất bại!',
-            'text' => 'Sai email hoặc mật khẩu',
-            'icon' => 'error']);
     }
-}
 
 
 
@@ -102,13 +132,32 @@ class UserController extends Controller
 */
 public function register(Request $request)
 {
-    $request->validate([
-        'username' => 'required|string',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|min:6|confirmed',
-        'g-recaptcha-response' => new Captcha(),
-    ]);
-
+    try {
+        $request->validate([
+            'username' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'g-recaptcha-response' => new Captcha(),
+        ], [
+            'username.required' => 'Vui lòng nhập tên!',
+            'email.required' => 'Vui lòng nhập email!',
+            'email.email' => 'Email không đúng định dạng!',
+            'email.unique' => 'Email này đã được sử dụng!',
+            'password.required' => 'Vui lòng nhập mật khẩu!',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự!',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp!',
+            'g-recaptcha-response.required' => 'Vui lòng xác nhận captcha!'
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $errorMessage = collect($e->errors())->first()[0];
+        return redirect()->back()
+            ->withInput()
+            ->with('swal_error', [
+                'title' => 'Lỗi!',
+                'text' => $errorMessage,
+                'icon' => 'error'
+            ]);
+    }
     $verifyToken = Str::random(60);
 
     $user = UserModel::create([
@@ -210,11 +259,20 @@ public function verifyEmail($token)
         return view('laylaimk');
     }
 
-    public function laylaimatkhau(Request $request){
+   public function laylaimatkhau(Request $request){
+    try {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
             'token' => 'required',
             'password' => 'required|min:6|confirmed',
+        ], [
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Email không hợp lệ',
+            'email.regex' => 'Email không đúng định dạng',
+            'token.required' => 'Vui lòng nhập mã xác nhận',
+            'password.required' => 'Vui lòng nhập mật khẩu mới',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp'
         ]);
     
         $user = UserModel::where('email', $request->email)
@@ -225,7 +283,7 @@ public function verifyEmail($token)
         if (!$user) {
             return redirect()->route('dangnhapdangky')->with('swal_error', [
                 'title' => 'Lỗi!',
-                'text' => 'Mã không đúng hoặc đã hết hạn.',
+                'text' => 'Email hoặc mã xác nhận không đúng hoặc đã hết hạn. Vui lòng thử lại!',
                 'icon' => 'error'
             ]);
         }
@@ -236,44 +294,86 @@ public function verifyEmail($token)
         $user->save();
     
         return redirect()->route('dangnhapdangky')->with('swal_success', [
-        'title' => 'Thành công!',
-        'text' => 'Đặt lại mật khẩu thành công',
-        'icon' => 'success']);
+            'title' => 'Thành công!',
+            'text' => 'Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại với mật khẩu mới!',
+            'icon' => 'success'
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()->with('swal_error', [
+            'title' => 'Lỗi!',
+            'text' => $e->validator->errors()->first(),
+            'icon' => 'error'
+        ]);
     }
+}
 
 
     public function update(Request $request)
-    {
+{
+    try {
         $user = Auth::user();
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10', 
+        ], [
+            'name.required' => 'Vui lòng nhập tên!',
+            'name.max' => 'Tên không được vượt quá 255 ký tự!',
+            'email.required' => 'Vui lòng nhập email!',
+            'email.email' => 'Email không đúng định dạng!',
+            'email.unique' => 'Email này đã được sử dụng!',
+            'email.max' => 'Email không được vượt quá 255 ký tự!',
+            'phone.required' => 'Vui lòng nhập số điện thoại!',
+            'phone.regex' => 'Số điện thoại không đúng định dạng!',
+            'phone.min' => 'Số điện thoại phải có ít nhất 10 số!',
+            'phone.max' => 'Số điện thoại không được vượt quá 10 số!'
         ]);
+
         $user->username = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->save();
         return redirect()->route('profile.edit')->with('success', 'Cập nhật thành công!');
-    }
 
-    public function changePassword(Request $request)
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $errorMessage = collect($e->errors())->first()[0];
+        return redirect()->back()
+            ->withInput()
+            ->with('error', $errorMessage);
+    }
+}
+
+public function changePassword(Request $request)
 {
-    $request->validate([
-        'current_password' => 'required',
-        'new_password' => 'required|min:6|confirmed',
-    ]);
+    try {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ], [
+            'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại!',
+            'new_password.required' => 'Vui lòng nhập mật khẩu mới!',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự!',
+            'new_password.confirmed' => 'Xác nhận mật khẩu mới không khớp!'
+        ]);
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    if (!Hash::check($request->current_password, $user->password)) {
-        return back()->with('password_error', 'Mật khẩu hiện tại không đúng!');
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Mật khẩu hiện tại không đúng!');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Đổi mật khẩu thành công!');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $errorMessage = collect($e->errors())->first()[0];
+        return redirect()->back()
+            ->withInput()
+            ->with('error', $errorMessage);
     }
-
-    $user->password = Hash::make($request->new_password);
-    $user->save();
-
-    return back()->with('password_success', 'Đổi mật khẩu thành công!');
 }
 
 public function resendVerificationEmail(Request $request)

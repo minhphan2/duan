@@ -10,23 +10,38 @@ use Illuminate\Support\Facades\DB;
 class ReviewController extends Controller
 {
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'product_id' => 'required|exists:sanpham,MaSP',
-            'rating'     => 'required|integer|min:1|max:5',
-            'comment'    => 'nullable|string|max:1000',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'product_id' => 'required|exists:sanpham,MaSP',
+        'rating'     => 'required|integer|min:1|max:5',
+        'comment'    => 'nullable|string|max:1000',
+    ]);
 
-        ReviewModel::create([
-            'name'    => $request->name, 
-            'product_id' => $request->product_id,
-            'rating'     => $request->rating,
-            'comment'    => $request->comment,
-        ]);
+    // Danh sách từ cấm
+    $badWords = [
+        'đụ', 'địt', 'đéo', 'đcm', 'lồn', 'cặc', 'đít', 'chó', 'ngu', 'khốn', 'bố láo', 'bậy', 'fuck', 'shit'
+        // Thêm các từ khác nếu cần
+    ];
 
-        return response()->json(['success' => true]);
+    $comment = $request->comment;
+    if ($comment) {
+        foreach ($badWords as $badWord) {
+            // Thay thế không phân biệt hoa thường
+            $pattern = '/' . preg_quote($badWord, '/') . '/i';
+            $comment = preg_replace($pattern, '***', $comment);
+        }
     }
+
+    ReviewModel::create([
+        'name'    => $request->name, 
+        'product_id' => $request->product_id,
+        'rating'     => $request->rating,
+        'comment'    => $comment,
+    ]);
+
+    return response()->json(['success' => true, 'message' => 'Gửi đánh giá thành công!']);
+}
 
     public function getReviews($product_id)
 {

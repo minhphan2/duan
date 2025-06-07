@@ -163,6 +163,7 @@ Route::middleware(['auth:admin'])->group(function () {
 
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlysanpham', [ProductsController::class, 'laytatcasanpham'])->name('admin.qlysanpham');
+    Route::get('/admin/products/load', [ProductsController::class, 'loadProducts'])->name('admin.products.load');
 });
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard/quanlysanpham/them', [ProductsController::class, 'formthem'])->name('sanpham.formthem');
@@ -197,6 +198,7 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/thongke', [AdminController::class, 'thongke'])->name('admin.thongke');
+    Route::get('/xuat-excel', [AdminController::class, 'xuatExcel'])->name('xuat.excel');
 });
 
 Route::middleware(['auth:admin'])->group(function () {

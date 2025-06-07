@@ -13,3 +13,30 @@
 
     <button type="submit">Đặt lại mật khẩu</button>
 </form>
+<!-- Thêm vào phần head hoặc cuối body -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Thêm đoạn code này vào cuối file, trước thẻ đóng body -->
+@if(session('swal_success'))
+<script>
+    Swal.fire({
+        title: '{{ session('swal_success')['title'] }}',
+        text: '{{ session('swal_success')['text'] }}',
+        icon: '{{ session('swal_success')['icon'] }}',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6'
+    });
+</script>
+@endif
+
+@if(session('swal_error'))
+<script>
+    Swal.fire({
+        title: '{{ session('swal_error')['title'] }}',
+        text: '{{ session('swal_error')['text'] }}',
+        icon: '{{ session('swal_error')['icon'] }}',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33'
+    });
+</script>
+@endif

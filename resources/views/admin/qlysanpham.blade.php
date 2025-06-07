@@ -113,9 +113,43 @@
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Quản trị sản phẩm</h1>
+                        <div id="loadingIndicator" style="display: none; text-align: center; padding: 20px;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng điều khiển</a></li>
 </ol>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <select id="sortBy" class="form-select">
+            <option value="">Sắp xếp theo</option>
+            <option value="price_asc">Giá tăng dần</option>
+            <option value="price_desc">Giá giảm dần</option>
+            <option value="name_asc">Tên A-Z</option>
+            <option value="name_desc">Tên Z-A</option>
+            <option value="quantity_asc">Số lượng tăng dần</option>
+            <option value="quantity_desc">Số lượng giảm dần</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select id="filterCategory" class="form-select">
+            <option value="">Tất cả loại</option>
+            <option value="BSN">Bánh sinh nhật</option>
+            <option value="BNE">Bánh nửa Entremet</option>
+            <option value="PKB">Phụ kiện bánh</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+            <button class="btn btn-primary" type="button" id="searchBtn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
 <div class="card mb-4">
     <div class="card-header">
@@ -123,7 +157,7 @@
         Danh sách sản phẩm | 
         <a href="{{route('sanpham.formthem')}}">Thêm mới</a> 
     </div>
-    <div class="card-body">
+    <div class="card-body" id="productTable">
         <table id="datatablesSimple" class="table table-bordered table-hover text-center align-middle">
             <thead>
                 <tr>
@@ -188,6 +222,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div id="noResults" style="display: none; text-align: center; padding: 20px;">
+            <p class="text-muted">Không tìm thấy sản phẩm nào phù hợp với điều kiện tìm kiếm.</p>
+        </div>
     </div>
 </div>
                     </div>
@@ -214,6 +251,65 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
     <script src="{{ asset('admin/datatables-simple-demo.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    function loadProducts() {
+        $('#loadingIndicator').show();
+        $.ajax({
+            url: '{{ route("admin.products.load") }}',
+            type: 'GET',
+            data: {
+                sort: $('#sortBy').val(),
+                category: $('#filterCategory').val(),
+                search: $('#searchInput').val()
+            },
+            success: function(response) {
+                $('#productTable').html(response);
+                $('#loadingIndicator').hide();
+                if($('#productTable table tbody tr').length === 0) {
+                    $('#noResults').show();
+                } else {
+                    $('#noResults').hide();
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi tải dữ liệu!');
+                $('#loadingIndicator').hide();
+            }
+        });
+    }
+
+    // Load sản phẩm khi trang được tải
+    loadProducts();
+
+    // Xử lý sự kiện thay đổi
+    $('#sortBy, #filterCategory').change(function() {
+        loadProducts();
+    });
+
+    // Xử lý tìm kiếm
+    $('#searchBtn').click(function() {
+        loadProducts();
+    });
+
+    // Tìm kiếm khi nhấn Enter
+    $('#searchInput').keypress(function(e) {
+        if(e.which == 13) {
+            loadProducts();
+        }
+    });
+
+    // Thêm debounce cho ô tìm kiếm
+    let searchTimeout;
+    $('#searchInput').on('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            loadProducts();
+        }, 500);
+    });
+});
+</script>
     </body>
 </html>
 
